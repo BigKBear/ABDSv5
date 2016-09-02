@@ -1,24 +1,118 @@
-// Ionic Starter App
+(function() {
 
-// angular.module is a global place for creating, registering and retrieving Angular modules
-// 'starter' is the name of this angular module example (also set in a <body> attribute in index.html)
-// the 2nd parameter is an array of 'requires'
-angular.module('starter', ['ionic'])
+var app = angular.module('abds', ['ionic', 'notes.notestore', 'users.userstore']);
 
-.run(function($ionicPlatform) {
+app.config(function($stateProvider, $urlRouterProvider) {
+
+  $stateProvider.state('list', {
+    url: '/list',
+    templateUrl: 'templates/list.html',
+    controller: 'ListCtrl'
+  });
+
+  $stateProvider.state('add', {
+    url: '/add',
+    templateUrl: 'templates/edit.html',
+    controller: 'AddCtrl'
+  });
+
+  $stateProvider.state('edit', {
+    url: '/edit/:noteId',
+    templateUrl: 'templates/edit.html',
+    controller: 'EditCtrl'
+  });
+
+  $stateProvider.state('login', {
+    url: '/login',
+    templateUrl: 'templates/login.html',
+    controller: 'LoginCtrl'
+  });
+
+  $urlRouterProvider.otherwise('/login');
+});
+
+app.controller('LoginCtrl', function($scope, $state, UserStore){  
+  $scope.users = UserStore.list();
+
+  $scope.user = {
+    id: new Date().getTime().toString(),
+    username: '',
+    password: ''
+  };
+  
+  $scope.loginFailed = false;
+
+  $scope.login = function() {
+     /*User.login($scope.credentials)
+      .then(function() {
+        $ionicHistory.nextViewOptions({historyRoot: true});
+        $state.go('list');
+      })
+      .catch(function() {
+        $scope.loginFailed = true;
+      });*/
+      if(($scope.user.password == '')||($scope.user.username == '')){
+        $scope.loginFailed = true;
+      }else{
+        UserStore.createUser($scope.user);
+        $state.go('list');
+      }
+  };
+});
+
+app.controller('ListCtrl', function($scope, NoteStore){  
+  $scope.notes = NoteStore.list();
+  $scope.reordering =false;
+
+  $scope.remove = function(noteId){
+    NoteStore.remove(noteId);
+  };
+
+  $scope.move = function(note, fromIndex, toIndex){
+    
+    NoteStore.move(note, fromIndex, toIndex);
+  };
+
+  $scope.toggleReordering = function(){
+    $scope.reordering = !$scope.reordering;
+  };
+
+});
+
+app.controller('AddCtrl', function($scope, $state, NoteStore) {
+
+  $scope.note = {
+    id: new Date().getTime().toString(),
+    title: '',
+    description: ''
+  };
+
+  $scope.save = function() {
+    NoteStore.createNote($scope.note);
+    $state.go('list');
+  };
+});
+
+app.controller('EditCtrl', function($scope, $state, NoteStore){
+  
+  $scope.note = angular.copy(NoteStore.getNote($state.params.noteId));
+  
+  $scope.save = function() {
+    NoteStore.updateNote($scope.note);
+    $state.go('list');
+  };
+});
+
+app.run(function($ionicPlatform) {
   $ionicPlatform.ready(function() {
     if(window.cordova && window.cordova.plugins.Keyboard) {
-      // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
-      // for form inputs)
       cordova.plugins.Keyboard.hideKeyboardAccessoryBar(true);
-
-      // Don't remove this line unless you know what you are doing. It stops the viewport
-      // from snapping when text inputs are focused. Ionic handles this internally for
-      // a much nicer keyboard experience.
       cordova.plugins.Keyboard.disableScroll(true);
     }
     if(window.StatusBar) {
       StatusBar.styleDefault();
     }
   });
-})
+});
+
+}());
