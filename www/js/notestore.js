@@ -1,5 +1,5 @@
 /*
-User Store Service
+Notes Store Service
 Creator: Kyle St.Hill
 Purpose: Manage the user data
 */

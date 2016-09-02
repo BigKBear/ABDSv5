@@ -1,31 +1,188 @@
 (function() {
 
-var app = angular.module('abds', ['ionic', 'notes.notestore', 'users.userstore']);
+var app = angular.module('abds', ['ionic', 'notes.notestore', 'users.userstore', 'files.filestore']);
 
 app.config(function($stateProvider, $urlRouterProvider) {
 
-  $stateProvider.state('list', {
-    url: '/list',
-    templateUrl: 'templates/list.html',
-    controller: 'ListCtrl'
-  });
+  $stateProvider
 
-  $stateProvider.state('add', {
-    url: '/add',
-    templateUrl: 'templates/edit.html',
-    controller: 'AddCtrl'
-  });
+  .state('tabs', {
+    url: "/tab",
+    abstract: true,
+    templateUrl: "templates/tabs/tabs.html"
+  })
+  .state('encrypted_tabs', {
+    url: "/encrypted_tab",
+    abstract: true,
+    templateUrl: "templates/tabs/encrypted_tabs.html"
+  })
+  .state('decrypted_tabs', {
+    url: "/decrypted_tab",
+    abstract: true,
+    templateUrl: "templates/tabs/decrypted_tabs.html"
+  })
 
-  $stateProvider.state('edit', {
-    url: '/edit/:noteId',
-    templateUrl: 'templates/edit.html',
-    controller: 'EditCtrl'
-  });
-
-  $stateProvider.state('login', {
+  .state('login', {
     url: '/login',
     templateUrl: 'templates/login.html',
     controller: 'LoginCtrl'
+  })
+
+  /*The different home tab bars available*/
+  .state('tabs.home', {
+    url: "/home",
+    views: {
+      'home-tab': {
+        templateUrl: "templates/home.html",
+        controller: 'HomeTabCtrl'
+      }
+    }
+  })
+  .state('tabs.encrypted', {
+    url: "/encrypted",
+    views: {
+      'encrypted-tab': {
+        templateUrl: "templates/home.html"
+      }
+    }
+  })
+  .state('tabs.decrypted', {
+    url: "/decrypted",
+    views: {
+      'decrypted-tab': {
+        templateUrl: "templates/home.html"
+      }
+    }
+  })
+  .state('tabs.all', {
+    url: "/all",
+    views: {
+      'all-files-tab': {
+        templateUrl: "templates/list.html",
+        controller: 'ListCtrl'
+      }
+    }
+  })
+
+  /*Encrypted view tabs*/
+  .state('encrypted_tabs.home', {
+    url: "/home",
+    views: {
+      'encrypted-home-tab': {
+        templateUrl: "templates/home.html",
+        controller: 'HomeTabCtrl'
+      }
+    }
+  })
+  .state('encrypted_tabs.videos', {
+    url: "/videos",
+    views: {
+      'encrypted-videos-tab': {
+        templateUrl: "templates/home.html"
+      }
+    }
+  })
+  .state('encrypted_tabs.pictures', {
+    url: "/pictures",
+    views: {
+      'encrypted-pictures-tab': {
+        templateUrl: "templates/home.html"
+      }
+    }
+  })
+  .state('encrypted_tabs.music', {
+    url: "/music",
+    views: {
+      'encrypted-music-tab': {
+        templateUrl: "templates/home.html"
+      }
+    }
+  })
+  .state('encrypted_tabs.document', {
+    url: "/documents",
+    views: {
+      'encrypted-document-tab': {
+        templateUrl: "templates/home.html"
+      }
+    }
+  })
+  .state('encrypted_tabs.other', {
+    url: "/other",
+    views: {
+      'encrypted-other-tab': {
+        templateUrl: "templates/home.html"
+      }
+    }
+  })
+
+  /*Decrypted view tabs*/
+  .state('decrypted_tabs.home', {
+    url: "/home",
+    views: {
+      'decrypted-home-tab': {
+        templateUrl: "templates/home.html",
+        controller: 'HomeTabCtrl'
+      }
+    }
+  })
+  .state('decrypted_tabs.videos', {
+    url: "/videos",
+    views: {
+      'decrypted-videos-tab': {
+        templateUrl: "templates/videos.html"
+      }
+    }
+  })
+  .state('decrypted_tabs.pictures', {
+    url: "/pictures",
+    views: {
+      'decrypted-pictures-tab': {
+        templateUrl: "templates/pictures.html"
+      }
+    }
+  })
+  .state('decrypted_tabs.music', {
+    url: "/music",
+    views: {
+      'decrypted-music-tab': {
+        templateUrl: "templates/music.html"
+      }
+    }
+  })
+  .state('decrypted_tabs.document', {
+    url: "/documents",
+    views: {
+      'decrypted-document-tab': {
+        templateUrl: "templates/documents.html"
+      }
+    }
+  })
+  .state('decrypted_tabs.other', {
+    url: "/other",
+    views: {
+      'decrypted-other-tab': {
+        templateUrl: "templates/other.html"
+      }
+    }
+  })
+
+  /*Other states from notes app*/
+  .state('list', {
+    url: '/list',
+    templateUrl: 'templates/list.html',
+    controller: 'ListCtrl'
+  })
+
+  .state('add', {
+    url: '/add',
+    templateUrl: 'templates/edit.html',
+    controller: 'AddCtrl'
+  })
+
+  .state('edit', {
+    url: '/edit/:noteId',
+    templateUrl: 'templates/edit.html',
+    controller: 'EditCtrl'
   });
 
   $urlRouterProvider.otherwise('/login');
@@ -43,7 +200,7 @@ app.controller('LoginCtrl', function($scope, $state, UserStore){
   $scope.loginFailed = false;
 
   $scope.login = function() {
-     /*User.login($scope.credentials)
+     /*User.login($scope.user)
       .then(function() {
         $ionicHistory.nextViewOptions({historyRoot: true});
         $state.go('list');
@@ -55,12 +212,18 @@ app.controller('LoginCtrl', function($scope, $state, UserStore){
         $scope.loginFailed = true;
       }else{
         UserStore.createUser($scope.user);
-        $state.go('list');
+        $state.go('tabs.home');
+        //$state.go('encrypted_tabs.home');
+        //$state.go('decrypted_tabs.home');
       }
   };
 });
 
-app.controller('ListCtrl', function($scope, NoteStore){  
+app.controller('HomeTabCtrl', function($scope) {
+  console.log('HomeTabCtrl');
+});
+
+app.controller('ListCtrl', function($scope, $ionicPlatform, NoteStore, FileFactory){  
   $scope.notes = NoteStore.list();
   $scope.reordering =false;
 
@@ -77,6 +240,29 @@ app.controller('ListCtrl', function($scope, NoteStore){
     $scope.reordering = !$scope.reordering;
   };
 
+  var fs = new FileFactory();
+
+  $ionicPlatform.ready(function() {  
+       /* 
+       fs.getEntriesAtRoot();
+       .then(function(result) {
+            $scope.files = result;
+        }, function(error) {
+            console.error(error);
+        });
+
+        $scope.getContents = function(path) {
+            fs.getEntries(path).then(function(result) {
+                $scope.files = result;
+                $scope.files.unshift({name: "[parent]"});
+                fs.getParentDirectory(path).then(function(result) {
+                    result.name = "[parent]";
+                    $scope.files[0] = result;
+                });
+            });
+        }
+*/
+    });
 });
 
 app.controller('AddCtrl', function($scope, $state, NoteStore) {
