@@ -1,7 +1,17 @@
 <ion-view view-title="Videos">
    <ion-content class="padding">
-   		<p>Videos files</p>
-           {{currentPlatform }}
-           {{filedirectory}}
+   		<h1>Videos files for {{currentPlatform}} device</h1>
+   			<p>{{stepone}}</p>
+        	<p>{{filedirectory}}</p>
+        	<p>{{stepthree}}</p>
+	    <!-- <div class="list">
+	        <div ng-repeat="file in files">
+	            <a class="item item-icon-left" href="#" ng-click="getContents(file.nativeURL)">
+	                <i ng-show="file.isDirectory" class="icon ion-folder"></i>
+	                <i ng-show="file.isFile" class="icon ion-document"></i>
+	                {{file.name}}
+	            </a>
+	        </div>
+	    </div> -->
    </ion-content>
 </ion-view>

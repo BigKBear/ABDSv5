@@ -260,6 +260,36 @@ app.controller('EncryptVideoCtrl',function($scope, $state,$ionicPlatform, $cordo
 
 $ionicPlatform.ready(function() {
   if (ionic.Platform.isAndroid()) {
+
+    //var test_dir = 'DCMI/ABDSv5';
+    var test_dir = 'ABDSv5';
+    $cordovaFile.checkDir(cordova.file.externalDataDirectory, test_dir)
+      .then(function (success) {
+        // success
+        $scope.stepone = 'Directory '+ test_dir +' Exist';
+      }, function (error) {
+        // error
+        $scope.stepone = 'Directory '+ test_dir +' Does not Exist';
+      });
+
+       // Create dir 'DCMI/ABDSv5'
+      $cordovaFile.createDir(cordova.file.externalDataDirectory, 'ABDSv5', false)
+       .then( function(success) {
+        console.log('Directory was created: OK');
+        $scope.filedirectory = 'Directory '+test_dir+' was created.';
+      }, function(error){
+        $scope.filedirectory ='Directory '+test_dir+' was not created due to ' + error+'.';
+      });
+
+        $cordovaFile.checkDir(cordova.file.externalDataDirectory, test_dir)
+      .then(function (success) {
+        // success
+        $scope.stepthree = 'Directory '+ test_dir +' Exist';
+      }, function (error) {
+        // error
+        $scope.stepthree = 'Directory '+ test_dir +' Does not Exist';
+      });
+    
       // If running on Android
       console.log('cordova.file.externalDataDirectory: ' + cordova.file.externalDataDirectory);
       //
@@ -267,8 +297,8 @@ $ionicPlatform.ready(function() {
       // If you remove the app from the device these url are cleared too on the device. So keep it clean.
       // Remove the root from cordova.file.externalDataDirectory
       // 
-            myFsRootDirectory1 = 'file:///'; // path for tablet
-            myFsRootDirectory2 = 'file:///'; // path for phone
+            myFsRootDirectory1 = 'file:///storage/emulated/0/'; // path for tablet
+            myFsRootDirectory2 = 'file:///storage/sdcard0/'; // path for phone
             fileTransferDir = cordova.file.externalDataDirectory;
             if (fileTransferDir.indexOf(myFsRootDirectory1) === 0) {
               fileDir = fileTransferDir.replace(myFsRootDirectory1, '');
@@ -293,26 +323,14 @@ console.log('IOS FILEDIR: ' + fileDir);
     }
 
   if (ionic.Platform.isAndroid() || ionic.Platform.isIOS()) {
-    var filedirectory = fileDir+ 'test/';
-
-
- $cordovaFile.createFile(cordova.file.dataDirectory, "session.txt", true)
-  .then(function (success) {
-    // success
-    console.log('Session OK');
-     $scope.filedirectory = 'Session OK  '+fileTransferDir + '\n Filetransfer dir:' + fileTransferDir.indexOf(myFsRootDirectory2);
-  }, function (error) {
-    // error
-    alert(JSON.stringify(err));
-  });
-//
-// Just functions from the list below one by one ( or chain them)
-//
-
-// Create dir test
-$cordovaFile.createDir(fileDir + 'test/').then( function(dirEntry) {
-});
-
+    // Create dir test
+    /*  $cordovaFile.createDir(cordova.file.externalDataDirectory,'testvid',false)
+       .then( function(success) {
+        console.log('Directory was created: OK');
+        $scope.filedirectory = 'Directory was created: OK';
+      }, function(error){
+        $scope.filedirectory ='Directory was not created: OK';
+      });*/
   }
 });
 
