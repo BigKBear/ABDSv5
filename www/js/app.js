@@ -38,11 +38,62 @@ app.config(function($stateProvider, $urlRouterProvider) {
       }
     }
   })
-  .state('tabs.encrypted', {
+  .state('tabs.device', {
+    url: "/device",
+    views: {
+      'home-tab': {
+        templateUrl: "templates/homepage/device.html"
+      }
+    }
+  })
+  .state('tabs.about', {
+    url: "/about",
+    views: {
+      'home-tab': {
+        templateUrl: "templates/homepage/about.html"
+      }
+    }
+  })
+  .state('tabs.about_part2', {
+      url: "/about_part2",
+      views: {
+        'home-tab': {
+          templateUrl: "templates/homepage/about_part2.html"
+        }
+      }
+    })
+  .state('tabs.tutorial', {
+    url: "/tutorial",
+    views: {
+      'home-tab': {
+        templateUrl: "templates/homepage/tutorial.html"
+      }
+    }
+  })
+  .state('tabs.settings', {
+    url: "/settings",
+    views: {
+      'home-tab': {
+        templateUrl: "templates/homepage/settings.html"
+      }
+    }
+  })
+  .state('tabs.contact_us', {
+    url: "/contact_us",
+    views: {
+      'home-tab': {
+        templateUrl: "templates/homepage/contact_us.html"
+      }
+    }
+  })
+
+
+  /*Home tab navigation bar*/
+  /*.state('tabs.encrypted', {
     url: "/encrypted",
     views: {
       'encrypted-tab': {
-        templateUrl: "templates/home.html"
+        templateUrl: "templates/videos.html"
       }
     }
   })
@@ -50,10 +101,10 @@ app.config(function($stateProvider, $urlRouterProvider) {
     url: "/decrypted",
     views: {
       'decrypted-tab': {
-        templateUrl: "templates/home.html"
+        templateUrl: "templates/videos.html"
       }
     }
-  })
+  })*/
   .state('tabs.all', {
     url: "/all",
     views: {
@@ -63,14 +114,22 @@ app.config(function($stateProvider, $urlRouterProvider) {
       }
     }
   })
+  /*
+ .state('tabs.about', {
+    url: "/about",
+    views: {
+      'about-tab': {
+        templateUrl: "templates/homepage/about.html"
+      }
+    }
+  })*/
 
   /*Encrypted view tabs*/
   .state('encrypted_tabs.home', {
     url: "/home",
     views: {
       'encrypted-home-tab': {
-        templateUrl: "templates/home.html",
-        controller: 'HomeTabCtrl'
+        templateUrl: "templates/home.html"
       }
     }
   })
@@ -78,7 +137,7 @@ app.config(function($stateProvider, $urlRouterProvider) {
     url: "/videos",
     views: {
       'encrypted-videos-tab': {
-        templateUrl: "templates/home.html"
+        templateUrl: "templates/videos.html"
       }
     }
   })
@@ -86,7 +145,7 @@ app.config(function($stateProvider, $urlRouterProvider) {
     url: "/pictures",
     views: {
       'encrypted-pictures-tab': {
-        templateUrl: "templates/home.html"
+        templateUrl: "templates/pictures.html"
       }
     }
   })
@@ -94,7 +153,7 @@ app.config(function($stateProvider, $urlRouterProvider) {
     url: "/music",
     views: {
       'encrypted-music-tab': {
-        templateUrl: "templates/home.html"
+        templateUrl: "templates/music.html"
       }
     }
   })
@@ -102,7 +161,7 @@ app.config(function($stateProvider, $urlRouterProvider) {
     url: "/documents",
     views: {
       'encrypted-document-tab': {
-        templateUrl: "templates/home.html"
+        templateUrl: "templates/documents.html"
       }
     }
   })
@@ -110,7 +169,7 @@ app.config(function($stateProvider, $urlRouterProvider) {
     url: "/other",
     views: {
       'encrypted-other-tab': {
-        templateUrl: "templates/home.html"
+        templateUrl: "templates/other.html"
       }
     }
   })
