@@ -1,6 +1,6 @@
 (function() {
 
-var app = angular.module('abds', ['ionic', 'ngCordova', 'notes.notestore', 'users.userstore', 'files.filestore']);
+var app = angular.module('abds', ['ionic', 'ngCordova','login.service', 'notes.notestore', 'users.userstore', 'files.filestore']);
 
 app.config(function($stateProvider, $urlRouterProvider) {
 
@@ -252,7 +252,20 @@ app.config(function($stateProvider, $urlRouterProvider) {
   $urlRouterProvider.otherwise('/login');
 });
 
-
+app.controller('LoginCtrl', function($scope, LoginService, $ionicPopup, $state){  
+    $scope.user = {};
+ 
+    $scope.login = function() {
+        LoginService.loginUser($scope.user.username, $scope.user.password).success(function(user) {
+             $state.go('tabs.home');
+        }).error(function(user) {
+            var alertPopup = $ionicPopup.alert({
+                title: 'Login failed!',
+                template: 'Please check your credentials!'
+            });
+        });
+    }
+});
 
 app.controller('EncryptVideoCtrl',function($scope, $state,$ionicPlatform, $cordovaFile) {
   var currentPlatform = ionic.Platform.platform();  
@@ -260,10 +273,40 @@ app.controller('EncryptVideoCtrl',function($scope, $state,$ionicPlatform, $cordo
 
 $ionicPlatform.ready(function() {
   if (ionic.Platform.isAndroid()) {
+    var i=1;
 
-    //var test_dir = 'DCMI/ABDSv5';
+    function listDir(path){
+      window.resolveLocalFileSystemURL(path,
+        function (fileSystem) {
+          var reader = fileSystem.createReader();
+          reader.readEntries(
+            function (entries) {
+              //console.log('ENTRIES'+ entries);
+              console.log('ENTRY #'+i+' '+entries + '\n');
+              i++;
+              window.localStorage.setItem('newsArticle12', localData);
+              console.log('ENTRY #'+i+' '+entries);
+              /*var localData = JSON.parse(window.localStorage.getItem('newsArticle12');
+                $.each(function(key, value){
+                  //handle the data
+                });*/
+            },
+            function (err) {
+              console.log(err);
+            }
+          );
+        }, function (err) {
+          console.log(err);
+        }
+      );
+    }
+    //example: list of www/audio/ folder in cordova/ionic app.
+    listDir(cordova.file.externalRootDirectory);
+
+
+    //var test_dir = 'DCMIABDSv5';
     var test_dir = 'ABDSv5';
-    $cordovaFile.checkDir(cordova.file.externalDataDirectory, test_dir)
+    $cordovaFile.checkDir(cordova.file.externalRootDirectory, test_dir)
       .then(function (success) {
         // success
         $scope.stepone = 'Directory '+ test_dir +' Exist';
@@ -272,8 +315,8 @@ $ionicPlatform.ready(function() {
         $scope.stepone = 'Directory '+ test_dir +' Does not Exist';
       });
 
-       // Create dir 'DCMI/ABDSv5'
-      $cordovaFile.createDir(cordova.file.externalDataDirectory, 'ABDSv5', false)
+       // Create dir 'ABDSv5'
+      $cordovaFile.createDir(cordova.file.externalRootDirectory, test_dir, true)
        .then( function(success) {
         console.log('Directory was created: OK');
         $scope.filedirectory = 'Directory '+test_dir+' was created.';
@@ -281,25 +324,30 @@ $ionicPlatform.ready(function() {
         $scope.filedirectory ='Directory '+test_dir+' was not created due to ' + error+'.';
       });
 
-        $cordovaFile.checkDir(cordova.file.externalDataDirectory, test_dir)
+        $cordovaFile.checkDir(cordova.file.externalRootDirectory, test_dir)
       .then(function (success) {
         // success
-        $scope.stepthree = 'Directory '+ test_dir +' Exist';
+        $scope.$apply(function () {
+            $scope.stepthree = 'Directory '+ test_dir +' Exist';
+        });
+        
       }, function (error) {
         // error
-        $scope.stepthree = 'Directory '+ test_dir +' Does not Exist';
+        $scope.$apply(function () {
+            $scope.stepthree = 'Directory '+ test_dir +' Does not Exist';
+        });
       });
     
       // If running on Android
-      console.log('cordova.file.externalDataDirectory: ' + cordova.file.externalDataDirectory);
+      console.log('cordova.file.externalRootDirectory: ' + cordova.file.externalRootDirectory);
       //
-      // I use cordova.file.externalDataDirectory because this url is for Android devices
+      // I use cordova.file.externalRootDirectory because this url is for Android devices
       // If you remove the app from the device these url are cleared too on the device. So keep it clean.
-      // Remove the root from cordova.file.externalDataDirectory
+      // Remove the root from cordova.file.externalRootDirectory
       // 
             myFsRootDirectory1 = 'file:///storage/emulated/0/'; // path for tablet
             myFsRootDirectory2 = 'file:///storage/sdcard0/'; // path for phone
-            fileTransferDir = cordova.file.externalDataDirectory;
+            fileTransferDir = cordova.file.externalRootDirectory;
             if (fileTransferDir.indexOf(myFsRootDirectory1) === 0) {
               fileDir = fileTransferDir.replace(myFsRootDirectory1, '');
             }
@@ -324,7 +372,7 @@ console.log('IOS FILEDIR: ' + fileDir);
 
   if (ionic.Platform.isAndroid() || ionic.Platform.isIOS()) {
     // Create dir test
-    /*  $cordovaFile.createDir(cordova.file.externalDataDirectory,'testvid',false)
+    /*  $cordovaFile.createDir(cordova.file.externalRootDirectory,'testvid',false)
        .then( function(success) {
         console.log('Directory was created: OK');
         $scope.filedirectory = 'Directory was created: OK';
@@ -424,37 +472,6 @@ app.controller('EncryptDocumentCtrl',function() {
 
 app.controller('EncryptOtherCtrl',function() {
 
-});
-
-app.controller('LoginCtrl', function($scope, $state, UserStore){  
-  $scope.users = UserStore.list();
-
-  $scope.user = {
-    id: new Date().getTime().toString(),
-    username: '',
-    password: ''
-  };
-  
-  $scope.loginFailed = false;
-
-  $scope.login = function() {
-     /*User.login($scope.user)
-      .then(function() {
-        $ionicHistory.nextViewOptions({historyRoot: true});
-        $state.go('list');
-      })
-      .catch(function() {
-        $scope.loginFailed = true;
-      });*/
-      if(($scope.user.password == '')||($scope.user.username == '')){
-        $scope.loginFailed = true;
-      }else{
-        UserStore.createUser($scope.user);
-        $state.go('tabs.home');
-        //$state.go('encrypted_tabs.home');
-        //$state.go('decrypted_tabs.home');
-      }
-  };
 });
 
 app.controller('HomeTabCtrl', function($scope) {
