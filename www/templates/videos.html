@@ -1,15 +1,25 @@
-<ion-view view-title="Videos">
+<ion-view view-title="Video files for {{currentPlatform}} device">
    <ion-content class="padding">
-   		<h1>Videos files for {{currentPlatform}} device</h1>
-   			<p>{{stepone}}</p>
-        	<p>{{filedirectory}}</p>
-        	<p>{{stepthree}}</p>
+   			<div class="padding">
+   			{{stepone}}
+   			</div>
+   			<div class="padding">
+   			{{steptwo}}
+   			</div>
+   			<div class="padding">
+   			{{stepthree}}
+   			</div>
+   			
+   			
+        	<!-- <p>{{filedirectory}}</p> -->
+        	Below is an example: of directories on the root of the device.
+        	{{videodirectories}} 
 	    <!-- <div class="list">
-	        <div ng-repeat="file in files">
-	            <a class="item item-icon-left" href="#" ng-click="getContents(file.nativeURL)">
-	                <i ng-show="file.isDirectory" class="icon ion-folder"></i>
-	                <i ng-show="file.isFile" class="icon ion-document"></i>
-	                {{file.name}}
+	        <div ng-repeat="videodirectory in videodirectories">
+	            <a class="item item-icon-left" href="#" ng-click="getContents(videodirectory.nativeURL)">
+	                <i ng-show="videodirectory.isDirectory" class="icon ion-folder"></i>
+	                <i ng-show="videodirectory.isFile" class="icon ion-document"></i>
+	                {{videodirectory.name}}
 	            </a>
 	        </div>
 	    </div> -->
