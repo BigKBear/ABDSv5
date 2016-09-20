@@ -1,5 +1,3 @@
-(function() {
-
 var app = angular.module('abds', ['ionic', 'ngCordova','login.service', 'notes.notestore', 'users.userstore', 'files.filestore']);
 
 app.config(function($stateProvider, $urlRouterProvider) {
@@ -555,5 +553,3 @@ app.run(function($ionicPlatform) {
     }
   });
 });
-
-}());
