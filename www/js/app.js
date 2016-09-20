@@ -460,14 +460,6 @@ app.controller('EncryptPivtureCtrl',function() {
 
 });
 
-app.controller('EncryptMusicCtrl',function() {
-
-});
-
-app.controller('EncryptDocumentCtrl',function() {
-
-});
-
 app.controller('EncryptOtherCtrl',function() {
 
 });
