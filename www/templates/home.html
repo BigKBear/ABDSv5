@@ -1,23 +1,15 @@
 <ion-view view-title="Home">
   <ion-content class="padding">
-    <p>
-      <a class="button icon icon-right ion-chevron-right" href="#/tab/device">Device information</a>
-    </p>
-    
-    <p>
-      <a class="button icon icon-right ion-chevron-right" href="#/tab/about">About the app</a>
-    </p>
-
-    <p>
-      <a class="button icon icon-right ion-chevron-right" href="#/tab/tutorial">Tutorial Video</a>
-    </p>
-    
-    <p>
-      <a class="button icon icon-right ion-chevron-right" href="#/tab/settings">Settings</a>
-    </p>
-
-    <p>
-      <a class="button icon icon-right ion-chevron-right" href="#/tab/contact_us">Contact Us</a>
-    </p>
+    <div class="content">
+      <h1>What do you want to do {{username}}?</h1>
+      <div class="padding">
+        <button class="button button-block button-positive"
+          ng-click="Encrypt()">Encrypt a file</button>
+      </div>
+      <div class="padding">
+        <button class="button button-block button-positive"
+          ng-click="Decrypt()">Decrypt a file</button>
+      </div>
+    </div>
   </ion-content>
 </ion-view>

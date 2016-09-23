@@ -1,0 +1,12 @@
+<ion-view view-title="Home">
+  <ion-content class="padding">
+    <h1>Choose which file {{username}} to decrypt</h1>
+          <h2>Only files encrypted by this tool are accepted.</h2>
+          <button class="button button-block button-positive"
+          ng-click="BrowseEncryptedFiles()">Browse</button>
+
+          <p>{{show}}</p>
+          <input type="file" id="decrypt-input" />
+        </div>
+  </ion-content>
+</ion-view>

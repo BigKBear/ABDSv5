@@ -1,0 +1,11 @@
+<ion-view view-title="Encrypt">
+  <ion-content class="padding">
+     <h1>Choose which file {{username}} to encrypt</h1>
+          <h2>An encrypted copy of the file will be generated. No data is sent to our server.</h2>
+          <button class="button button-block button-positive"
+          ng-click="BrowseDecryptedFiles()">Browse</button>
+
+          <p>{{show}}</p>
+          <input type="file" id="encrypt-input" />
+  </ion-content>
+</ion-view>
