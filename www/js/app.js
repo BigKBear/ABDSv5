@@ -4,6 +4,12 @@ app.config(function($stateProvider, $urlRouterProvider) {
 
   $stateProvider
 
+  .state('login', {
+    url: '/login',
+    templateUrl: 'templates/login.html',
+    controller: 'LoginCtrl'
+  })
+
   .state('tabs', {
     url: "/tab",
     abstract: true,
@@ -20,11 +26,7 @@ app.config(function($stateProvider, $urlRouterProvider) {
     templateUrl: "templates/tabs/decrypted_tabs.html"
   })
 
-  .state('login', {
-    url: '/login',
-    templateUrl: 'templates/login.html',
-    controller: 'LoginCtrl'
-  })
+  
 
   /*The different home tab bars available*/
   .state('tabs.home', {
@@ -128,7 +130,8 @@ app.config(function($stateProvider, $urlRouterProvider) {
     url: "/home",
     views: {
       'encrypted-home-tab': {
-        templateUrl: "templates/home.html"
+        templateUrl: "templates/home.html",
+        controller: 'HomeTabCtrl'
       }
     }
   })
@@ -253,6 +256,7 @@ app.config(function($stateProvider, $urlRouterProvider) {
 
 app.controller('HomeTabCtrl', function($scope) {
   console.log('HomeTabCtrl');
+  //$state.go('tabs.home');
 });
 
 app.run(function($ionicPlatform) {

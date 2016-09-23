@@ -10,10 +10,9 @@ app.controller('EncryptVideoCtrl',function($scope, $state,$ionicPlatform, $cordo
             var reader = fileSystem.createReader();
             reader.readEntries(
               function (entries) {
-                //console.log('ENTRIES'+ entries);
+                window.localStorage.setItem('newsArticle12', localData);
                 var videodirectories = entries;
                 $scope.videodirectories = videodirectories;
-                window.localStorage.setItem('newsArticle12', localData);
                 /*var localData = JSON.parse(window.localStorage.getItem('newsArticle12');
                   $.each(function(key, value){
                     //handle the data
@@ -89,27 +88,6 @@ app.controller('EncryptVideoCtrl',function($scope, $state,$ionicPlatform, $cordo
 
       //example: list of directories on the root of the device.
       //listDir(cordova.file.externalRootDirectory);
-    
-  /*
-    
-      // If running on Android
-      console.log('cordova.file.externalRootDirectory: ' + cordova.file.externalRootDirectory);
-      //
-      // I use cordova.file.externalRootDirectory because this url is for Android devices
-      // If you remove the app from the device these url are cleared too on the device. So keep it clean.
-      // Remove the root from cordova.file.externalRootDirectory
-      // 
-            myFsRootDirectory1 = 'file:///storage/emulated/0/'; // path for tablet
-            myFsRootDirectory2 = 'file:///storage/sdcard0/'; // path for phone
-            fileTransferDir = cordova.file.externalRootDirectory;
-            if (fileTransferDir.indexOf(myFsRootDirectory1) === 0) {
-              fileDir = fileTransferDir.replace(myFsRootDirectory1, '');
-            }
-            if (fileTransferDir.indexOf(myFsRootDirectory2) === 0) {
-              fileDir = fileTransferDir.replace(myFsRootDirectory2, '');
-            }
-      console.log('Android FILETRANSFERDIR: ' + fileTransferDir);
-      console.log('Android FILEDIR: ' + fileDir);*/
     }
 
     if (ionic.Platform.isIOS()) {

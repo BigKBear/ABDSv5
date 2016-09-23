@@ -1,5 +1,5 @@
 app.controller('AllFilesCtrl', function($scope, $ionicPlatform, NoteStore, FileFactory){  
-  $scope.name = 
+  $scope.name = 'Allfiles';
   $scope.reordering =false;
 
   /*$scope.remove = function(noteId){
