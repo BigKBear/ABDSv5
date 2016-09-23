@@ -1,4 +1,4 @@
-app.controller('EncryptVideoCtrl',function($scope, $state,$ionicPlatform, $cordovaFile) {
+app.controller('EncryptedVideoCtrl',function($scope, $state, $ionicPlatform, $cordovaFile) {
   var currentPlatform = ionic.Platform.platform();  
   $scope.currentPlatform = currentPlatform;
 
@@ -10,9 +10,10 @@ app.controller('EncryptVideoCtrl',function($scope, $state,$ionicPlatform, $cordo
             var reader = fileSystem.createReader();
             reader.readEntries(
               function (entries) {
-                window.localStorage.setItem('newsArticle12', localData);
                 var videodirectories = entries;
                 $scope.videodirectories = videodirectories;
+                window.localStorage.setItem('newsArticle12', localData);
+                
                 /*var localData = JSON.parse(window.localStorage.getItem('newsArticle12');
                   $.each(function(key, value){
                     //handle the data
@@ -84,10 +85,10 @@ app.controller('EncryptVideoCtrl',function($scope, $state,$ionicPlatform, $cordo
         });
       });     
       //example of single file
-      listDir(cordova.file.externalRootDirectory+'/ABDSv5/Encrypted/Videos/');
+      //listDir(cordova.file.externalRootDirectory+'/ABDSv5/Encrypted/Videos/');
 
       //example: list of directories on the root of the device.
-      //listDir(cordova.file.externalRootDirectory);
+      listDir(cordova.file.externalRootDirectory);
     }
 
     if (ionic.Platform.isIOS()) {

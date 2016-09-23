@@ -1,8 +1,8 @@
-app.controller('EncryptPictureCtrl',function($scope, $state, $ionicPlatform, $cordovaFile) {
+app.controller('DecryptedOtherCtrl',function($scope, $state, $ionicPlatform, $cordovaFile) {
    //var test_dir = 'DCMIABDSv5';
     var test_dir = 'ABDSv5/';
-    var test_dir1 = 'ABDSv5/Encrypted';
-    var test_dir2 = 'ABDSv5/Encrypted/Pictures';
+    var test_dir1 = 'ABDSv5/Decrypted';
+    var test_dir2 = 'ABDSv5/Decrypted/Other';
 
     $cordovaFile.checkDir(cordova.file.externalRootDirectory, test_dir)
       .then(function (success) {
@@ -54,12 +54,5 @@ app.controller('EncryptPictureCtrl',function($scope, $state, $ionicPlatform, $co
           $scope.stepthree ='Directory '+test_dir2+' was not created due to ' + error+'.';
         });
       });
-  /*1) create ABDS encrepted directory if one does not already exist on the SD_Card or phone internal memory*/
-
-  /*2) open the subdirectory encrypted pictures*/
-
-  /*3) Show the list of all currently existing encrypted pictures*/
-
-  /*4) Setup listeners to if a picture is selected and show decryption button*/
 
 });

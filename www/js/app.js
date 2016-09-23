@@ -1,4 +1,4 @@
-var app = angular.module('abds', ['ionic', 'ngCordova','login.service', 'notes.notestore', 'users.userstore', 'files.filestore']);
+var app = angular.module('abds', ['ionic', 'ngCordova','login.service']);
 
 app.config(function($stateProvider, $urlRouterProvider) {
 
@@ -110,7 +110,7 @@ app.config(function($stateProvider, $urlRouterProvider) {
     url: "/all",
     views: {
       'all-files-tab': {
-        templateUrl: "templates/list.html",
+        templateUrl: "templates/all.html",
         controller: 'AllFilesCtrl'
       }
     }
@@ -140,7 +140,7 @@ app.config(function($stateProvider, $urlRouterProvider) {
     views: {
       'encrypted-videos-tab': {
         templateUrl: "templates/videos.html",
-        controller: 'EncryptVideoCtrl'
+        controller: 'EncryptedVideoCtrl'
       }
     }
   })
@@ -149,7 +149,7 @@ app.config(function($stateProvider, $urlRouterProvider) {
     views: {
       'encrypted-pictures-tab': {
         templateUrl: "templates/pictures.html",
-        controller: 'EncryptPictureCtrl'
+        controller: 'EncryptedPictureCtrl'
       }
     }
   })
@@ -158,7 +158,7 @@ app.config(function($stateProvider, $urlRouterProvider) {
     views: {
       'encrypted-music-tab': {
         templateUrl: "templates/music.html",
-        controller: 'EncryptMusicCtrl'
+        controller: 'EncryptedMusicCtrl'
       }
     }
   })
@@ -167,7 +167,7 @@ app.config(function($stateProvider, $urlRouterProvider) {
     views: {
       'encrypted-document-tab': {
         templateUrl: "templates/documents.html",
-        controller: 'EncryptDocumentCtrl'
+        controller: 'EncryptedDocumentCtrl'
       }
     }
   })
@@ -176,7 +176,7 @@ app.config(function($stateProvider, $urlRouterProvider) {
     views: {
       'encrypted-other-tab': {
         templateUrl: "templates/other.html",
-        controller: 'EncryptOtherCtrl'
+        controller: 'EncryptedOtherCtrl'
       }
     }
   })
@@ -195,7 +195,8 @@ app.config(function($stateProvider, $urlRouterProvider) {
     url: "/videos",
     views: {
       'decrypted-videos-tab': {
-        templateUrl: "templates/videos.html"
+        templateUrl: "templates/videos.html",
+        controller: "DecryptedVideoCtrl"
       }
     }
   })
@@ -203,7 +204,8 @@ app.config(function($stateProvider, $urlRouterProvider) {
     url: "/pictures",
     views: {
       'decrypted-pictures-tab': {
-        templateUrl: "templates/pictures.html"
+        templateUrl: "templates/pictures.html",
+        controller: "DecryptedPictureCtrl"
       }
     }
   })
@@ -211,7 +213,8 @@ app.config(function($stateProvider, $urlRouterProvider) {
     url: "/music",
     views: {
       'decrypted-music-tab': {
-        templateUrl: "templates/music.html"
+        templateUrl: "templates/music.html",
+        controller: "DecryptedMusicCtrl"
       }
     }
   })
@@ -219,7 +222,8 @@ app.config(function($stateProvider, $urlRouterProvider) {
     url: "/documents",
     views: {
       'decrypted-document-tab': {
-        templateUrl: "templates/documents.html"
+        templateUrl: "templates/documents.html",
+        controller: 'DecryptedDocumentCtrl'
       }
     }
   })
@@ -227,19 +231,20 @@ app.config(function($stateProvider, $urlRouterProvider) {
     url: "/other",
     views: {
       'decrypted-other-tab': {
-        templateUrl: "templates/other.html"
+        templateUrl: "templates/other.html",
+        controller: "DecryptedOtherCtrl"
       }
     }
   })
 
   /*Other states from notes app*/
-  .state('list', {
+  /*.state('list', {
     url: '/list',
     templateUrl: 'templates/list.html',
     controller: 'ListCtrl'
-  })
+  })*/
 
-  .state('add', {
+  /*.state('add', {
     url: '/add',
     templateUrl: 'templates/edit.html',
     controller: 'AddCtrl'
@@ -249,7 +254,7 @@ app.config(function($stateProvider, $urlRouterProvider) {
     url: '/edit/:noteId',
     templateUrl: 'templates/edit.html',
     controller: 'EditCtrl'
-  });
+  });*/
 
   $urlRouterProvider.otherwise('/login');
 });

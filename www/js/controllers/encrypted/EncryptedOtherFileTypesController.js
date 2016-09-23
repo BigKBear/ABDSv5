@@ -1,8 +1,8 @@
-app.controller('EncryptMusicCtrl',function($scope, $state, $ionicPlatform, $cordovaFile) {
+app.controller('EncryptedOtherCtrl',function($scope, $state, $ionicPlatform, $cordovaFile) {
    //var test_dir = 'DCMIABDSv5';
     var test_dir = 'ABDSv5/';
     var test_dir1 = 'ABDSv5/Encrypted';
-    var test_dir2 = 'ABDSv5/Encrypted/Music';
+    var test_dir2 = 'ABDSv5/Encrypted/Other';
 
     $cordovaFile.checkDir(cordova.file.externalRootDirectory, test_dir)
       .then(function (success) {

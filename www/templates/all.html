@@ -1,0 +1,14 @@
+<ion-view view-title="All files on {{currentPlatform}} device">
+   <ion-content class="padding">
+        <ion-list>
+          <ion-item class="item-remove-animate item-icon-right"
+                ng-repeat="directory in directories">
+            <h2>{{directory.name}}</h2>
+            <p>{{directory.filesystem}}</p>
+            <i class="icon ion-arrow-right-b"></i>
+            <i ng-show="file.isDirectory" class="icon ion-folder"></i>
+            <i ng-show="file.isFile" class="icon ion-document"></i>
+          </ion-item>
+        </ion-list>
+   </ion-content>
+</ion-view>
