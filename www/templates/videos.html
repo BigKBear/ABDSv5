@@ -1,17 +1,24 @@
-<ion-view view-title="Videos">
+<ion-view view-title="Video files for {{currentPlatform}} device">
    <ion-content class="padding">
-   		<h1>Videos files for {{currentPlatform}} device</h1>
-   			<p>{{stepone}}</p>
-        	<p>{{filedirectory}}</p>
-        	<p>{{stepthree}}</p>
-	    <!-- <div class="list">
-	        <div ng-repeat="file in files">
-	            <a class="item item-icon-left" href="#" ng-click="getContents(file.nativeURL)">
-	                <i ng-show="file.isDirectory" class="icon ion-folder"></i>
-	                <i ng-show="file.isFile" class="icon ion-document"></i>
-	                {{file.name}}
-	            </a>
-	        </div>
-	    </div> -->
+    Debugging to ensure the folder has been created
+   			<div class="padding">
+   			{{stepone}}
+   			</div>
+   			<div class="padding">
+   			{{steptwo}}
+   			</div>
+   			<div class="padding">
+   			{{stepthree}}
+   			</div>
+
+        Below are the files and folders currently saved in the encrypted folder on the phone SDcard:
+        <ion-list>
+          <ion-item class="item-remove-animate item-icon-right"
+                ng-repeat="videodirectory in videodirectories">
+            <h2>{{videodirectory.name}}</h2>
+            <p>{{videodirectory.filesystem}}</p>
+            <i class="icon ion-arrow-right-b"></i>
+          </ion-item>
+        </ion-list>
    </ion-content>
 </ion-view>
