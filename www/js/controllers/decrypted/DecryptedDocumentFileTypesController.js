@@ -1,4 +1,6 @@
 app.controller('DecryptedDocumentCtrl',function($scope, $state, $ionicPlatform, $cordovaFile) {
+  $scope.messageToUser = "Below are the files and folders currently saved on the device in the documents folder:";
+
    //var test_dir = 'DCMIABDSv5';
     var test_dir = 'ABDSv5/';
     var test_dir1 = 'ABDSv5/Decrypted';
@@ -55,4 +57,61 @@ app.controller('DecryptedDocumentCtrl',function($scope, $state, $ionicPlatform, 
         });
       });
 
+        var currentPlatform = ionic.Platform.platform();  
+  $scope.currentPlatform = currentPlatform;
+
+  $ionicPlatform.ready(function() {
+    if (ionic.Platform.isAndroid()) {
+      function listDir(path){
+        window.resolveLocalFileSystemURL(path,
+          function (fileSystem) {
+            var reader = fileSystem.createReader();
+            reader.readEntries(
+              function (entries) {
+                var videodirectories = entries;
+                $scope.videodirectories = videodirectories;
+                window.localStorage.setItem('newsArticle12', localData);
+                
+                /*var localData = JSON.parse(window.localStorage.getItem('newsArticle12');
+                  $.each(function(key, value){
+                    //handle the data
+                  });*/
+            },
+            function (err) {
+              console.log(err);
+            }
+          );
+        }, function (err) {
+          console.log(err);
+        }
+      );
+    }
+    
+     
+      //example: list of directories on the root of the device.
+      listDir(cordova.file.externalRootDirectory);
+    }
+
+      if (ionic.Platform.isIOS()) {
+      // if running on IOS
+      console.log('cordova.file.documentsDirectory: ' + cordova.file.documentsDirectory);
+      // I use cordova.file.documentsDirectory because this url is for IOS (NOT backed on iCloud) devices
+      fileTransferDir = cordova.file.documentsDirectory;
+      fileDir = '';
+      console.log('IOS FILETRANSFERDIR: ' + fileTransferDir);
+      console.log('IOS FILEDIR: ' + fileDir);
+    }
+
+    if (ionic.Platform.isAndroid() || ionic.Platform.isIOS()) {
+      // Create dir test
+      /*$cordovaFile.createDir(cordova.file.externalRootDirectory,'testvid',false)
+       .then( function(success) {
+        console.log('Directory was created: OK');
+        $scope.filedirectory = 'Directory was created: OK';
+      }, function(error){
+        $scope.filedirectory ='Directory was not created: OK';
+      });*/
+    }
+    
+  });//end of ionicplatform ready
 });
