@@ -1,4 +1,6 @@
 app.controller('EncryptedPictureCtrl',function($scope, $state, $ionicPlatform, $cordovaFile) {
+   $scope.messageToUser = "Below are the files and folders currently saved on the device in the Encrypted/Pictures folder:";
+
    //var test_dir = 'DCMIABDSv5';
     var test_dir = 'ABDSv5/';
     var test_dir1 = 'ABDSv5/Encrypted';
@@ -87,7 +89,7 @@ app.controller('EncryptedPictureCtrl',function($scope, $state, $ionicPlatform, $
     
      
       //example: list of directories on the root of the device.
-      listDir(cordova.file.externalRootDirectory);
+      listDir(cordova.file.externalRootDirectory+'/ABDSv5/Encrypted/Documents/');
     }
 
       if (ionic.Platform.isIOS()) {

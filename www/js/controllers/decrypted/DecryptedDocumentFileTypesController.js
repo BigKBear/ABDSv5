@@ -89,6 +89,7 @@ app.controller('DecryptedDocumentCtrl',function($scope, $state, $ionicPlatform, 
     
      
       //example: list of directories on the root of the device.
+      //listDir(cordova.file.externalRootDirectory+'/Documents/');
       listDir(cordova.file.externalRootDirectory);
     }
 

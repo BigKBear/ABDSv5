@@ -1,5 +1,5 @@
 app.controller('DecryptedVideoCtrl',function($scope, $state, $ionicPlatform, $cordovaFile) {
-    $scope.messageToUser = "Below are the files and folders currently saved on the device in the Videos folder:";
+//    $scope.messageToUser = "Below are the files and folders currently saved on the device in the Videos folder:";
 
     //var test_dir = 'DCMIABDSv5';
     var test_dir = 'ABDSv5/';
@@ -89,6 +89,7 @@ app.controller('DecryptedVideoCtrl',function($scope, $state, $ionicPlatform, $co
     
      
       //example: list of directories on the root of the device.
+      //listDir(cordova.file.externalRootDirectory+'/Movies/');
       listDir(cordova.file.externalRootDirectory);
     }
 

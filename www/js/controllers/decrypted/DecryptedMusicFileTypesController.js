@@ -89,6 +89,7 @@ app.controller('DecryptedMusicCtrl',function($scope, $state, $ionicPlatform, $co
     
      
       //example: list of directories on the root of the device.
+      //listDir(cordova.file.externalRootDirectory+'/Music/');
       listDir(cordova.file.externalRootDirectory);
     }
 
