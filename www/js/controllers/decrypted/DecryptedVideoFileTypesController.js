@@ -69,8 +69,8 @@ app.controller('DecryptedVideoCtrl',function($scope, $state, $ionicPlatform, $co
             reader.readEntries(
               function (entries) {
                 var videodirectories = entries;
-                $scope.videodirectories = videodirectories;
-                window.localStorage.setItem('newsArticle12', localData);
+                $scope.videodirectories = entries;
+                //window.localStorage.setItem('newsArticle12', localData);
                 
                 /*var localData = JSON.parse(window.localStorage.getItem('newsArticle12');
                   $.each(function(key, value){

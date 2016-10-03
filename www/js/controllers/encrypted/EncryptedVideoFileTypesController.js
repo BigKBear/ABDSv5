@@ -1,4 +1,6 @@
 app.controller('EncryptedVideoCtrl',function($scope, $state, $ionicPlatform, $cordovaFile) {
+    $scope.messageToUser = "Below are the encrypted Videos/Movies you have saved on the SDCard:";
+
     //var test_dir = 'DCMIABDSv5';
     var test_dir = 'ABDSv5/';
     var test_dir1 = 'ABDSv5/Encrypted';
@@ -59,6 +61,7 @@ app.controller('EncryptedVideoCtrl',function($scope, $state, $ionicPlatform, $co
   $scope.currentPlatform = currentPlatform;
 
   $ionicPlatform.ready(function() {
+
     if (ionic.Platform.isAndroid()) {
       function listDir(path){
         window.resolveLocalFileSystemURL(path,
@@ -68,7 +71,7 @@ app.controller('EncryptedVideoCtrl',function($scope, $state, $ionicPlatform, $co
               function (entries) {
                 var videodirectories = entries;
                 $scope.videodirectories = videodirectories;
-                window.localStorage.setItem('newsArticle12', localData);
+                //window.localStorage.setItem('newsArticle12', localData);
                 
                 /*var localData = JSON.parse(window.localStorage.getItem('newsArticle12');
                   $.each(function(key, value){
@@ -86,7 +89,8 @@ app.controller('EncryptedVideoCtrl',function($scope, $state, $ionicPlatform, $co
     }    
      
       //example: list of directories on the root of the device.
-      listDir(cordova.file.externalRootDirectory+"/Movies");
+      //listDir(cordova.file.externalRootDirectory+"/Movies");
+      listDir(cordova.file.externalRootDirectory);
 
 
       //TODO: Allow the user to sellect a Videos from thie Videos folder

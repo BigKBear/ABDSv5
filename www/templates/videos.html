@@ -1,6 +1,7 @@
 <ion-view view-title="Video files for {{currentPlatform}} device">
    <ion-content class="padding">
-    Debugging to ensure the folder has been created
+   <p>{{currentPlatform}} Video files</p>
+    Debugging to ensure the folders have been created
    			<div class="padding">
    			{{stepone}}
    			</div>
@@ -10,11 +11,11 @@
    			<div class="padding">
    			{{stepthree}}
    			</div>
-
+        <div class="padding">
         <p>{{messageToUser}}</p>
+        </div>
         <ion-list>
-          <ion-item class="item-remove-animate item-icon-right"
-                ng-repeat="videodirectory in videodirectories">
+          <ion-item class="item-remove-animate item-icon-right" ng-repeat="videodirectory in videodirectories">
             <h2>{{videodirectory.name}}</h2>
             <p>{{videodirectory.filesystem}}</p>
             <i class="icon ion-arrow-right-b"></i>
