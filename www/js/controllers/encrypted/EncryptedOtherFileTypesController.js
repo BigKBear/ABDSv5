@@ -88,6 +88,15 @@ app.controller('EncryptedOtherCtrl',function($scope, $state, $ionicPlatform, $co
      
       //example: list of directories on the root of the device.
       listDir(cordova.file.externalRootDirectory);
+
+       //TODO: Allow the user to sellect a Pictures from thie Pictures folder
+
+      // Once selected the usere must enter thier password to encrypted the selected Pictures
+
+      //Save the passwrd as part of the file 
+      //Save the pasword to a serve so the user can acces the passwrod on different device
+
+      //Then the encrypted Pictures is to be saved to 'ABDSv5/Encrypted/Pictures'
     }
 
       if (ionic.Platform.isIOS()) {
@@ -101,14 +110,7 @@ app.controller('EncryptedOtherCtrl',function($scope, $state, $ionicPlatform, $co
     }
 
     if (ionic.Platform.isAndroid() || ionic.Platform.isIOS()) {
-      // Create dir test
-      /*$cordovaFile.createDir(cordova.file.externalRootDirectory,'testvid',false)
-       .then( function(success) {
-        console.log('Directory was created: OK');
-        $scope.filedirectory = 'Directory was created: OK';
-      }, function(error){
-        $scope.filedirectory ='Directory was not created: OK';
-      });*/
+      // Create dir if on android or IOS
     }
     
   });//end of ionicplatform ready

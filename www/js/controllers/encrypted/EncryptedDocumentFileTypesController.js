@@ -101,14 +101,7 @@ app.controller('EncryptedDocumentCtrl',function($scope, $state, $ionicPlatform, 
     }
 
     if (ionic.Platform.isAndroid() || ionic.Platform.isIOS()) {
-      // Create dir test
-      /*$cordovaFile.createDir(cordova.file.externalRootDirectory,'testvid',false)
-       .then( function(success) {
-        console.log('Directory was created: OK');
-        $scope.filedirectory = 'Directory was created: OK';
-      }, function(error){
-        $scope.filedirectory ='Directory was not created: OK';
-      });*/
+      // Create dir if on android or IOS
     }
     
   });//end of ionicplatform ready
