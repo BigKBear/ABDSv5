@@ -40,12 +40,6 @@ angular.module('users.userstore', [])
         }
       },
 
-      /*move: function(note, fromIndex, toIndex){
-        notes.splice(fromIndex,1);
-        notes.splice(toIndex,0,note);
-        persist();
-      },
-*/
       remove: function(userId){
           for(var i = 0; i < users.length; i++){
             if(users[i].id === userId){
