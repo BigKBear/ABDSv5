@@ -14,10 +14,15 @@
         <div class="padding">
         <p>{{messageToUser}}</p>
         </div>
+        <div class="padding">
+        <p>{{videodirectories.source}}</p>
+        </div>
+        
         <ion-list>
           <ion-item class="item-remove-animate item-icon-right" ng-repeat="videodirectory in videodirectories">
             <h2>{{videodirectory.name}}</h2>
             <p>{{videodirectory.filesystem}}</p>
+            <p>{{videodirectory.source}}</p>
             <i class="icon ion-arrow-right-b"></i>
             <!-- <i ng-show="file.isDirectory" class="icon ion-folder"></i>
             <i ng-show="file.isFile" class="icon ion-document"></i> -->

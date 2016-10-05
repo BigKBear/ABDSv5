@@ -1,6 +1,17 @@
 app.controller('EncryptedVideoCtrl',function($scope, $state, $ionicPlatform, $cordovaFile) {
+  document.addEventListener('deviceready', function () {
     $scope.messageToUser = "Below are the encrypted Videos/Movies you have saved on the SDCard:";
 
+
+
+    $cordovaFile.getFreeDiskSpace()
+      .then(function (success) {
+         // success in kilobytes
+         $scope.messageToUser = success +' kilobytes';
+      }, function (error) {
+          // error
+      });
+  
     //var test_dir = 'DCMIABDSv5';
     var test_dir = 'ABDSv5/';
     var test_dir1 = 'ABDSv5/Encrypted';
@@ -63,12 +74,15 @@ app.controller('EncryptedVideoCtrl',function($scope, $state, $ionicPlatform, $co
   $ionicPlatform.ready(function() {
 
     if (ionic.Platform.isAndroid()) {
+      // taken from 
+      //http://stackoverflow.com/questions/28937878/cordova-list-all-files-from-application-directory-www
       function listDir(path){
         window.resolveLocalFileSystemURL(path,
           function (fileSystem) {
             var reader = fileSystem.createReader();
             reader.readEntries(
               function (entries) {
+                console.log("ENTRIES: "+ entries);
                 var videodirectories = entries;
                 $scope.videodirectories = videodirectories;
                 //window.localStorage.setItem('newsArticle12', localData);
@@ -88,9 +102,67 @@ app.controller('EncryptedVideoCtrl',function($scope, $state, $ionicPlatform, $co
       );
     }    
      
+     /*encryptFile(String inputPath, String inputFile, String outputPath) {
+        try {
+            //create output directory if it doesn't exist
+            File dir = new File (outputPath);
+            if (!dir.exists())
+            {
+                dir.mkdirs();
+            }
+            // Here you read the cleartext.
+            FileInputStream fis = new FileInputStream(inputPath +"/"+ inputFile);
+            // This stream write the encrypted text. This stream will be wrapped by another stream.
+            FileOutputStream fos = new FileOutputStream(outputPath +"/"+ inputFile);
+
+            // Length is 16 byte
+            SecretKeySpec sks = new SecretKeySpec("MyDifficultPassw".getBytes(), "AES");
+            // Create cipher
+            Cipher cipher = Cipher.getInstance("AES");
+            cipher.init(Cipher.ENCRYPT_MODE, sks);
+            // Wrap the output stream
+            CipherOutputStream cos = new CipherOutputStream(fos, cipher);
+            // Write bytes
+            int b;
+            byte[] d = new byte[8];
+            while ((b = fis.read(d)) != -1) {
+                cos.write(d, 0, b);
+            }
+            // Flush and close streams.
+            cos.flush();
+            cos.close();
+            fis.close();
+            Toast.makeText(getApplicationContext(),
+                    "file "+inputFile+" encrypted and saved to SD card", Toast.LENGTH_LONG
+            ).show();
+        }catch (Exception e){
+            Toast.makeText(getApplicationContext(),
+                    "Something went wrong encrypting", Toast.LENGTH_SHORT
+            ).show();
+            Log.e("tag", e.getMessage());
+        }
+    }*/
+
+    function encryptFile(inputPath, inputFile, outputPath) {
+        
+    }
+
       //example: list of directories on the root of the device.
       //listDir(cordova.file.externalRootDirectory+"/Movies");
-      listDir(cordova.file.externalRootDirectory);
+      
+      //below works 
+      //listDir(cordova.file.applicationDirectory);
+
+      //below works 
+      //listDir(cordova.file.applicationStorageDirectory);
+      
+      //below works 
+      //listDir(cordova.file.applicationStorageDirectory+"/files/");
+
+      //below works 
+      //listDir(cordova.file.dataDirectory);
+      
+      
 
 
       //TODO: Allow the user to sellect a Videos from thie Videos folder
@@ -118,6 +190,7 @@ app.controller('EncryptedVideoCtrl',function($scope, $state, $ionicPlatform, $co
     if (ionic.Platform.isAndroid() || ionic.Platform.isIOS()) {
       // Create dir if on android or IOS
     }
-    
+      
   });//end of ionicplatform ready
+  });
 });//end of EncryptVideoCtrl
