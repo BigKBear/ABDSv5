@@ -15,18 +15,26 @@
         <p>{{messageToUser}}</p>
         </div>
         <div class="padding">
-        <p>{{videodirectories.source}}</p>
+        <p>{{videodirectories}}</p>
         </div>
+        <input type='file' id='fileInput'>
         
         <ion-list>
           <ion-item class="item-remove-animate item-icon-right" ng-repeat="videodirectory in videodirectories">
             <h2>{{videodirectory.name}}</h2>
             <p>{{videodirectory.filesystem}}</p>
-            <p>{{videodirectory.source}}</p>
+            <p>{{videodirectory.nativeURL}}</p>
+            
             <i class="icon ion-arrow-right-b"></i>
-            <!-- <i ng-show="file.isDirectory" class="icon ion-folder"></i>
+            <i ng-show="file.isDirectory" class="icon ion-folder"></i>
             <i ng-show="file.isFile" class="icon ion-document"></i> -->
           </ion-item>
         </ion-list>
    </ion-content>
+   <div class="bar bar-footer bar-stable">
+    <a href="#/"
+      class="button button-assertive icon-left ion-compose">{{encryptDecrypt}}</a>
+      <!-- <button class="button button-light icon-left ion-shuffle" 
+              ng-click="toggleReordering()">Reorder</button> -->
+  </div>
 </ion-view>

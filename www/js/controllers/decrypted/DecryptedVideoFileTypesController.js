@@ -1,6 +1,7 @@
 app.controller('DecryptedVideoCtrl',function($scope, $state, $ionicPlatform, $cordovaFile) {
     document.addEventListener('deviceready', function () {
     $scope.messageToUser = "Below are the files and folders currently saved on the device in the Videos folder:";
+    $scope.encryptDecrypt = "Encrypt";
 
     //var test_dir = 'DCMIABDSv5';
     var test_dir = 'ABDSv5/';

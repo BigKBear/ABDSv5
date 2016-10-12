@@ -1,5 +1,6 @@
 app.controller('EncryptedOtherCtrl',function($scope, $state, $ionicPlatform, $cordovaFile) {
     $scope.messageToUser = "Below are the other encrypted files or folders you have saved on the SDCard:";
+    $scope.encryptDecrypt = "Decrypt";
 
    //var test_dir = 'DCMIABDSv5';
     var test_dir = 'ABDSv5/';

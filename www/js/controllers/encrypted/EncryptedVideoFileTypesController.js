@@ -1,8 +1,34 @@
 app.controller('EncryptedVideoCtrl',function($scope, $state, $ionicPlatform, $cordovaFile) {
+/*
+     encrypt: function(message, password) {
+            var salt = forge.random.getBytesSync(128);
+            var key = forge.pkcs5.pbkdf2(password, salt, 4, 16);
+            var iv = forge.random.getBytesSync(16);
+            var cipher = forge.cipher.createCipher('AES-CBC', key);
+            cipher.start({iv: iv});
+            cipher.update(forge.util.createBuffer(message));
+            cipher.finish();
+            var cipherText = forge.util.encode64(cipher.output.getBytes());
+            return {cipher_text: cipherText, salt: forge.util.encode64(salt), iv: forge.util.encode64(iv)};
+        },
+
+        decrypt: function(cipherText, password, salt, iv, options) {
+            var key = forge.pkcs5.pbkdf2(password, forge.util.decode64(salt), 4, 16);
+            var decipher = forge.cipher.createDecipher('AES-CBC', key);
+            decipher.start({iv: forge.util.decode64(iv)});
+            decipher.update(forge.util.createBuffer(forge.util.decode64(cipherText)));
+            decipher.finish();
+            if(options !== undefined && options.hasOwnProperty("output") && options.output === "hex") {
+                return decipher.output.toHex();
+            } else {
+                return decipher.output.toString();
+            }
+        }
+*/
+
   document.addEventListener('deviceready', function () {
     $scope.messageToUser = "Below are the encrypted Videos/Movies you have saved on the SDCard:";
-
-
+    $scope.encryptDecrypt = "Decrypt";
 
     $cordovaFile.getFreeDiskSpace()
       .then(function (success) {
@@ -159,11 +185,30 @@ app.controller('EncryptedVideoCtrl',function($scope, $state, $ionicPlatform, $co
       //below works 
       //listDir(cordova.file.applicationStorageDirectory+"/files/");
 
+      //did not work cacheDirectory
+      //listDir(cordova.file.cacheDirectory);
+
       //below works 
       //listDir(cordova.file.dataDirectory);
       
+      //did not work externalRootDirectory
+      //listDir(cordova.file.externalRootDirectory);
+      //entries returns  source: file:///android_asset/www/js/controllers/encrypted/EncryptedVideoFileTypesController.js (85)
       
+      //below works 
+      //listDir(cordova.file.externalApplicationStorageDirectory);
+      //entries returns files and cache
 
+      //below works externalCacheDirectory
+      //listDir(cordova.file.externalCacheDirectory);
+      //entries returns source: file:///android_asset/www/js/controllers/encrypted/EncryptedVideoFileTypesController.js (85)
+
+      //below works externalDataDirectory
+      listDir(cordova.file.externalDataDirectory);
+      //entries returns ABDSv5
+
+      
+      
 
       //TODO: Allow the user to sellect a Videos from thie Videos folder
 
