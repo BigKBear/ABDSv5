@@ -1,8 +1,11 @@
-app.controller('EncryptPictureCtrl',function($scope, $state, $ionicPlatform, $cordovaFile) {
+app.controller('EncryptedMusicCtrl',function($scope, $state, $ionicPlatform, $cordovaFile) {
+    $scope.messageToUser = "Below are the encrypted Music you have saved on the SDCard:";
+    $scope.encryptDecrypt = "Decrypt";
+
    //var test_dir = 'DCMIABDSv5';
     var test_dir = 'ABDSv5/';
     var test_dir1 = 'ABDSv5/Encrypted';
-    var test_dir2 = 'ABDSv5/Encrypted/Pictures';
+    var test_dir2 = 'ABDSv5/Encrypted/Music';
 
     $cordovaFile.checkDir(cordova.file.externalRootDirectory, test_dir)
       .then(function (success) {
@@ -54,12 +57,56 @@ app.controller('EncryptPictureCtrl',function($scope, $state, $ionicPlatform, $co
           $scope.stepthree ='Directory '+test_dir2+' was not created due to ' + error+'.';
         });
       });
-  /*1) create ABDS encrepted directory if one does not already exist on the SD_Card or phone internal memory*/
 
-  /*2) open the subdirectory encrypted pictures*/
+        var currentPlatform = ionic.Platform.platform();  
+  $scope.currentPlatform = currentPlatform;
 
-  /*3) Show the list of all currently existing encrypted pictures*/
+  $ionicPlatform.ready(function() {
+    if (ionic.Platform.isAndroid()) {
+      function listDir(path){
+        window.resolveLocalFileSystemURL(path,
+          function (fileSystem) {
+            var reader = fileSystem.createReader();
+            reader.readEntries(
+              function (entries) {
+                var videodirectories = entries;
+                $scope.videodirectories = videodirectories;
+                window.localStorage.setItem('newsArticle12', localData);
+                
+                /*var localData = JSON.parse(window.localStorage.getItem('newsArticle12');
+                  $.each(function(key, value){
+                    //handle the data
+                  });*/
+            },
+            function (err) {
+              console.log(err);
+            }
+          );
+        }, function (err) {
+          console.log(err);
+        }
+      );
+    }
+    
+     
+      //example: list of directories on the root of the device.
+      listDir(cordova.file.externalRootDirectory);
+    }
 
-  /*4) Setup listeners to if a picture is selected and show decryption button*/
+      if (ionic.Platform.isIOS()) {
+      // if running on IOS
+      console.log('cordova.file.documentsDirectory: ' + cordova.file.documentsDirectory);
+      // I use cordova.file.documentsDirectory because this url is for IOS (NOT backed on iCloud) devices
+      fileTransferDir = cordova.file.documentsDirectory;
+      fileDir = '';
+      console.log('IOS FILETRANSFERDIR: ' + fileTransferDir);
+      console.log('IOS FILEDIR: ' + fileDir);
+    }
+
+    if (ionic.Platform.isAndroid() || ionic.Platform.isIOS()) {
+      // Create dir if on android or IOS
+    }
+    
+  });//end of ionicplatform ready
 
 });

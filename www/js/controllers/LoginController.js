@@ -1,4 +1,7 @@
 app.controller('LoginCtrl', function($scope, LoginService, $ionicPopup, $state){  
+
+    //TODO: Store the password in a server
+
     $scope.user = {};
  
     $scope.login = function() {
