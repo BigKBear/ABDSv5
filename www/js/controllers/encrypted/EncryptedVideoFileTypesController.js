@@ -24,18 +24,33 @@ app.controller('EncryptedVideoCtrl',function($scope, $state, $ionicPlatform, $co
                 return decipher.output.toString();
             }
         }
+
+
 */
+  $scope.messageToUser = "Below are the encrypted Videos/Movies you have saved on the SDCard:";
+  $scope.encryptDecrypt = "Decrypt";
+  $scope.fileLabel = "Choose a file to encrypt:";
+  $scope.folderLabel="Choose a folder to encrypt:";
+  /*$scope.files={};*/
 
   document.addEventListener('deviceready', function () {
-    $scope.messageToUser = "Below are the encrypted Videos/Movies you have saved on the SDCard:";
-    $scope.encryptDecrypt = "Decrypt";
+    var currentPlatform = ionic.Platform.platform();  
+    $scope.currentPlatform = currentPlatform;
 
     $cordovaFile.getFreeDiskSpace()
       .then(function (success) {
          // success in kilobytes
-         $scope.messageToUser = success +' kilobytes';
+         $scope.freeSpace = success +' kilobytes';
+          /*var alertPopup = $ionicPopup.alert({
+                title: 'Success!',
+                template: 'You have '+sucess+'Kb of free space!'
+            });*/
       }, function (error) {
-          // error
+          // error Show pop up stating there is no free space
+           /*var alertPopup = $ionicPopup.alert({
+                title: 'Login failed!',
+                template: 'Please check your credentials!'
+            });*/
       });
   
     //var test_dir = 'DCMIABDSv5';
@@ -94,12 +109,104 @@ app.controller('EncryptedVideoCtrl',function($scope, $state, $ionicPlatform, $co
         });
       });     
     
-      var currentPlatform = ionic.Platform.platform();  
-  $scope.currentPlatform = currentPlatform;
 
   $ionicPlatform.ready(function() {
 
     if (ionic.Platform.isAndroid()) {
+
+      $scope.hash = CryptoJS.MD5("Message");
+      
+     document.getElementById("createFile").addEventListener("click", createFile);
+      document.getElementById("writeFile").addEventListener("click", writeFile);
+      document.getElementById("readFile").addEventListener("click", readFile);
+      document.getElementById("removeFile").addEventListener("click", removeFile);
+
+      function createFile() {
+       var type = window.TEMPORARY;
+       var size = 5*1024*1024;
+
+       window.requestFileSystem(type, size, successCallback, errorCallback)
+
+       function successCallback(fs) {
+          fs.root.getFile('log.txt', {create: true, exclusive: true}, function(fileEntry) {
+             alert('File creation successfull!')
+          }, errorCallback);
+       }
+
+       function errorCallback(error) {
+          alert("ERROR: " + error.code)
+       }
+      
+    }
+
+function writeFile() {
+   var type = window.TEMPORARY;
+   var size = 5*1024*1024;
+
+   window.requestFileSystem(type, size, successCallback, errorCallback)
+
+   function successCallback(fs) {
+
+      fs.root.getFile('log.txt', {create: true}, function(fileEntry) {
+
+         fileEntry.createWriter(function(fileWriter) {
+            fileWriter.onwriteend = function(e) {
+               alert('Write completed.');
+            };
+
+            fileWriter.onerror = function(e) {
+               alert('Write failed: ' + e.toString());
+            };
+
+            var blob = new Blob(['Lorem Ipsum'], {type: 'text/plain'});
+            fileWriter.write(blob);
+         }, errorCallback);
+
+      }, errorCallback);
+
+   }
+
+   function errorCallback(error) {
+      alert("ERROR: " + error.code)
+   }
+  
+}
+
+
+function readFile() {
+   var type = window.TEMPORARY;
+   var size = 5*1024*1024;
+
+   window.requestFileSystem(type, size, successCallback, errorCallback)
+
+   function successCallback(fs) {
+
+      fs.root.getFile('log.txt', {}, function(fileEntry) {
+
+         fileEntry.file(function(file) {
+            var reader = new FileReader();
+
+            reader.onloadend = function(e) {
+               var txtArea = document.getElementById('textarea');
+               txtArea.value = this.result;
+            };
+
+            reader.readAsText(file);
+
+         }, errorCallback);
+
+      }, errorCallback);
+   }
+
+   function errorCallback(error) {
+      alert("ERROR: " + error.code)
+   }
+  
+} 
+
+
+
+
       // taken from 
       //http://stackoverflow.com/questions/28937878/cordova-list-all-files-from-application-directory-www
       function listDir(path){

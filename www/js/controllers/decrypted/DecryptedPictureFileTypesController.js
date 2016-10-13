@@ -1,5 +1,6 @@
 app.controller('DecryptedPictureCtrl',function($scope, $state, $ionicPlatform, $cordovaFile) {
    $scope.messageToUser = "Below are the files and folders currently saved on the device in the Pictures folder:";
+   $scope.encryptDecrypt = "Encrypt";
 
    //var test_dir = 'DCMIABDSv5';
     var test_dir = 'ABDSv5/';
