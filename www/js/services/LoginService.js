@@ -1,4 +1,9 @@
 angular.module('login.service', [])
+/**
+ * The LoginService handles saving and loading user
+ * from local storage, and also lets us save and load the
+ * last active project index.
+ */
 .service('LoginService', function($q) {
     return {
         loginUser: function(name, pw) {

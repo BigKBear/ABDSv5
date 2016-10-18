@@ -1,4 +1,4 @@
-app.controller('LoginCtrl', function($scope, LoginService, $ionicPopup, $state){  
+app.controller('LoginCtrl', function($scope, LoginService, $ionicHistory, $ionicPopup, $state){  
 
     //TODO: Store the password in a server
 
@@ -14,4 +14,5 @@ app.controller('LoginCtrl', function($scope, LoginService, $ionicPopup, $state){
             });
         });
     }
+    $ionicHistory.clearHistory();
 });

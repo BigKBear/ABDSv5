@@ -6,5 +6,5 @@ app.controller('DeviceCtrl', function($scope) {
       $scope.device = device;
     });
   });
-
-});
+$ionicHistory.clearHistory();
+});//end of DeviceCtrl

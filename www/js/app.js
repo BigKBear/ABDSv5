@@ -1,4 +1,26 @@
-var app = angular.module('abds', ['ionic', 'ngCordova','login.service']);
+var app = angular.module('abds', ['ionic', 'ngCordova','login.service', 'cipher.factory']);
+
+app.run(function($ionicPlatform) {
+  $ionicPlatform.ready(function() {
+    if(window.cordova && window.cordova.plugins.Keyboard) {
+      cordova.plugins.Keyboard.hideKeyboardAccessoryBar(true);
+      cordova.plugins.Keyboard.disableScroll(true);
+    }
+    if(window.StatusBar) {
+      StatusBar.styleDefault();
+    }
+  });
+  /*When the application resumes focus we will be navigated 
+  to the locked screen just as if we were opening the application fresh
+  */
+  document.addEventListener("resume", function() {
+        $state.go("login", {}, {location: "replace"});
+    }, false);
+
+  /*document.addEventListener("pause", function()){
+    $state.go("login", {}, {location: "replace"});
+  },false);*/
+});
 
 app.config(function($stateProvider, $urlRouterProvider) {
 
@@ -7,7 +29,8 @@ app.config(function($stateProvider, $urlRouterProvider) {
   .state('login', {
     url: '/login',
     templateUrl: 'templates/login.html',
-    controller: 'LoginCtrl'
+    controller: 'LoginCtrl',
+    cache: false
   })
 
   .state('tabs', {
@@ -90,22 +113,6 @@ app.config(function($stateProvider, $urlRouterProvider) {
 
 
   /*Home tab navigation bar*/
-  /*.state('tabs.encrypted', {
-    url: "/encrypted",
-    views: {
-      'encrypted-tab': {
-        templateUrl: "templates/videos.html"
-      }
-    }
-  })
-  .state('tabs.decrypted', {
-    url: "/decrypted",
-    views: {
-      'decrypted-tab': {
-        templateUrl: "templates/videos.html"
-      }
-    }
-  })*/
   .state('tabs.all', {
     url: "/all",
     views: {
@@ -115,15 +122,6 @@ app.config(function($stateProvider, $urlRouterProvider) {
       }
     }
   })
-  /*
- .state('tabs.about', {
-    url: "/about",
-    views: {
-      'about-tab': {
-        templateUrl: "templates/homepage/about.html"
-      }
-    }
-  })*/
 
   /*Encrypted view tabs*/
   .state('encrypted_tabs.home', {
@@ -237,41 +235,11 @@ app.config(function($stateProvider, $urlRouterProvider) {
     }
   })
 
-  /*Other states from notes app*/
-  /*.state('list', {
-    url: '/list',
-    templateUrl: 'templates/list.html',
-    controller: 'ListCtrl'
-  })*/
-
-  /*.state('add', {
-    url: '/add',
-    templateUrl: 'templates/edit.html',
-    controller: 'AddCtrl'
-  })
-
-  .state('edit', {
-    url: '/edit/:noteId',
-    templateUrl: 'templates/edit.html',
-    controller: 'EditCtrl'
-  });*/
-
   $urlRouterProvider.otherwise('/login');
 });
 
-app.controller('HomeTabCtrl', function($scope) {
+app.controller('HomeTabCtrl', function($scope,$ionicHistory) {
   console.log('HomeTabCtrl');
+  $ionicHistory.clearHistory();
   //$state.go('tabs.home');
-});
-
-app.run(function($ionicPlatform) {
-  $ionicPlatform.ready(function() {
-    if(window.cordova && window.cordova.plugins.Keyboard) {
-      cordova.plugins.Keyboard.hideKeyboardAccessoryBar(true);
-      cordova.plugins.Keyboard.disableScroll(true);
-    }
-    if(window.StatusBar) {
-      StatusBar.styleDefault();
-    }
-  });
 });

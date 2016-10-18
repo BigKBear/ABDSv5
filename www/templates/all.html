@@ -1,7 +1,10 @@
 <ion-view view-title="All files on {{currentPlatform}} device">
    <ion-content class="padding">
-    <input type='file' id='fileInput'>
-        <ion-list>
+     <div class="list card">
+        <div class="item item-input">
+          <input type='file' id='fileInput' ng-model="file">
+
+        <!-- <ion-list>
            <ion-item class="item-remove-animate item-icon-right"
                 ng-repeat="videodirectory in videodirectories">
             <h2>{{videodirectory.name}}</h2>
@@ -10,6 +13,6 @@
             <i ng-show="file.isDirectory" class="icon ion-folder"></i>
             <i ng-show="file.isFile" class="icon ion-document"></i>
           </ion-item>
-        </ion-list>
+        </ion-list> -->
    </ion-content>
 </ion-view>

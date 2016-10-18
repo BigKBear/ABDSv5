@@ -1,4 +1,4 @@
-app.controller('EncryptedVideoCtrl',function($scope, $state, $ionicPlatform, $cordovaFile) {
+app.controller('EncryptedVideoCtrl',function($scope, $state, $ionicPlatform, $cordovaFile,$ionicHistory) {
 /*
      encrypt: function(message, password) {
             var salt = forge.random.getBytesSync(128);
@@ -27,15 +27,16 @@ app.controller('EncryptedVideoCtrl',function($scope, $state, $ionicPlatform, $co
 
 
 */
-  $scope.messageToUser = "Below are the encrypted Videos/Movies you have saved on the SDCard:";
-  $scope.encryptDecrypt = "Decrypt";
-  $scope.fileLabel = "Choose a file to encrypt:";
-  $scope.folderLabel="Choose a folder to encrypt:";
+  
   /*$scope.files={};*/
 
   document.addEventListener('deviceready', function () {
     var currentPlatform = ionic.Platform.platform();  
     $scope.currentPlatform = currentPlatform;
+    $scope.messageToUser = "Below are the encrypted Videos/Movies you have saved on the SDCard:";
+    $scope.encryptDecrypt = "Decrypt";
+    $scope.fileLabel = "Choose a file to encrypt:";
+    $scope.folderLabel="Choose a folder to encrypt:";
 
     $cordovaFile.getFreeDiskSpace()
       .then(function (success) {
@@ -114,8 +115,8 @@ app.controller('EncryptedVideoCtrl',function($scope, $state, $ionicPlatform, $co
 
     if (ionic.Platform.isAndroid()) {
 
-      $scope.hash = CryptoJS.MD5("Message");
-      
+      /*$scope.hash = CryptoJS.MD5("Message");*/
+
      document.getElementById("createFile").addEventListener("click", createFile);
       document.getElementById("writeFile").addEventListener("click", writeFile);
       document.getElementById("readFile").addEventListener("click", readFile);
@@ -345,4 +346,5 @@ function readFile() {
       
   });//end of ionicplatform ready
   });
+
 });//end of EncryptVideoCtrl
