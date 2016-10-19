@@ -10,7 +10,7 @@ angular.module('login.service', [])
             var deferred = $q.defer();
             var promise = deferred.promise;
  
-            if (name == 'User' && pw == 's') {
+            if (name == window.localStorage.getItem("userUsername") && pw == localStorage.getItem("userPassword")) {
                 deferred.resolve('Welcome ' + name + '!');
             } else {
                 deferred.reject('Wrong credentials.');

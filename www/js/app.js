@@ -22,13 +22,22 @@ app.run(function($ionicPlatform) {
   },false);*/
 });
 
-app.config(function($stateProvider, $urlRouterProvider) {
+
+app.config(function($stateProvider, $urlRouterProvider,$ionicConfigProvider) {
+  $ionicConfigProvider.tabs.position('top'); // other values: top
 
   $stateProvider
 
   .state('login', {
     url: '/login',
     templateUrl: 'templates/login.html',
+    controller: 'LoginCtrl',
+    cache: false
+  })
+
+  .state('register', {
+    url: '/register',
+    templateUrl: 'templates/registration.html',
     controller: 'LoginCtrl',
     cache: false
   })
