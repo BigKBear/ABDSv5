@@ -1,7 +1,8 @@
-app.controller('LoginCtrl', function($scope, LoginService, $timeout,$cipherFactory, $ionicHistory, $ionicPopup, $state){  
+app.controller('LoginCtrl', function($scope, $rootScope, LoginService, $timeout,$cipherFactory, $ionicHistory, $ionicPopup, $state){  
 
     //Check to see if it is the first time the user is using the application
     var username = window.localStorage.getItem("userUsername");
+    var encrypted ="";
 
     if (!username) {
       $scope.messagetouser = "Welcome first time user";
@@ -23,20 +24,39 @@ app.controller('LoginCtrl', function($scope, LoginService, $timeout,$cipherFacto
     //Function used to reset user data
     var reset = function() {
         window.localStorage.removeItem("userUsername");
-        window.localStorage.removeItem("userPassword");
+        window.localStorage.removeItem("EncryptedPassword");
         $state.go('register');
         $scope.messagetouser = "Username and password erased";
     }
 
     //Function to load the current user password
-    var savePassword = function(){
-      window.localStorage.setItem("userPassword", userOBJ.password);
+    var saveEncryptPassword = function(){
+      encrypted = CryptoJS.AES.encrypt(
+                userOBJ.password,
+                $rootScope.base64Key,
+                { iv: $rootScope.iv });
+      //alert('String being saved '+ encrypted.ciphertext.toString(CryptoJS.enc.Base64));
+      var encryptedpassword = encrypted.ciphertext.toString(CryptoJS.enc.Base64);
+      window.localStorage.setItem("EncryptedPassword", encryptedpassword);
     }
 
-    var loadPassword = function(){
-      $timeout(function () {
-        return window.localStorage.getItem("userPassword");
-      },1000);
+    var getEncryptedPassword = function(){
+        //alert('Getting encrypted password \n'+window.localStorage.getItem("EncryptedPassword"));
+        return window.localStorage.getItem("EncryptedPassword");
+    }
+
+    var getDecryptedPassword = function(){
+      var cipherParams = CryptoJS.lib.CipherParams.create({
+                ciphertext: CryptoJS.enc.Base64.parse(window.localStorage.getItem("EncryptedPassword"))
+                });
+
+      var decrypted = CryptoJS.AES.decrypt(
+                  cipherParams,
+                  $rootScope.base64Key,
+                  { iv: $rootScope.iv });
+                  $scope.descrString = decrypted.toString(CryptoJS.enc.Utf8);
+        //alert('Getting decrypted password \n'+ decrypted.toString(CryptoJS.enc.Utf8));
+        return decrypted.toString(CryptoJS.enc.Utf8);
     }
 
     //function to load the curent user username
@@ -44,11 +64,6 @@ app.controller('LoginCtrl', function($scope, LoginService, $timeout,$cipherFacto
       window.localStorage.setItem("userUsername", userOBJ.username);
     }
 
-    var loadUsername = function(){
-      $timeout(function () {
-         return window.localStorage.getItem("userUsername");
-       },1000);
-    }
 
     /* Buttons on view functionality*/
     //save the user credentials
@@ -71,7 +86,7 @@ app.controller('LoginCtrl', function($scope, LoginService, $timeout,$cipherFacto
             password: pw
           };
           saveUsername();
-          savePassword();
+          saveEncryptPassword();
           $state.go('login');
         },1000);
       }
@@ -84,7 +99,9 @@ app.controller('LoginCtrl', function($scope, LoginService, $timeout,$cipherFacto
           template: 'Please enter your master password'
         });
       }else{
-        LoginService.loginUser(pw).success(function(userOBJ) {
+        LoginService.loginUser(pw,getDecryptedPassword()).success(function(userOBJ) {
+          /*alert('encrypted='+getEncryptedPassword());
+          alert('decrypted='+getDecryptedPassword());*/
           attempts = 0;
           $state.go('tabs.home');
         }).error(function(userOBJ) {
@@ -108,13 +125,21 @@ app.controller('LoginCtrl', function($scope, LoginService, $timeout,$cipherFacto
     }
 
     /*No used but might be needed*/
-    $scope.isLoggedIn = function() {
+    
+    /*$scope.isLoggedIn = function() {
       if(window.localStorage.getItem("username") !== undefined && window.localStorage.getItem("password") !== undefined) {
           return true;
       } else {
           return false;
       }
-    }
+    }*/
+
+/*    var loadUsername = function(){
+      $timeout(function () {
+        return window.localStorage.getItem("userUsername");
+       },1000);
+    }*/
+
 
     $ionicHistory.clearHistory();
 });
