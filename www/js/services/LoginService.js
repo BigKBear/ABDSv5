@@ -4,13 +4,13 @@ angular.module('login.service', [])
  * from local storage, and also lets us save and load the
  * last active project index.
  */
-.service('LoginService', function($q) {
+.service('LoginService', function($q,$rootScope) {
     return {
-        loginUser: function(pw) {
+        loginUser: function(pw,decryptedPW) {
             var deferred = $q.defer();
             var promise = deferred.promise;
  
-            if (pw == localStorage.getItem("userPassword")) {
+            if (pw == decryptedPW) {
                 deferred.resolve('Welcome !');
             } else {
                 deferred.reject('Wrong credentials given.');
