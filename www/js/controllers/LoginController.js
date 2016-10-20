@@ -12,7 +12,7 @@ app.controller('LoginCtrl', function($scope, $rootScope, LoginService, $timeout,
     }
     
     //configuration for max atempts
-    var maxattempts = 1;
+    var maxattempts = 7;
     var attempts = 0;
 
     var userOBJ = {
@@ -64,7 +64,6 @@ app.controller('LoginCtrl', function($scope, $rootScope, LoginService, $timeout,
       window.localStorage.setItem("userUsername", userOBJ.username);
     }
 
-    
 
     /* Buttons on view functionality*/
     //save the user credentials
@@ -126,19 +125,20 @@ app.controller('LoginCtrl', function($scope, $rootScope, LoginService, $timeout,
     }
 
     /*No used but might be needed*/
-    $scope.isLoggedIn = function() {
+    
+    /*$scope.isLoggedIn = function() {
       if(window.localStorage.getItem("username") !== undefined && window.localStorage.getItem("password") !== undefined) {
           return true;
       } else {
           return false;
       }
-    }
+    }*/
 
-    var loadUsername = function(){
+/*    var loadUsername = function(){
       $timeout(function () {
         return window.localStorage.getItem("userUsername");
        },1000);
-    }
+    }*/
 
 
     $ionicHistory.clearHistory();
