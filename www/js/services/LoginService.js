@@ -6,14 +6,14 @@ angular.module('login.service', [])
  */
 .service('LoginService', function($q) {
     return {
-        loginUser: function(name, pw) {
+        loginUser: function(pw) {
             var deferred = $q.defer();
             var promise = deferred.promise;
  
-            if (name == window.localStorage.getItem("userUsername") && pw == localStorage.getItem("userPassword")) {
-                deferred.resolve('Welcome ' + name + '!');
+            if (pw == localStorage.getItem("userPassword")) {
+                deferred.resolve('Welcome !');
             } else {
-                deferred.reject('Wrong credentials.');
+                deferred.reject('Wrong credentials given.');
             }
             promise.success = function(fn) {
                 promise.then(fn);

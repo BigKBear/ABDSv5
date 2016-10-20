@@ -68,7 +68,8 @@ app.config(function($stateProvider, $urlRouterProvider,$ionicConfigProvider) {
         templateUrl: "templates/home.html",
         controller: 'HomeTabCtrl'
       }
-    }
+    },
+    cache: false
   })
   .state('tabs.device', {
     url: "/device",
