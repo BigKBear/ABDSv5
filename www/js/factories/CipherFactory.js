@@ -1,4 +1,9 @@
 angular.module('cipher.factory', [])
+
+/*
+*This factory was Created with hopes of encrypting the password before saving it to local storage
+*But the forge.min.js library caused an error
+*/
     .factory("$cipherFactory", function(){
   return {
 

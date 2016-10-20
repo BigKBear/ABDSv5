@@ -1,4 +1,8 @@
 angular.module('file.service', ['ionic', 'ngCordova'])
+/**
+*The File Service uses ionic and ngCordova and the $cordovaFile
+*To return an object containing a list of files and directorries based on a given path
+*/
 .service('FileService', function($q, $cordovaFile) {
     return {
         listDir: function(path) {
