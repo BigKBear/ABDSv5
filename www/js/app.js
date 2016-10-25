@@ -248,7 +248,6 @@ app.config(function($stateProvider, $urlRouterProvider,$ionicConfigProvider) {
 app.controller('HomeTabCtrl', function($scope,$ionicHistory) {
   console.log('HomeTabCtrl');
   $ionicHistory.clearHistory();
-  //$state.go('tabs.home');
 });
 
 //Helper function used to Capatilise the first letter in a given string
