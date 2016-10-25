@@ -15,12 +15,6 @@ app.controller('AllFilesCtrl', function($scope, $ionicPlatform){
               function (entries) {
                 var videodirectories = entries;
                 $scope.videodirectories = entries;
-                //window.localStorage.setItem('newsArticle12', localData);
-                
-                /*var localData = JSON.parse(window.localStorage.getItem('newsArticle12');
-                  $.each(function(key, value){
-                    //handle the data
-                  });*/
             },
             function (err) {
               console.log(err);
@@ -31,12 +25,8 @@ app.controller('AllFilesCtrl', function($scope, $ionicPlatform){
         }
       );
     }
-    
-     
-      //example: list of directories on the root of the device.
-      
+
       if(!listDir(cordova.file.externalRootDirectory)){
-        //alert("no files in "+ test_dir2);
         $scope.notification = "no files in "+ test_dir2;
       }else{
         listDir(cordova.file.externalRootDirectory);
@@ -45,9 +35,7 @@ app.controller('AllFilesCtrl', function($scope, $ionicPlatform){
     }
 
       if (ionic.Platform.isIOS()) {
-      // if running on IOS
       console.log('cordova.file.documentsDirectory: ' + cordova.file.documentsDirectory);
-      // I use cordova.file.documentsDirectory because this url is for IOS (NOT backed on iCloud) devices
       fileTransferDir = cordova.file.documentsDirectory;
       fileDir = '';
       console.log('IOS FILETRANSFERDIR: ' + fileTransferDir);
@@ -55,8 +43,7 @@ app.controller('AllFilesCtrl', function($scope, $ionicPlatform){
     }
 
     if (ionic.Platform.isAndroid() || ionic.Platform.isIOS()) {
-      // Create dir if on android or IOS
       
     }    
-  });//end of ionicplatform ready
+  });
 });

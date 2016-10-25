@@ -1,22 +1,5 @@
 <ion-view view-title="{{messagetouser}}">
   <ion-content>
-  	<!-- <div class="list card">
-      <div class="item item-input">
-        <input type="text" placeholder="Username"
-          ng-model="user.username">
-      </div>
-      <div class="item item-input">
-        <input type="password" placeholder="Password"
-          ng-model="user.password">
-      </div>
-    </div>
-    <div class="padding text-center" ng-show="loginFailed">
-      <i class="ion-alert-circled"></i> Invalid credentials
-    </div>
-    <div class="padding">
-      <button class="button button-block button-positive"
-        ng-click="login()">Login</button>
-    </div> -->
     <div class="list list-inset">
             <label class="item item-input">
               <input type="text" placeholder="Username" ng-model="registration.user.username">
@@ -31,10 +14,6 @@
         <div class="padding-left padding-right">
             <div class="button-bar">
                 <a class="button" ng-click="saveData(registration.user.username, registration.user.password, registration.user.confirmpassword)">Register</a>
-                <!-- <a class="button" ng-click="loadData()">LoadData</a>
-
-                <a class="button" ng-click="register()">Unlock</a>
-                <a class="button" ng-click="reset()">Reset</a> -->
             </div>
         </div>
     </div>

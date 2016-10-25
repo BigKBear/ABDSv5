@@ -34,8 +34,7 @@ angular.module('appFilereader', [])
 
                         return deferred.promise;
                     }
-
-                }); //change
-            } //link
-    }; //return
+                });
+            }
+    };
 });
