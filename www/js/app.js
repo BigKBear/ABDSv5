@@ -1,8 +1,43 @@
-var app = angular.module('abds', ['ionic', 'ngCordova','login.service', 'notes.notestore', 'users.userstore', 'files.filestore']);
+var app = angular.module('abds', ['ionic','angularjs-crypto', 'base64', 'ngCordova','login.service', 'cipher.factory']);
 
-app.config(function($stateProvider, $urlRouterProvider) {
+app.run(
+
+function($ionicPlatform) {
+  $ionicPlatform.ready(function() {
+    if(window.cordova && window.cordova.plugins.Keyboard) {
+      cordova.plugins.Keyboard.hideKeyboardAccessoryBar(true);
+      cordova.plugins.Keyboard.disableScroll(true);
+    }
+    if(window.StatusBar) {
+      StatusBar.styleDefault();
+    }
+  })
+});
+
+
+app.run(function(cfCryptoHttpInterceptor, $rootScope) {
+  $rootScope.base64Key = CryptoJS.enc.Base64.parse("2b7e151628aed2a6abf7158809cf4f3c");
+  $rootScope.iv = CryptoJS.enc.Base64.parse("3ad77bb40d7a3660a89ecaf32466ef97");
+});
+
+app.config(function($stateProvider, $urlRouterProvider,$ionicConfigProvider) {
+  $ionicConfigProvider.tabs.position('top'); // other values: top
 
   $stateProvider
+
+  .state('login', {
+    url: '/login',
+    templateUrl: 'templates/login.html',
+    controller: 'LoginCtrl',
+    cache: false
+  })
+
+  .state('register', {
+    url: '/register',
+    templateUrl: 'templates/registration.html',
+    controller: 'LoginCtrl',
+    cache: false
+  })
 
   .state('tabs', {
     url: "/tab",
@@ -20,11 +55,7 @@ app.config(function($stateProvider, $urlRouterProvider) {
     templateUrl: "templates/tabs/decrypted_tabs.html"
   })
 
-  .state('login', {
-    url: '/login',
-    templateUrl: 'templates/login.html',
-    controller: 'LoginCtrl'
-  })
+  
 
   /*The different home tab bars available*/
   .state('tabs.home', {
@@ -34,13 +65,15 @@ app.config(function($stateProvider, $urlRouterProvider) {
         templateUrl: "templates/home.html",
         controller: 'HomeTabCtrl'
       }
-    }
+    },
+    cache: false
   })
   .state('tabs.device', {
     url: "/device",
     views: {
       'home-tab': {
-        templateUrl: "templates/homepage/device.html"
+        templateUrl: "templates/homepage/device.html",
+        controller: 'DeviceCtrl'
       }
     }
   })
@@ -87,47 +120,23 @@ app.config(function($stateProvider, $urlRouterProvider) {
 
 
   /*Home tab navigation bar*/
-  /*.state('tabs.encrypted', {
-    url: "/encrypted",
-    views: {
-      'encrypted-tab': {
-        templateUrl: "templates/videos.html"
-      }
-    }
-  })
-  .state('tabs.decrypted', {
-    url: "/decrypted",
-    views: {
-      'decrypted-tab': {
-        templateUrl: "templates/videos.html"
-      }
-    }
-  })*/
   .state('tabs.all', {
     url: "/all",
     views: {
       'all-files-tab': {
-        templateUrl: "templates/list.html",
-        controller: 'ListCtrl'
+        templateUrl: "templates/all.html",
+        controller: 'AllFilesCtrl'
       }
     }
   })
-  /*
- .state('tabs.about', {
-    url: "/about",
-    views: {
-      'about-tab': {
-        templateUrl: "templates/homepage/about.html"
-      }
-    }
-  })*/
 
   /*Encrypted view tabs*/
   .state('encrypted_tabs.home', {
     url: "/home",
     views: {
       'encrypted-home-tab': {
-        templateUrl: "templates/home.html"
+        templateUrl: "templates/home.html",
+        controller: 'HomeTabCtrl'
       }
     }
   })
@@ -135,8 +144,8 @@ app.config(function($stateProvider, $urlRouterProvider) {
     url: "/videos",
     views: {
       'encrypted-videos-tab': {
-        templateUrl: "templates/videos.html",
-        controller: 'EncryptVideoCtrl'
+        templateUrl: "templates/encrypted/videos.html",
+        controller: 'EncryptedVideoCtrl'
       }
     }
   })
@@ -144,8 +153,8 @@ app.config(function($stateProvider, $urlRouterProvider) {
     url: "/pictures",
     views: {
       'encrypted-pictures-tab': {
-        templateUrl: "templates/pictures.html",
-        controller: 'EncryptPivtureCtrl'
+        templateUrl: "templates/encrypted/pictures.html",
+        controller: 'EncryptedPictureCtrl'
       }
     }
   })
@@ -153,8 +162,8 @@ app.config(function($stateProvider, $urlRouterProvider) {
     url: "/music",
     views: {
       'encrypted-music-tab': {
-        templateUrl: "templates/music.html",
-        controller: 'EncryptMusicCtrl'
+        templateUrl: "templates/encrypted/music.html",
+        controller: 'EncryptedMusicCtrl'
       }
     }
   })
@@ -162,8 +171,8 @@ app.config(function($stateProvider, $urlRouterProvider) {
     url: "/documents",
     views: {
       'encrypted-document-tab': {
-        templateUrl: "templates/documents.html",
-        controller: 'EncryptDocumentCtrl'
+        templateUrl: "templates/encrypted/documents.html",
+        controller: 'EncryptedDocumentCtrl'
       }
     }
   })
@@ -171,8 +180,8 @@ app.config(function($stateProvider, $urlRouterProvider) {
     url: "/other",
     views: {
       'encrypted-other-tab': {
-        templateUrl: "templates/other.html",
-        controller: 'EncryptOtherCtrl'
+        templateUrl: "templates/encrypted/other.html",
+        controller: 'EncryptedOtherCtrl'
       }
     }
   })
@@ -191,7 +200,8 @@ app.config(function($stateProvider, $urlRouterProvider) {
     url: "/videos",
     views: {
       'decrypted-videos-tab': {
-        templateUrl: "templates/videos.html"
+        templateUrl: "templates/decrypted/videos.html",
+        controller: "DecryptedVideoCtrl"
       }
     }
   })
@@ -199,7 +209,8 @@ app.config(function($stateProvider, $urlRouterProvider) {
     url: "/pictures",
     views: {
       'decrypted-pictures-tab': {
-        templateUrl: "templates/pictures.html"
+        templateUrl: "templates/decrypted/pictures.html",
+        controller: "DecryptedPictureCtrl"
       }
     }
   })
@@ -207,7 +218,8 @@ app.config(function($stateProvider, $urlRouterProvider) {
     url: "/music",
     views: {
       'decrypted-music-tab': {
-        templateUrl: "templates/music.html"
+        templateUrl: "templates/decrypted/music.html",
+        controller: "DecryptedMusicCtrl"
       }
     }
   })
@@ -215,7 +227,8 @@ app.config(function($stateProvider, $urlRouterProvider) {
     url: "/documents",
     views: {
       'decrypted-document-tab': {
-        templateUrl: "templates/documents.html"
+        templateUrl: "templates/decrypted/documents.html",
+        controller: 'DecryptedDocumentCtrl'
       }
     }
   })
@@ -223,143 +236,24 @@ app.config(function($stateProvider, $urlRouterProvider) {
     url: "/other",
     views: {
       'decrypted-other-tab': {
-        templateUrl: "templates/other.html"
+        templateUrl: "templates/decrypted/other.html",
+        controller: "DecryptedOtherCtrl"
       }
     }
   })
 
-  /*Other states from notes app*/
-  .state('list', {
-    url: '/list',
-    templateUrl: 'templates/list.html',
-    controller: 'ListCtrl'
-  })
-
-  .state('add', {
-    url: '/add',
-    templateUrl: 'templates/edit.html',
-    controller: 'AddCtrl'
-  })
-
-  .state('edit', {
-    url: '/edit/:noteId',
-    templateUrl: 'templates/edit.html',
-    controller: 'EditCtrl'
-  });
-
   $urlRouterProvider.otherwise('/login');
 });
 
-app.controller('LoginCtrl', function($scope, LoginService, $ionicPopup, $state){  
-    $scope.user = {};
- 
-    $scope.login = function() {
-        LoginService.loginUser($scope.user.username, $scope.user.password).success(function(user) {
-             $state.go('tabs.home');
-        }).error(function(user) {
-            var alertPopup = $ionicPopup.alert({
-                title: 'Login failed!',
-                template: 'Please check your credentials!'
-            });
-        });
-    }
-});
-
-
-
-app.controller('EncryptPivtureCtrl',function() {
-  /*1) create ABDS encrepted directory if one does not already exist on the SD_Card or phone internal memory*/
-
-  /*2) open the subdirectory encrypted pictures*/
-
-  /*3) Show the list of all currently existing encrypted pictures*/
-
-  /*4) Setup listeners to if a picture is selected and show decryption button*/
-
-});
-
-app.controller('EncryptOtherCtrl',function() {
-
-});
-
-app.controller('HomeTabCtrl', function($scope) {
+app.controller('HomeTabCtrl', function($scope,$ionicHistory) {
   console.log('HomeTabCtrl');
+  $ionicHistory.clearHistory();
+  //$state.go('tabs.home');
 });
 
-app.controller('ListCtrl', function($scope, $ionicPlatform, NoteStore, FileFactory){  
-  $scope.notes = NoteStore.list();
-  $scope.reordering =false;
-
-  $scope.remove = function(noteId){
-    NoteStore.remove(noteId);
-  };
-
-  $scope.move = function(note, fromIndex, toIndex){
-    
-    NoteStore.move(note, fromIndex, toIndex);
-  };
-
-  $scope.toggleReordering = function(){
-    $scope.reordering = !$scope.reordering;
-  };
-
-  var fs = new FileFactory();
-
-  $ionicPlatform.ready(function() {  
-       /* 
-       fs.getEntriesAtRoot();
-       .then(function(result) {
-            $scope.files = result;
-        }, function(error) {
-            console.error(error);
-        });
-
-        $scope.getContents = function(path) {
-            fs.getEntries(path).then(function(result) {
-                $scope.files = result;
-                $scope.files.unshift({name: "[parent]"});
-                fs.getParentDirectory(path).then(function(result) {
-                    result.name = "[parent]";
-                    $scope.files[0] = result;
-                });
-            });
-        }
-*/
-    });
-});
-
-app.controller('AddCtrl', function($scope, $state, NoteStore) {
-
-  $scope.note = {
-    id: new Date().getTime().toString(),
-    title: '',
-    description: ''
-  };
-
-  $scope.save = function() {
-    NoteStore.createNote($scope.note);
-    $state.go('list');
-  };
-});
-
-app.controller('EditCtrl', function($scope, $state, NoteStore){
-  
-  $scope.note = angular.copy(NoteStore.getNote($state.params.noteId));
-  
-  $scope.save = function() {
-    NoteStore.updateNote($scope.note);
-    $state.go('list');
-  };
-});
-
-app.run(function($ionicPlatform) {
-  $ionicPlatform.ready(function() {
-    if(window.cordova && window.cordova.plugins.Keyboard) {
-      cordova.plugins.Keyboard.hideKeyboardAccessoryBar(true);
-      cordova.plugins.Keyboard.disableScroll(true);
-    }
-    if(window.StatusBar) {
-      StatusBar.styleDefault();
+//Helper function used to Capatilise the first letter in a given string
+app.filter('capitalize', function() {
+    return function(input) {
+      return (!!input) ? input.charAt(0).toUpperCase() + input.substr(1).toLowerCase() : '';
     }
   });
-});
