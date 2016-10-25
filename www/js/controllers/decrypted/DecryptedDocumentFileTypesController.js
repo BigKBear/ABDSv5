@@ -1,6 +1,7 @@
 app.controller('DecryptedDocumentCtrl',function($scope, $state, $ionicPlatform, $cordovaFile) {
   $scope.messageToUser = "Below are the files and folders currently saved on the device in the documents folder:";
   $scope.encryptDecrypt = "Encrypt";
+  $scope.fileLabel = "Choose a file to encrypt:";
 
    //var test_dir = 'DCMIABDSv5';
     var test_dir = 'ABDSv5/';
@@ -90,7 +91,12 @@ app.controller('DecryptedDocumentCtrl',function($scope, $state, $ionicPlatform, 
     
      
       //example: list of directories on the root of the device.
-      listDir(cordova.file.externalRootDirectory);
+      if(!listDir(cordova.file.externalRootDirectory+test_dir2)){
+        $scope.notification = "no files in "+ test_dir2;
+      }else{
+        listDir(cordova.file.externalRootDirectory+test_dir2);
+        $scope.notification = "";
+      }      
     }
 
       if (ionic.Platform.isIOS()) {

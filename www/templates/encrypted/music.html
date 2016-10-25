@@ -1,8 +1,13 @@
-<ion-view view-title="All files on {{currentPlatform  | capitalize}} device">
-   <ion-content class="padding">
-     <div class="padding">
+<ion-view view-title="{{typeBeingViewed}} {{currentPlatform  | capitalize}} Music">
+  <ion-content class="padding">
+    <div class="padding">
+      <label class="item item-input">
+        <span class="input-label">{{fileLabel}}</span>
+      </label>
+    </div>
+
+    <div class="padding">
       <p>{{messageToUser}}</p>
-      <p>{{notification}}</p>
     </div>
 
     <ion-list>
@@ -19,6 +24,6 @@
   </ion-content>
 
   <div class="bar bar-footer bar-stable">
-    <a href="#/" class="button button-assertive icon-left ion-compose">Logout</a>
+    <a href="#/" class="button button-assertive icon-left ion-compose">{{encryptDecrypt}}</a>
   </div>
 </ion-view>

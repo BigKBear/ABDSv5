@@ -1,0 +1,60 @@
+<ion-view view-title="{{typeBeingViewed}} {{currentPlatform | capitalize}} Videos">
+   <ion-content class="padding">
+        <!-- <input type='file' id='fileInput'> -->
+        <div class="padding">          
+          <label class="item item-input">
+            <span class="input-label">{{fileLabel}}</span>
+            <input type="file" ng-model="editItem._attachments_uri.image" accept="video/*" app-filereader /> 
+          </label>
+          
+          <label class="item item-input">
+              <input ng-model="userFileName" type="text" placeholder="Give the File a name..." id="userFileName"/>  
+          </label>
+        </div>
+        
+        <div class="padding-left padding-right">
+          <div class="button-bar">
+            <a class="button" ng-click="encrypt(userFileName,editItem._attachments_uri.image)">Encrypt Video</a>
+          </div>
+        </div>
+
+          <!-- 
+        <div class="padding">
+          <label class="item item-input">
+            <span class="input-label">{{folderLabel}}</span>
+            <br>
+            <input type="file" id="files" ng-model="fileSes[]"/>  
+          </label>
+        </div> -->
+
+        
+<!-- 
+        <div class="padding">
+        <p ng-if="videofile.fileModel">
+            File Size: {{videofile.fileModel.size}} Last Modified: {{videofile.fileModel['_kmd'].lmt | date:'yyyy-MM-dd HH:mm:ss Z'}}
+        </p>
+        </div>
+         -->
+    <div class="padding">
+      <p>{{messageToUser}}</p>
+      <p>{{notification}}</p>
+    </div>
+
+    <ion-list>
+      <ion-item class="item-remove-animate item-icon-right" ng-repeat="videodirectory in videodirectories">
+        <h2>{{videodirectory.name}}</h2>
+        <p>{{videodirectory.filesystem}}</p>
+        <p>{{videodirectory.nativeURL}}</p>
+
+        <i class="icon ion-arrow-right-b"></i>
+        <i ng-show="file.isDirectory" class="icon ion-folder"></i>
+        <i ng-show="file.isFile" class="icon ion-document"></i>
+      </ion-item>
+    </ion-list>
+  </ion-content>
+
+
+  <div class="bar bar-footer bar-stable">
+    <a href="#/" class="button button-assertive icon-left ion-compose">{{encryptDecrypt}}</a>
+  </div>
+</ion-view>
