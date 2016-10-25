@@ -1,4 +1,4 @@
-app.controller('DeviceCtrl', function($scope) {
+app.controller('DeviceCtrl', function($scope) {/*
   document.addEventListener('deviceready', function() {
     console.log('device is ' + angular.toJson(device));
     $scope.$apply(function() {
@@ -6,5 +6,5 @@ app.controller('DeviceCtrl', function($scope) {
     });
   });
 
-  $ionicHistory.clearHistory();
+  $ionicHistory.clearHistory();*/
 });
