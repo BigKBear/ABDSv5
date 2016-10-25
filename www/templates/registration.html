@@ -1,0 +1,21 @@
+<ion-view view-title="{{messagetouser}}">
+  <ion-content>
+    <div class="list list-inset">
+            <label class="item item-input">
+              <input type="text" placeholder="Username" ng-model="registration.user.username">
+            </label>
+            <label class="item item-input">
+              <input type="password" placeholder="Master Password" ng-model="registration.user.password"/>
+            </label>
+            <label class="item item-input">
+              <input type="password" placeholder="Confirm Password" ng-model="registration.user.confirmpassword"/>
+            </label>
+        </div>
+        <div class="padding-left padding-right">
+            <div class="button-bar">
+                <a class="button" ng-click="saveData(registration.user.username, registration.user.password, registration.user.confirmpassword)">Register</a>
+            </div>
+        </div>
+    </div>
+  </ion-content>
+</ion-view>

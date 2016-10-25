@@ -1,14 +1,19 @@
 angular.module('login.service', [])
+/**
+ * The LoginService handles saving and loading user
+ * from local storage, and also lets us save and load the
+ * last active project index.
+ */
 .service('LoginService', function($q) {
     return {
-        loginUser: function(name, pw) {
+        loginUser: function(pw,decryptedPW) {
             var deferred = $q.defer();
             var promise = deferred.promise;
  
-            if (name == 'User' && pw == 's') {
-                deferred.resolve('Welcome ' + name + '!');
+            if (pw == decryptedPW) {
+                deferred.resolve('Welcome !');
             } else {
-                deferred.reject('Wrong credentials.');
+                deferred.reject('Wrong credentials given.');
             }
             promise.success = function(fn) {
                 promise.then(fn);
