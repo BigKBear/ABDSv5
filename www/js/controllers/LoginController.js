@@ -125,21 +125,22 @@ app.controller('LoginCtrl', function($scope, $rootScope, LoginService, $timeout,
     }
 
     /*No used but might be needed*/
-    
-    /*$scope.isLoggedIn = function() {
-      if(window.localStorage.getItem("username") !== undefined && window.localStorage.getItem("password") !== undefined) {
+      /*
+      $scope.isLoggedIn = function() {
+        if(window.localStorage.getItem("username") !== undefined && window.localStorage.getItem("password") !== undefined) {
           return true;
-      } else {
+        }else {
           return false;
+        }
       }
-    }*/
+      */
 
-/*    var loadUsername = function(){
-      $timeout(function () {
-        return window.localStorage.getItem("userUsername");
-       },1000);
-    }*/
-
-
+      /*
+      var loadUsername = function(){
+        $timeout(function () {
+          return window.localStorage.getItem("userUsername");
+        },1000);
+      }
+      */
     $ionicHistory.clearHistory();
 });

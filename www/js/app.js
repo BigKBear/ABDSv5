@@ -1,4 +1,4 @@
-var app = angular.module('abds', ['ionic','angularjs-crypto', 'ngCordova','login.service', 'cipher.factory']);
+var app = angular.module('abds', ['ionic','angularjs-crypto', 'base64', 'ngCordova','login.service', 'cipher.factory']);
 
 app.run(
 
@@ -19,8 +19,6 @@ app.run(function(cfCryptoHttpInterceptor, $rootScope) {
   $rootScope.base64Key = CryptoJS.enc.Base64.parse("2b7e151628aed2a6abf7158809cf4f3c");
   $rootScope.iv = CryptoJS.enc.Base64.parse("3ad77bb40d7a3660a89ecaf32466ef97");
 });
-
-
 
 app.config(function($stateProvider, $urlRouterProvider,$ionicConfigProvider) {
   $ionicConfigProvider.tabs.position('top'); // other values: top
@@ -146,7 +144,7 @@ app.config(function($stateProvider, $urlRouterProvider,$ionicConfigProvider) {
     url: "/videos",
     views: {
       'encrypted-videos-tab': {
-        templateUrl: "templates/videos.html",
+        templateUrl: "templates/encrypted/videos.html",
         controller: 'EncryptedVideoCtrl'
       }
     }
@@ -155,7 +153,7 @@ app.config(function($stateProvider, $urlRouterProvider,$ionicConfigProvider) {
     url: "/pictures",
     views: {
       'encrypted-pictures-tab': {
-        templateUrl: "templates/pictures.html",
+        templateUrl: "templates/encrypted/pictures.html",
         controller: 'EncryptedPictureCtrl'
       }
     }
@@ -164,7 +162,7 @@ app.config(function($stateProvider, $urlRouterProvider,$ionicConfigProvider) {
     url: "/music",
     views: {
       'encrypted-music-tab': {
-        templateUrl: "templates/music.html",
+        templateUrl: "templates/encrypted/music.html",
         controller: 'EncryptedMusicCtrl'
       }
     }
@@ -173,7 +171,7 @@ app.config(function($stateProvider, $urlRouterProvider,$ionicConfigProvider) {
     url: "/documents",
     views: {
       'encrypted-document-tab': {
-        templateUrl: "templates/documents.html",
+        templateUrl: "templates/encrypted/documents.html",
         controller: 'EncryptedDocumentCtrl'
       }
     }
@@ -182,7 +180,7 @@ app.config(function($stateProvider, $urlRouterProvider,$ionicConfigProvider) {
     url: "/other",
     views: {
       'encrypted-other-tab': {
-        templateUrl: "templates/other.html",
+        templateUrl: "templates/encrypted/other.html",
         controller: 'EncryptedOtherCtrl'
       }
     }
@@ -202,7 +200,7 @@ app.config(function($stateProvider, $urlRouterProvider,$ionicConfigProvider) {
     url: "/videos",
     views: {
       'decrypted-videos-tab': {
-        templateUrl: "templates/videos.html",
+        templateUrl: "templates/decrypted/videos.html",
         controller: "DecryptedVideoCtrl"
       }
     }
@@ -211,7 +209,7 @@ app.config(function($stateProvider, $urlRouterProvider,$ionicConfigProvider) {
     url: "/pictures",
     views: {
       'decrypted-pictures-tab': {
-        templateUrl: "templates/pictures.html",
+        templateUrl: "templates/decrypted/pictures.html",
         controller: "DecryptedPictureCtrl"
       }
     }
@@ -220,7 +218,7 @@ app.config(function($stateProvider, $urlRouterProvider,$ionicConfigProvider) {
     url: "/music",
     views: {
       'decrypted-music-tab': {
-        templateUrl: "templates/music.html",
+        templateUrl: "templates/decrypted/music.html",
         controller: "DecryptedMusicCtrl"
       }
     }
@@ -229,7 +227,7 @@ app.config(function($stateProvider, $urlRouterProvider,$ionicConfigProvider) {
     url: "/documents",
     views: {
       'decrypted-document-tab': {
-        templateUrl: "templates/documents.html",
+        templateUrl: "templates/decrypted/documents.html",
         controller: 'DecryptedDocumentCtrl'
       }
     }
@@ -238,7 +236,7 @@ app.config(function($stateProvider, $urlRouterProvider,$ionicConfigProvider) {
     url: "/other",
     views: {
       'decrypted-other-tab': {
-        templateUrl: "templates/other.html",
+        templateUrl: "templates/decrypted/other.html",
         controller: "DecryptedOtherCtrl"
       }
     }
@@ -252,3 +250,10 @@ app.controller('HomeTabCtrl', function($scope,$ionicHistory) {
   $ionicHistory.clearHistory();
   //$state.go('tabs.home');
 });
+
+//Helper function used to Capatilise the first letter in a given string
+app.filter('capitalize', function() {
+    return function(input) {
+      return (!!input) ? input.charAt(0).toUpperCase() + input.substr(1).toLowerCase() : '';
+    }
+  });

@@ -1,6 +1,8 @@
 app.controller('EncryptedPictureCtrl',function($scope, $state, $ionicPlatform, $cordovaFile) {
     $scope.messageToUser = "Below are the encrypted Pictures you have saved on the SDCard:";
     $scope.encryptDecrypt = "Decrypt";
+    $scope.fileLabel = "Choose a picture to decrypt";
+    $scope.typeBeingViewed = "Encrypted";
 
    //var test_dir = 'DCMIABDSv5';
     var test_dir = 'ABDSv5/';
@@ -90,7 +92,7 @@ app.controller('EncryptedPictureCtrl',function($scope, $state, $ionicPlatform, $
     
      
       //example: list of directories on the root of the device.
-      listDir(cordova.file.externalRootDirectory);
+      listDir(cordova.file.externalRootDirectory+test_dir2);
 
 
       //TODO: Allow the user to sellect a Pictures from thie Pictures folder
