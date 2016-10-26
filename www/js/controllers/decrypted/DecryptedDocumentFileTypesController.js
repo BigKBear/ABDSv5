@@ -114,9 +114,19 @@ app.controller('DecryptedDocumentCtrl',function($scope, $ionicPopup, $state, $io
          });
        };
 
-       $scope.encrypt =function(file){
-        alert("Encrypt clicked");
-       };
+       $scope.encrypt = function(file){
+          var encryptedDirectory = 'ABDSv5/Encrypted/Documents';
+          alert("Encrypt clicked");
+           /*$cordovaFile.moveFile(cordova.file.externalRootDirectory+test_dir2,file.name, cordova.file.externalRootDirectory+encryptedDirectory,file.name)*/
+           $cordovaFile.moveFile(cordova.file.externalRootDirectory+test_dir2,file.name, cordova.file.externalRootDirectory+encryptedDirectory)
+              .then(function (success) {
+                // success
+                alert("File " + file.name+ " moved");
+              }, function (error) {
+                // error
+                alert("File " + file.name+ " NOT moved" + error);
+              });
+            };
 
        $scope.encryptSelectedFile =function(fileName){
         var selectedFile = document.getElementById('fileInput').files[0];

@@ -118,45 +118,29 @@ app.controller('DecryptedPictureCtrl',function($scope, $ionicPopup, $state, $ion
          });
        };
 
-       $scope.encrypt =function(file){
-        alert("Encrypt clicked");
-       };
+       $scope.encrypt = function(file){
+          var encryptedDirectory = 'ABDSv5/Encrypted/Pictures';
+          alert("Encrypt clicked");
+           /*$cordovaFile.moveFile(cordova.file.externalRootDirectory+test_dir2,file.name, cordova.file.externalRootDirectory+encryptedDirectory,file.name)*/
+           $cordovaFile.moveFile(cordova.file.externalRootDirectory+test_dir2,file.name, cordova.file.externalRootDirectory+encryptedDirectory)
+              .then(function (success) {
+                // success
+                alert("File " + file.name+ " moved");
+              }, function (error) {
+                // error
+                alert("File " + file.name+ " NOT moved" + error);
+              });
+            };
 
        $scope.selectedFile =function(fileName){
-        document.getElementById("uploadBtn").onchange = function () {
-          console.log("AHHH"+this.files);
-          document.getElementById("uploadFile").value = this.value;
-            alert("Encrypt  selectedFile clicked " + this.value);
-          };
-        };
-
-        $scpe.previewFiles = function(){
-          alert("Encrypt  selectedFile clicked ");
-           var preview = document.querySelector('#preview');
-            var files   = document.querySelector('input[type=file]').files;
-
-           /* function readAndPreview(file) {
-
-              // Make sure `file.name` matches our extensions criteria
-              if ( /\.(jpe?g|png|gif)$/i.test(file.name) ) {
-                var reader = new FileReader();
-
-                reader.addEventListener("load", function () {
-                  var image = new Image();
-                  image.height = 100;
-                  image.title = file.name;
-                  image.src = this.result;
-                  preview.appendChild( image );
-                }, false);
-
-                reader.readAsDataURL(file);
-              }
-
-            }*/
-
-            if (files) {
-              [].forEach.call(files, readAndPreview);
-            }
+        //not working
+        //var selectedFile = document.getElementById('fileInput').files[0];
+        //not working
+        //var newNameForSelectedFile = $scope.userFileName;
+        //not working
+        document.getElementById("fileInput").onchange = function () {
+            document.getElementById("uploadFile").value = this.value;
+            alert("Encrypt "+newNameForSelectedFile+" clicked"+selectedFile);
         };
         
         /*if(!file){
@@ -165,6 +149,7 @@ app.controller('DecryptedPictureCtrl',function($scope, $ionicPopup, $state, $ion
           console.log('Selected file: ' + selectedFile.name);
           alert("Encrypt "+fileName+" clicked"+selectedFile);
         }*/
+       };
     }
 
       if (ionic.Platform.isIOS()) {

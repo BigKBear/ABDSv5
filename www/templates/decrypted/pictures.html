@@ -3,19 +3,19 @@
         <div class="padding">          
           <label class="item item-input">
             <span class="input-label">{{fileLabel}}</span>
-            <input type="file" ng-model="testName" id="fileInput" accept="image/*" app-filereader /> 
-            <!-- <input id="browse" type="file" ng-change="previewFiles()" multiple> -->
-          </label>    
-          
-          <div id="preview"></div>
+            <input type="file" ng-model="editItem._attachments_uri.image" accept="*/*" app-filereader /> 
+          </label>
 
           <label class="item item-input">
+              <input ng-model="userFileName" type="text" placeholder="Give the File a name..." id="userFileName"/>  
+          </label>
+          <!-- <label class="item item-input">
               <input id="uploadFile" placeholder="Choose File" disabled="disabled" />
               <div class="fileUpload btn btn-primary">
                   <span>Upload</span>
                   <input id="uploadBtn" type="file" class="upload" />
               </div>
-          </label>    
+          </label>     -->
         </div>
 
         <div class="padding-left padding-right">
@@ -30,7 +30,7 @@
     </div>
 
     <ion-list>
-      <ion-item class="item-remove-animate item-icon-right" ng-repeat="videodirectory in videodirectories">
+      <ion-item class="item-remove-animate item-icon-right" href="#" ng-repeat="videodirectory in videodirectories">
         <div class="item-icon-left">
           <i ng-show="videodirectory.isDirectory" class="icon ion-folder"></i>
           <i ng-show="videodirectory.isFile" class="icon ion-document"></i>

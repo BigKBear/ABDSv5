@@ -122,6 +122,20 @@ app.controller('DecryptedVideoCtrl',function($scope, $ionicPopup, $state, $ionic
           alert("Encrypt "+fileName+" clicked"+file);
         }
        };
+
+       $scope.encrypt = function(file){
+          var encryptedDirectory = 'ABDSv5/Encrypted/Videos';
+          alert("Encrypt clicked");
+           /*$cordovaFile.moveFile(cordova.file.externalRootDirectory+test_dir2,file.name, cordova.file.externalRootDirectory+encryptedDirectory,file.name)*/
+           $cordovaFile.moveFile(cordova.file.externalRootDirectory+test_dir2,file.name, cordova.file.externalRootDirectory+encryptedDirectory)
+              .then(function (success) {
+                // success
+                alert("File " + file.name+ " moved");
+              }, function (error) {
+                // error
+                alert("File " + file.name+ " NOT moved" + error);
+              });
+            };
     }
 
       if (ionic.Platform.isIOS()) {
