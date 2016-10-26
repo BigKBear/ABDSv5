@@ -141,17 +141,18 @@ app.controller('EncryptedVideoCtrl',function($scope, $ionicPopup, $state, $ionic
          };
 
          $scope.Decrypt = function(file){
-
+          var decryptedDirectory = 'ABDSv5/Decrypted/Videos';
           alert("Decrypted clicked");
-           /*$cordovaFile.copyFile(cordova.file.externalRootDirectory, files, cordova.file.externalRootDirectory+test_dir2, nameForFile+".mp4")
+           /*$cordovaFile.moveFile(cordova.file.externalRootDirectory+test_dir2,file.name, cordova.file.externalRootDirectory+decryptedDirectory,file.name)*/
+           $cordovaFile.moveFile(cordova.file.externalRootDirectory+test_dir2,file.name, cordova.file.externalRootDirectory+decryptedDirectory)
               .then(function (success) {
                 // success
-                alert("success: " + success);
+                alert("File " + file.name+ " moved");
               }, function (error) {
                 // error
-                alert("failed");
-              });*/
-         }  
+                alert("File " + file.name+ " NOT moved" + error);
+              });
+         };
       }//end of android platform
 
         if (ionic.Platform.isIOS()) {

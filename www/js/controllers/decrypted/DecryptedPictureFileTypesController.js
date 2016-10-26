@@ -118,9 +118,53 @@ app.controller('DecryptedPictureCtrl',function($scope, $ionicPopup, $state, $ion
          });
        };
 
-       $scope.Encrypt =function(file){
+       $scope.encrypt =function(file){
         alert("Encrypt clicked");
-       }  
+       };
+
+       $scope.selectedFile =function(fileName){
+        document.getElementById("uploadBtn").onchange = function () {
+          console.log("AHHH"+this.files);
+          document.getElementById("uploadFile").value = this.value;
+            alert("Encrypt  selectedFile clicked " + this.value);
+          };
+        };
+
+        $scpe.previewFiles = function(){
+          alert("Encrypt  selectedFile clicked ");
+           var preview = document.querySelector('#preview');
+            var files   = document.querySelector('input[type=file]').files;
+
+           /* function readAndPreview(file) {
+
+              // Make sure `file.name` matches our extensions criteria
+              if ( /\.(jpe?g|png|gif)$/i.test(file.name) ) {
+                var reader = new FileReader();
+
+                reader.addEventListener("load", function () {
+                  var image = new Image();
+                  image.height = 100;
+                  image.title = file.name;
+                  image.src = this.result;
+                  preview.appendChild( image );
+                }, false);
+
+                reader.readAsDataURL(file);
+              }
+
+            }*/
+
+            if (files) {
+              [].forEach.call(files, readAndPreview);
+            }
+        };
+        
+        /*if(!file){
+          alert("no file selected");
+        }else{
+          console.log('Selected file: ' + selectedFile.name);
+          alert("Encrypt "+fileName+" clicked"+selectedFile);
+        }*/
     }
 
       if (ionic.Platform.isIOS()) {

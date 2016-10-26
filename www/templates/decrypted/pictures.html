@@ -1,19 +1,26 @@
-<ion-view view-title="{{typeBeingViewed}} {{currentPlatform | capitalize}} Pictures">
+<ion-view cache-view="false" view-title="{{typeBeingViewed}} {{currentPlatform | capitalize}} Pictures">
    <ion-content class="padding">
         <div class="padding">          
           <label class="item item-input">
             <span class="input-label">{{fileLabel}}</span>
-            <input type="file" ng-model="editItem._attachments_uri.image" accept="image/*" app-filereader /> 
+            <input type="file" ng-model="testName" id="fileInput" accept="image/*" app-filereader /> 
+            <!-- <input id="browse" type="file" ng-change="previewFiles()" multiple> -->
           </label>    
+          
+          <div id="preview"></div>
 
           <label class="item item-input">
-              <input ng-model="userFileName" type="text" placeholder="Give the File a name..." id="userFileName"/>  
+              <input id="uploadFile" placeholder="Choose File" disabled="disabled" />
+              <div class="fileUpload btn btn-primary">
+                  <span>Upload</span>
+                  <input id="uploadBtn" type="file" class="upload" />
+              </div>
           </label>    
         </div>
 
         <div class="padding-left padding-right">
           <div class="button-bar">
-            <a class="button" ng-click="encrypt(userFileName,editItem._attachments_uri.image)">Encrypt Picture</a>
+            <a class="button" ng-click="encryptSelectedFile(userFileName)">Encrypt Picture</a>
           </div>
         </div>
 
@@ -36,7 +43,7 @@
           <i class="icon ion-arrow-right-b"></i>
         </div>
 
-        <ion-option-button class="button-positive" ng-click="Encrypt(videodirectory)">
+        <ion-option-button class="button-positive" ng-click="encrypt(videodirectory)">
           Encrypt
         </ion-option-button>
         <ion-option-button ng-show="videodirectory.isFile" class="button-info" ng-click="Delete(videodirectory)">

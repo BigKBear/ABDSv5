@@ -151,8 +151,8 @@ app.controller('EncryptedDocumentCtrl',function($scope, $ionicPopup, $state, $io
                 // error
                 alert("failed");
               });*/
-         }
-    }
+         };
+    }//end of android only
 
       if (ionic.Platform.isIOS()) {
       
@@ -162,10 +162,10 @@ app.controller('EncryptedDocumentCtrl',function($scope, $ionicPopup, $state, $io
       fileDir = '';
       console.log('IOS FILETRANSFERDIR: ' + fileTransferDir);
       console.log('IOS FILEDIR: ' + fileDir);
-    }
+    }//end of IOS only
 
     if (ionic.Platform.isAndroid() || ionic.Platform.isIOS()) {
       
-    }    
+    }//end of both IOS and Android
   });
 });

@@ -114,9 +114,19 @@ app.controller('DecryptedDocumentCtrl',function($scope, $ionicPopup, $state, $io
          });
        };
 
-       $scope.Encrypt =function(file){
+       $scope.encrypt =function(file){
         alert("Encrypt clicked");
-       }
+       };
+
+       $scope.encryptSelectedFile =function(fileName){
+        var selectedFile = document.getElementById('fileInput').files[0];
+        if(!file){
+          alert("no file selected");
+        }else{
+          console.log('cordova.file.documentsDirectory: ' + file);
+          alert("Encrypt "+fileName+" clicked"+file);
+        }
+       };
     }
 
       if (ionic.Platform.isIOS()) {

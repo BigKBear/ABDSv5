@@ -111,17 +111,14 @@ app.controller('EncryptedPictureCtrl',function($scope, $ionicPopup, $state, $ion
        };
 
        $scope.Decrypt = function(file){
-
           alert("Decrypted clicked");
-           /*$cordovaFile.copyFile(cordova.file.externalRootDirectory, files, cordova.file.externalRootDirectory+test_dir2, nameForFile+".mp4")
+           /*$cordovaFile.moveFile(cordova.file.dataDirectory, "file.txt", cordova.file.tempDirectory)
               .then(function (success) {
                 // success
-                alert("success: " + success);
               }, function (error) {
                 // error
-                alert("failed");
               });*/
-         } 
+         };
 
 
       /*TODO: Allow the user to sellect a Pictures from thie Pictures folder

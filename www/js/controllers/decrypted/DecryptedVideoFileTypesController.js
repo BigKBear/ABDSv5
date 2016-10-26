@@ -8,18 +8,6 @@ app.controller('DecryptedVideoCtrl',function($scope, $ionicPopup, $state, $ionic
     var test_dir1 = 'ABDSv5/Decrypted';
     var test_dir2 = 'ABDSv5/Decrypted/Videos';
 
-    $scope.Delete = function(file){
-      alert("HI");
-         $cordovaFile.removeFile(file.nativeURL, file.name)
-        .then(function (success) {
-        // success
-        alert("file was deleted");
-      }, function (error) {
-        // error
-        alert("file was not deleted");
-      });
-      }
-
     $cordovaFile.checkDir(cordova.file.externalRootDirectory, test_dir)
       .then(function (success) {
         $scope.stepone = 'Directory '+ test_dir +' Exist';
@@ -99,7 +87,7 @@ app.controller('DecryptedVideoCtrl',function($scope, $ionicPopup, $state, $ionic
         }else{
           listDir(cordova.file.externalRootDirectory+test_dir2);
           $scope.notification = "";
-        }  
+        }
 
         // A confirm dialog before deleting file
        $scope.Delete = function(file) {
@@ -126,20 +114,25 @@ app.controller('DecryptedVideoCtrl',function($scope, $ionicPopup, $state, $ionic
          });
        };
 
-       $scope.Encrypt =function(file){
-        alert("Encrypt clicked");
-       }
-      }
+       $scope.encryptSelectedFile =function(fileName,file){
+        if(!file){
+          alert("no file selected");
+        }else{
+          console.log('cordova.file.documentsDirectory: ' + file);
+          alert("Encrypt "+fileName+" clicked"+file);
+        }
+       };
+    }
 
-        if (ionic.Platform.isIOS()) {
-        
-        console.log('cordova.file.documentsDirectory: ' + cordova.file.documentsDirectory);
-        
-        fileTransferDir = cordova.file.documentsDirectory;
-        fileDir = '';
-        console.log('IOS FILETRANSFERDIR: ' + fileTransferDir);
-        console.log('IOS FILEDIR: ' + fileDir);
-      }
+      if (ionic.Platform.isIOS()) {
+      
+      console.log('cordova.file.documentsDirectory: ' + cordova.file.documentsDirectory);
+      
+      fileTransferDir = cordova.file.documentsDirectory;
+      fileDir = '';
+      console.log('IOS FILETRANSFERDIR: ' + fileTransferDir);
+      console.log('IOS FILEDIR: ' + fileDir);
+    }
 
       if (ionic.Platform.isAndroid() || ionic.Platform.isIOS()) {
               

@@ -110,17 +110,14 @@ app.controller('EncryptedMusicCtrl',function($scope, $ionicPopup, $state, $ionic
        };
 
        $scope.Decrypt = function(file){
-
           alert("Decrypted clicked");
-           /*$cordovaFile.copyFile(cordova.file.externalRootDirectory, files, cordova.file.externalRootDirectory+test_dir2, nameForFile+".mp4")
+           /*$cordovaFile.moveFile(cordova.file.dataDirectory, "file.txt", cordova.file.tempDirectory)
               .then(function (success) {
                 // success
-                alert("success: " + success);
               }, function (error) {
                 // error
-                alert("failed");
               });*/
-         } 
+         };
     }
 
       if (ionic.Platform.isIOS()) {
