@@ -1,4 +1,4 @@
-app.controller('DecryptedVideoCtrl',function($scope, $state, $ionicPlatform, $cordovaFile) {
+app.controller('DecryptedVideoCtrl',function($scope, $ionicPopup, $state, $ionicPlatform, $cordovaFile, $ionicHistory) {
   document.addEventListener('deviceready', function () {
     $scope.messageToUser = "Below are the files and folders currently saved on the device in the Videos folder:";
     $scope.encryptDecrypt = "Encrypt";
@@ -7,6 +7,18 @@ app.controller('DecryptedVideoCtrl',function($scope, $state, $ionicPlatform, $co
     var test_dir = 'ABDSv5/';
     var test_dir1 = 'ABDSv5/Decrypted';
     var test_dir2 = 'ABDSv5/Decrypted/Videos';
+
+    $scope.Delete = function(file){
+      alert("HI");
+         $cordovaFile.removeFile(file.nativeURL, file.name)
+        .then(function (success) {
+        // success
+        alert("file was deleted");
+      }, function (error) {
+        // error
+        alert("file was not deleted");
+      });
+      }
 
     $cordovaFile.checkDir(cordova.file.externalRootDirectory, test_dir)
       .then(function (success) {
@@ -88,6 +100,35 @@ app.controller('DecryptedVideoCtrl',function($scope, $state, $ionicPlatform, $co
           listDir(cordova.file.externalRootDirectory+test_dir2);
           $scope.notification = "";
         }  
+
+        // A confirm dialog before deleting file
+       $scope.Delete = function(file) {
+         var confirmPopup = $ionicPopup.confirm({
+           title: 'Delete '+ file.name+'?',
+           template: 'Are you sure you want to delete' + file.name+ '?'
+         });
+
+         confirmPopup.then(function(res) {
+           if(res) {
+             $cordovaFile.removeFile(cordova.file.externalRootDirectory+test_dir2, file.name)
+              .then(function (success) {
+                // success
+                alert("file was deleted");
+                $state.go('encrypted_tabs.home');
+              }, function (error) {
+              // error
+              alert("file was not deleted");
+              $state.go('encrypted_tabs.home');
+            });
+           } else {
+             alert("file "+file.name+" was not deleted");
+           }
+         });
+       };
+
+       $scope.Encrypt =function(file){
+        alert("Encrypt clicked");
+       }
       }
 
         if (ionic.Platform.isIOS()) {

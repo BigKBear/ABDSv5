@@ -1,4 +1,4 @@
-app.controller('EncryptedPictureCtrl',function($scope, $state, $ionicPlatform, $cordovaFile) {
+app.controller('EncryptedPictureCtrl',function($scope, $ionicPopup, $state, $ionicPlatform, $cordovaFile, $ionicHistory) {
     $scope.messageToUser = "Below are the encrypted Pictures you have saved on the SDCard:";
     $scope.encryptDecrypt = "Decrypt";
     $scope.fileLabel = "Choose a picture to decrypt";
@@ -84,6 +84,44 @@ app.controller('EncryptedPictureCtrl',function($scope, $state, $ionicPlatform, $
       );
     }
       listDir(cordova.file.externalRootDirectory+test_dir2);
+
+      // A confirm dialog before deleting file
+       $scope.Delete = function(file) {
+         var confirmPopup = $ionicPopup.confirm({
+           title: 'Delete '+ file.name+'?',
+           template: 'Are you sure you want to delete' + file.name+ '?'
+         });
+
+         confirmPopup.then(function(res) {
+           if(res) {
+             $cordovaFile.removeFile(cordova.file.externalRootDirectory+test_dir2, file.name)
+              .then(function (success) {
+                // success
+                alert("file was deleted");
+                $state.go('encrypted_tabs.home');
+              }, function (error) {
+              // error
+              alert("file was not deleted");
+              $state.go('encrypted_tabs.home');
+            });
+           } else {
+             alert("file "+file.name+" was not deleted");
+           }
+         });
+       };
+
+       $scope.Decrypt = function(file){
+
+          alert("Decrypted clicked");
+           /*$cordovaFile.copyFile(cordova.file.externalRootDirectory, files, cordova.file.externalRootDirectory+test_dir2, nameForFile+".mp4")
+              .then(function (success) {
+                // success
+                alert("success: " + success);
+              }, function (error) {
+                // error
+                alert("failed");
+              });*/
+         } 
 
 
       /*TODO: Allow the user to sellect a Pictures from thie Pictures folder

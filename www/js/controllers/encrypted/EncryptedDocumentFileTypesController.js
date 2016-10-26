@@ -1,4 +1,4 @@
-app.controller('EncryptedDocumentCtrl',function($scope, $state, $ionicPlatform, $cordovaFile) {
+app.controller('EncryptedDocumentCtrl',function($scope, $ionicPopup, $state, $ionicPlatform, $cordovaFile, $ionicHistory) {
     $scope.messageToUser = "Below are the encrypted Documents you have saved on the SDCard:";
     $scope.encryptDecrypt = "Decrypt";
     $scope.fileLabel = "Choose a document to decrypt";
@@ -73,7 +73,6 @@ app.controller('EncryptedDocumentCtrl',function($scope, $state, $ionicPlatform, 
                 var videodirectories = entries;
                 $scope.videodirectories = videodirectories;
                 window.localStorage.setItem('newsArticle12', localData);
-                
             },
             function (err) {
               console.log(err);
@@ -86,6 +85,73 @@ app.controller('EncryptedDocumentCtrl',function($scope, $state, $ionicPlatform, 
     }
     
       listDir(cordova.file.externalRootDirectory + test_dir2);
+
+      // A confirm dialog before deleting file
+       $scope.Delete = function(file) {
+         var confirmPopup = $ionicPopup.confirm({
+           title: 'Delete '+ file.name+'?',
+           template: 'Are you sure you want to delete' + file.name+ '?'
+         });
+
+         confirmPopup.then(function(res) {
+           if(res) {
+             $cordovaFile.removeFile(cordova.file.externalRootDirectory+test_dir2, file.name)
+              .then(function (success) {
+                // success
+                alert("file was deleted");
+                $state.go('encrypted_tabs.home');
+              }, function (error) {
+              // error
+              alert("file was not deleted");
+              $state.go('encrypted_tabs.home');
+            });
+           } else {
+             alert("file "+file.name+" was not deleted");
+           }
+         });
+       };
+
+       $scope.Decrypt = function(file){
+        alert("Decrypted clicked");
+        var decryptedDir = 'ABDSv5/Decrypted/Documents'
+        //move the file to the Decrypted folder folder created
+        // encrypt the file
+        $cordovaFile.moveFile(cordova.file.dataDirectory, file.name, cordova.file.dataDirectory+decryptedDir)
+          .then(function (success) {
+            // success
+            var confirmPopup = $ionicPopup.confirm({
+               title: 'Decrypt '+ file.name+'?',
+               template: 'Are you sure you want to decrypt' + file.name+ '?'
+             });
+
+             confirmPopup.then(function(res) {
+               if(res) {
+                 $cordovaFile.moveFile(cordova.file.externalRootDirectory+test_dir2, file.name)
+                  .then(function (success) {
+                    // success
+                    alert("file was moved");
+                    $state.go('encrypted_tabs.home');
+                  }, function (error) {
+                  // error
+                  alert("file was not deleted");
+                  $state.go('encrypted_tabs.home');
+                });
+               } else {
+                 alert("file "+file.name+" was not deleted");
+               }
+             });
+          }, function (error) {
+            // error
+          });
+           /*$cordovaFile.copyFile(cordova.file.externalRootDirectory, files, cordova.file.externalRootDirectory+test_dir2, nameForFile+".mp4")
+              .then(function (success) {
+                // success
+                alert("success: " + success);
+              }, function (error) {
+                // error
+                alert("failed");
+              });*/
+         }
     }
 
       if (ionic.Platform.isIOS()) {

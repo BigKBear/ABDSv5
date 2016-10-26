@@ -1,4 +1,4 @@
-app.controller('EncryptedMusicCtrl',function($scope, $state, $ionicPlatform, $cordovaFile) {
+app.controller('EncryptedMusicCtrl',function($scope, $ionicPopup, $state, $ionicPlatform, $cordovaFile, $ionicHistory) {
     $scope.messageToUser = "Below are the encrypted Music you have saved on the SDCard:";
     $scope.encryptDecrypt = "Decrypt";
     $scope.fileLabel = "Choose a music file to decrypt";
@@ -83,6 +83,44 @@ app.controller('EncryptedMusicCtrl',function($scope, $state, $ionicPlatform, $co
       );
     }
       listDir(cordova.file.externalRootDirectory+test_dir2);
+
+      // A confirm dialog before deleting file
+       $scope.Delete = function(file) {
+         var confirmPopup = $ionicPopup.confirm({
+           title: 'Delete '+ file.name+'?',
+           template: 'Are you sure you want to delete' + file.name+ '?'
+         });
+
+         confirmPopup.then(function(res) {
+           if(res) {
+             $cordovaFile.removeFile(cordova.file.externalRootDirectory+test_dir2, file.name)
+              .then(function (success) {
+                // success
+                alert("file was deleted");
+                $state.go('encrypted_tabs.home');
+              }, function (error) {
+              // error
+              alert("file was not deleted");
+              $state.go('encrypted_tabs.home');
+            });
+           } else {
+             alert("file "+file.name+" was not deleted");
+           }
+         });
+       };
+
+       $scope.Decrypt = function(file){
+
+          alert("Decrypted clicked");
+           /*$cordovaFile.copyFile(cordova.file.externalRootDirectory, files, cordova.file.externalRootDirectory+test_dir2, nameForFile+".mp4")
+              .then(function (success) {
+                // success
+                alert("success: " + success);
+              }, function (error) {
+                // error
+                alert("failed");
+              });*/
+         } 
     }
 
       if (ionic.Platform.isIOS()) {

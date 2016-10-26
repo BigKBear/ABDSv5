@@ -1,4 +1,4 @@
-app.controller('LoginCtrl', function($scope, $rootScope, LoginService, $timeout,$cipherFactory, $ionicHistory, $ionicPopup, $state){  
+app.controller('LoginCtrl', function($scope, $rootScope, LoginService, $timeout, $ionicHistory, $ionicPopup, $state){  
     var username = window.localStorage.getItem("userUsername");
     var encrypted ="";
 
@@ -35,7 +35,6 @@ app.controller('LoginCtrl', function($scope, $rootScope, LoginService, $timeout,
     }
 
     var getEncryptedPassword = function(){
-        
         return window.localStorage.getItem("EncryptedPassword");
     }
 

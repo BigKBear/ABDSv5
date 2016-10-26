@@ -1,4 +1,4 @@
-app.controller('EncryptedVideoCtrl',function($scope, $rootScope, $base64, $state, $ionicPlatform, $cordovaFile,$ionicHistory) {
+app.controller('EncryptedVideoCtrl',function($scope, $ionicPopup, $state, $ionicPlatform, $cordovaFile, $ionicHistory) {
     $scope.messageToUser = "Below are the encrypted Videos/Movies you have saved on the SDCard:";
     $scope.encryptDecrypt = "Decrypt";
     $scope.fileLabel = "Choose a video to decrypt";
@@ -98,7 +98,31 @@ app.controller('EncryptedVideoCtrl',function($scope, $rootScope, $base64, $state
       }
         listDir(cordova.file.externalRootDirectory+test_dir2);    
       
-         
+      // A confirm dialog before deleting file
+       $scope.Delete = function(file) {
+         var confirmPopup = $ionicPopup.confirm({
+           title: 'Delete '+ file.name+'?',
+           template: 'Are you sure you want to delete' + file.name+ '?'
+         });
+
+         confirmPopup.then(function(res) {
+           if(res) {
+             $cordovaFile.removeFile(cordova.file.externalRootDirectory+test_dir2, file.name)
+              .then(function (success) {
+                // success
+                alert("file was deleted");
+                $state.go('encrypted_tabs.home');
+              }, function (error) {
+              // error
+              alert("file was not deleted");
+              $state.go('encrypted_tabs.home');
+            });
+           } else {
+             alert("file "+file.name+" was not deleted");
+           }
+         });
+       };
+
           $scope.SelectedFile = function() {
             $cordovaFile.copyFile(cordova.file.externalRootDirectory, $scope.file, cordova.file.externalRootDirectory+test_dir2, userFileName+".mp4")
               .then(function (success) {
@@ -116,9 +140,9 @@ app.controller('EncryptedVideoCtrl',function($scope, $rootScope, $base64, $state
             }, 2000);
          };
 
-         $scope.encrypt = function(userFileName,userSelectedFile){
+         $scope.Decrypt = function(file){
 
-          alert("Hi " + userFileName +"\n"+ userSelectedFile);
+          alert("Decrypted clicked");
            /*$cordovaFile.copyFile(cordova.file.externalRootDirectory, files, cordova.file.externalRootDirectory+test_dir2, nameForFile+".mp4")
               .then(function (success) {
                 // success
