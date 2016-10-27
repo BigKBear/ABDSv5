@@ -1,4 +1,4 @@
-app.controller('LoginCtrl', function($scope, $rootScope, LoginService, $timeout,$cipherFactory, $ionicHistory, $ionicPopup, $state){  
+app.controller('LoginCtrl', function($scope, $rootScope, LoginService, $cordovaFile, $timeout, $ionicHistory, $ionicPopup, $state){  
     var username = window.localStorage.getItem("userUsername");
     var encrypted ="";
 
@@ -20,9 +20,48 @@ app.controller('LoginCtrl', function($scope, $rootScope, LoginService, $timeout,
     var reset = function() {
         window.localStorage.removeItem("userUsername");
         window.localStorage.removeItem("EncryptedPassword");
-        $state.go('register');
-        $scope.messagetouser = "Username and password erased";
-    }
+
+    var test_dir = 'ABDSv5/';
+    var test_dir1 = 'ABDSv5/Encrypted';
+    var test_dir2 = 'ABDSv5/Decrypted';
+   
+    document.addEventListener('deviceready', function () {
+      $cordovaFile.checkDir(cordova.file.externalRootDirectory, test_dir)
+        .then(function (success) {
+          
+          $cordovaFile.removeRecursively(cordova.file.externalRootDirectory, test_dir1)
+          .then(function (success) {
+        // success
+        alert('Directory '+test_dir1+' was cleared.');
+      }, function (error) {
+        // error
+        alert('Error clearing '+test_dir1+' folder.');
+      });
+
+          $cordovaFile.removeRecursively(cordova.file.externalRootDirectory, test_dir2)
+          .then(function (success) {
+        // success
+        alert('Directory '+test_dir2+' was cleared.');
+      }, function (error) {
+        // error
+        alert('Error clearing '+test_dir2+' folder.');
+      });
+        }, function (error) {
+          
+          alert('Directory '+ test_dir +' Does not Exist');
+          
+           $cordovaFile.createDir(cordova.file.externalRootDirectory, test_dir, true)
+           .then( function(success) {
+            console.log('Directory was created: OK');
+            alert('Directory '+test_dir+' was created.');
+          }, function(error){
+            alert('Directory '+test_dir+' was not created due to ' + error+'.');
+          });
+        });     
+    });
+    $state.go('register');
+    $scope.messagetouser = "Username and password erased";
+  }
 
     var saveEncryptPassword = function(){
       encrypted = CryptoJS.AES.encrypt(
@@ -35,7 +74,6 @@ app.controller('LoginCtrl', function($scope, $rootScope, LoginService, $timeout,
     }
 
     var getEncryptedPassword = function(){
-        
         return window.localStorage.getItem("EncryptedPassword");
     }
 

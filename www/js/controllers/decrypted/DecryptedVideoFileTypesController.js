@@ -1,4 +1,4 @@
-app.controller('DecryptedVideoCtrl',function($scope, $state, $ionicPlatform, $cordovaFile) {
+app.controller('DecryptedVideoCtrl',function($scope, $ionicPopup, $state, $ionicPlatform, $cordovaFile, $ionicHistory) {
   document.addEventListener('deviceready', function () {
     $scope.messageToUser = "Below are the files and folders currently saved on the device in the Videos folder:";
     $scope.encryptDecrypt = "Encrypt";
@@ -87,18 +87,68 @@ app.controller('DecryptedVideoCtrl',function($scope, $state, $ionicPlatform, $co
         }else{
           listDir(cordova.file.externalRootDirectory+test_dir2);
           $scope.notification = "";
-        }  
-      }
+        }
 
-        if (ionic.Platform.isIOS()) {
-        
-        console.log('cordova.file.documentsDirectory: ' + cordova.file.documentsDirectory);
-        
-        fileTransferDir = cordova.file.documentsDirectory;
-        fileDir = '';
-        console.log('IOS FILETRANSFERDIR: ' + fileTransferDir);
-        console.log('IOS FILEDIR: ' + fileDir);
-      }
+        // A confirm dialog before deleting file
+       $scope.Delete = function(file) {
+         var confirmPopup = $ionicPopup.confirm({
+           title: 'Delete '+ file.name+'?',
+           template: 'Are you sure you want to delete' + file.name+ '?'
+         });
+
+         confirmPopup.then(function(res) {
+           if(res) {
+             $cordovaFile.removeFile(cordova.file.externalRootDirectory+test_dir2, file.name)
+              .then(function (success) {
+                // success
+                alert("file was deleted");
+                $state.go('encrypted_tabs.home');
+              }, function (error) {
+              // error
+              alert("file was not deleted");
+              $state.go('encrypted_tabs.home');
+            });
+           } else {
+             alert("file "+file.name+" was not deleted");
+           }
+         });
+       };
+
+       $scope.encryptSelectedFile =function(fileName,file){
+        if(!file){
+          alert("no file selected");
+        }else{
+          console.log('cordova.file.documentsDirectory: ' + file);
+          alert("Encrypt "+fileName+" clicked"+file);
+        }
+       };
+
+       $scope.encrypt = function(file){
+        var unencryptedFile = $cordovaFile.readAsText(cordova.file.externalRootDirectory+test_dir2,file);
+        alert(unencryptedFile);
+          var encryptedDirectory = 'ABDSv5/Encrypted/Videos';
+          alert("Encrypt clicked");
+           /*$cordovaFile.moveFile(cordova.file.externalRootDirectory+test_dir2,file.name, cordova.file.externalRootDirectory+encryptedDirectory,file.name)*/
+           $cordovaFile.moveFile(cordova.file.externalRootDirectory+test_dir2,file.name, cordova.file.externalRootDirectory+encryptedDirectory)
+              .then(function (success) {
+                // success
+                alert("File " + file.name+ " moved");
+              }, function (error) {
+                // error
+                alert("File " + file.name+ " NOT moved" + error);
+              });
+            };
+    }
+
+      if (ionic.Platform.isIOS()) {
+      
+      console.log('cordova.file.documentsDirectory: ' + cordova.file.documentsDirectory);
+      
+      fileTransferDir = cordova.file.documentsDirectory;
+      fileDir = '';
+      console.log('IOS FILETRANSFERDIR: ' + fileTransferDir);
+      console.log('IOS FILEDIR: ' + fileDir);
+    }
 
       if (ionic.Platform.isAndroid() || ionic.Platform.isIOS()) {
               

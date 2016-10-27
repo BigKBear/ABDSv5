@@ -1,4 +1,4 @@
-<ion-view view-title="All files on {{currentPlatform  | capitalize}} device">
+<ion-view cache-view="false" view-title="All files on {{currentPlatform  | capitalize}} device">
    <ion-content class="padding">
      <div class="padding">
       <p>{{messageToUser}}</p>
@@ -6,14 +6,18 @@
     </div>
 
     <ion-list>
-      <ion-item class="item-remove-animate item-icon-right" ng-repeat="videodirectory in videodirectories">
-        <h2>{{videodirectory.name}}</h2>
-        <p>{{videodirectory.filesystem}}</p>
-        <p>{{videodirectory.nativeURL}}</p>
+      <ion-item class="item-remove-animate item-icon-left" href="#/" ng-repeat="videodirectory in videodirectories">
+        <div class="item-icon-left">
+          <i ng-show="videodirectory.isDirectory" class="icon ion-folder"></i>
+          <i ng-show="videodirectory.isFile" class="icon ion-document"></i>
+          <h2>{{videodirectory.name}}</h2>
+          <p>{{videodirectory.filesystem}}</p>
+          <p>{{videodirectory.nativeURL}}</p>
+        </div>
 
-        <i class="icon ion-arrow-right-b"></i>
-        <i ng-show="file.isDirectory" class="icon ion-folder"></i>
-        <i ng-show="file.isFile" class="icon ion-document"></i>
+        <div class="item-icon-right">
+          <i class="icon ion-arrow-right-b"></i>
+        </div>
       </ion-item>
     </ion-list>
   </ion-content>

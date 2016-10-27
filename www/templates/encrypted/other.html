@@ -1,4 +1,4 @@
-<ion-view view-title=" Other {{typeBeingViewed}} {{currentPlatform  | capitalize}} files">
+<ion-view cache-view="false" view-title=" Other {{typeBeingViewed}} {{currentPlatform  | capitalize}} files">
     <ion-content class="padding">
     <div class="padding">
       <label class="item item-input">
@@ -11,14 +11,25 @@
     </div>
 
     <ion-list>
-      <ion-item class="item-remove-animate item-icon-right" ng-repeat="videodirectory in videodirectories">
-        <h2>{{videodirectory.name}}</h2>
-        <p>{{videodirectory.filesystem}}</p>
-        <p>{{videodirectory.nativeURL}}</p>
+      <ion-item class="item-remove-animate item-icon-right" href="#" ng-repeat="videodirectory in videodirectories">
+        <div class="item-icon-left">
+          <i ng-show="videodirectory.isDirectory" class="icon ion-folder"></i>
+          <i ng-show="videodirectory.isFile" class="icon ion-document"></i>
+          <h2>{{videodirectory.name}}</h2>
+          <p>{{videodirectory.filesystem}}</p>
+          <p>{{videodirectory.nativeURL}}</p>
+        </div>
 
-        <i class="icon ion-arrow-right-b"></i>
-        <i ng-show="file.isDirectory" class="icon ion-folder"></i>
-        <i ng-show="file.isFile" class="icon ion-document"></i>
+        <div class="item-icon-right">
+          <i class="icon ion-arrow-right-b"></i>
+        </div>
+
+        <ion-option-button class="button-positive" ng-click="Decrypt(videodirectory)">
+          Decrypt
+        </ion-option-button>
+        <ion-option-button ng-show="videodirectory.isFile" class="button-info" ng-click="Delete(videodirectory)">
+          Delete
+        </ion-option-button>
       </ion-item>
     </ion-list>
   </ion-content>

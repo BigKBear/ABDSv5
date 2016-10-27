@@ -1,4 +1,4 @@
-app.controller('EncryptedOtherCtrl',function($scope, $state, $ionicPlatform, $cordovaFile) {
+app.controller('EncryptedOtherCtrl',function($scope, $ionicPopup, $state, $ionicPlatform, $cordovaFile, $ionicHistory) {
     $scope.messageToUser = "Below are the other encrypted files or folders you have saved on the SDCard:";
     $scope.encryptDecrypt = "Decrypt";
     $scope.fileLabel = "Choose a file to decrypt:";
@@ -59,7 +59,7 @@ app.controller('EncryptedOtherCtrl',function($scope, $state, $ionicPlatform, $co
         });
       });
 
-        var currentPlatform = ionic.Platform.platform();  
+  var currentPlatform = ionic.Platform.platform();  
   $scope.currentPlatform = currentPlatform;
 
   $ionicPlatform.ready(function() {
@@ -86,6 +86,45 @@ app.controller('EncryptedOtherCtrl',function($scope, $state, $ionicPlatform, $co
     }
     
       listDir(cordova.file.externalRootDirectory +test_dir2);
+
+      // A confirm dialog before deleting file
+       $scope.Delete = function(file) {
+         var confirmPopup = $ionicPopup.confirm({
+           title: 'Delete '+ file.name+'?',
+           template: 'Are you sure you want to delete' + file.name+ '?'
+         });
+
+         confirmPopup.then(function(res) {
+           if(res) {
+             $cordovaFile.removeFile(cordova.file.externalRootDirectory+test_dir2, file.name)
+              .then(function (success) {
+                // success
+                alert("file was deleted");
+                $state.go('encrypted_tabs.home');
+              }, function (error) {
+              // error
+              alert("file was not deleted");
+              $state.go('encrypted_tabs.home');
+            });
+           } else {
+             alert("file "+file.name+" was not deleted");
+           }
+         });
+       };
+
+       $scope.Decrypt = function(file){
+          var decryptedDirectory = 'ABDSv5/Decrypted/Other';
+          alert("Decrypted clicked");
+           /*$cordovaFile.moveFile(cordova.file.externalRootDirectory+test_dir2,file.name, cordova.file.externalRootDirectory+decryptedDirectory,file.name)*/
+           $cordovaFile.moveFile(cordova.file.externalRootDirectory+test_dir2,file.name, cordova.file.externalRootDirectory+decryptedDirectory)
+              .then(function (success) {
+                // success
+                alert("File " + file.name+ " moved");
+              }, function (error) {
+                // error
+                alert("File " + file.name+ " NOT moved" + error);
+              });
+         };
 
       /*TODO: Allow the user to sellect a Pictures from thie Pictures folder
 

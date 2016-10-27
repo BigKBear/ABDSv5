@@ -1,4 +1,4 @@
-app.controller('EncryptedVideoCtrl',function($scope, $rootScope, $base64, $state, $ionicPlatform, $cordovaFile,$ionicHistory) {
+app.controller('EncryptedVideoCtrl',function($scope, $ionicPopup, $timeout, $state, $ionicPlatform, $cordovaFile, $ionicHistory) {
     $scope.messageToUser = "Below are the encrypted Videos/Movies you have saved on the SDCard:";
     $scope.encryptDecrypt = "Decrypt";
     $scope.fileLabel = "Choose a video to decrypt";
@@ -98,7 +98,31 @@ app.controller('EncryptedVideoCtrl',function($scope, $rootScope, $base64, $state
       }
         listDir(cordova.file.externalRootDirectory+test_dir2);    
       
-         
+      // A confirm dialog before deleting file
+       $scope.Delete = function(file) {
+         var confirmPopup = $ionicPopup.confirm({
+           title: 'Delete '+ file.name+'?',
+           template: 'Are you sure you want to delete' + file.name+ '?'
+         });
+
+         confirmPopup.then(function(res) {
+           if(res) {
+             $cordovaFile.removeFile(cordova.file.externalRootDirectory+test_dir2, file.name)
+              .then(function (success) {
+                // success
+                alert("file was deleted");
+                $state.go('encrypted_tabs.home');
+              }, function (error) {
+              // error
+              alert("file was not deleted");
+              $state.go('encrypted_tabs.home');
+            });
+           } else {
+             alert("file "+file.name+" was not deleted");
+           }
+         });
+       };
+
           $scope.SelectedFile = function() {
             $cordovaFile.copyFile(cordova.file.externalRootDirectory, $scope.file, cordova.file.externalRootDirectory+test_dir2, userFileName+".mp4")
               .then(function (success) {
@@ -108,7 +132,7 @@ app.controller('EncryptedVideoCtrl',function($scope, $rootScope, $base64, $state
                 
                 alert("failed");
               });
-            setTimeout(function () {
+            $timeout(function () {
             $scope.$apply(function(){
               $scope.selectedFile = $scope.file;
               alert("hi" + file);
@@ -116,18 +140,25 @@ app.controller('EncryptedVideoCtrl',function($scope, $rootScope, $base64, $state
             }, 2000);
          };
 
-         $scope.encrypt = function(userFileName,userSelectedFile){
-
-          alert("Hi " + userFileName +"\n"+ userSelectedFile);
-           /*$cordovaFile.copyFile(cordova.file.externalRootDirectory, files, cordova.file.externalRootDirectory+test_dir2, nameForFile+".mp4")
+         $scope.Decrypt = function(file){
+          var decryptedDirectory = 'ABDSv5/Decrypted/Videos';
+          alert("Decrypted clicked");
+           /*$cordovaFile.moveFile(cordova.file.externalRootDirectory+test_dir2,file.name, cordova.file.externalRootDirectory+decryptedDirectory,file.name)*/
+           $cordovaFile.moveFile(cordova.file.externalRootDirectory+test_dir2,file.name, cordova.file.externalRootDirectory+decryptedDirectory)
               .then(function (success) {
                 // success
-                alert("success: " + success);
+                alert("File " + file.name+ " moved");
+                $timeout(function () {
+                  $state.go('tabs.home');
+                },1000);
               }, function (error) {
                 // error
-                alert("failed");
-              });*/
-         }  
+                alert("File " + file.name+ " NOT moved" + error);
+                $timeout(function () {
+                  $state.go('tabs.home');
+                },1000);
+              });
+         };
       }//end of android platform
 
         if (ionic.Platform.isIOS()) {

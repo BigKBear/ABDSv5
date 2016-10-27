@@ -1,4 +1,4 @@
-app.controller('DecryptedOtherCtrl',function($scope, $state, $ionicPlatform, $cordovaFile) {
+app.controller('DecryptedOtherCtrl',function($scope, $ionicPopup, $state, $ionicPlatform, $cordovaFile, $ionicHistory) {
     $scope.messageToUser = "Below are the files and folders currently saved on the device that are not in any special folder:";
     $scope.encryptDecrypt = "Encrypt";
     $scope.fileLabel = "Choose a file to encrypt:";
@@ -91,6 +91,54 @@ app.controller('DecryptedOtherCtrl',function($scope, $state, $ionicPlatform, $co
         listDir(cordova.file.externalRootDirectory+test_dir2);
         $scope.notification = "";
       }  
+
+      // A confirm dialog before deleting file
+       $scope.Delete = function(file) {
+         var confirmPopup = $ionicPopup.confirm({
+           title: 'Delete '+ file.name+'?',
+           template: 'Are you sure you want to delete' + file.name+ '?'
+         });
+
+         confirmPopup.then(function(res) {
+           if(res) {
+             $cordovaFile.removeFile(cordova.file.externalRootDirectory+test_dir2, file.name)
+              .then(function (success) {
+                // success
+                alert("file was deleted");
+                $state.go('encrypted_tabs.home');
+              }, function (error) {
+              // error
+              alert("file was not deleted");
+              $state.go('encrypted_tabs.home');
+            });
+           } else {
+             alert("file "+file.name+" was not deleted");
+           }
+         });
+       };
+
+       $scope.encrypt = function(file){
+          var encryptedDirectory = 'ABDSv5/Encrypted/Other';
+          alert("Encrypt clicked");
+           /*$cordovaFile.moveFile(cordova.file.externalRootDirectory+test_dir2,file.name, cordova.file.externalRootDirectory+encryptedDirectory,file.name)*/
+           $cordovaFile.moveFile(cordova.file.externalRootDirectory+test_dir2,file.name, cordova.file.externalRootDirectory+encryptedDirectory)
+              .then(function (success) {
+                // success
+                alert("File " + file.name+ " moved");
+              }, function (error) {
+                // error
+                alert("File " + file.name+ " NOT moved" + error);
+              });
+            };
+
+       $scope.encryptSelectedFile =function(fileName,file){
+        if(!file){
+          alert("no file selected");
+        }else{
+          console.log('cordova.file.documentsDirectory: ' + file);
+          alert("Encrypt "+fileName+" clicked"+file);
+        }
+       };
     }
 
       if (ionic.Platform.isIOS()) {
