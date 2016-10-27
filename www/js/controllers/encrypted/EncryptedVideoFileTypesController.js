@@ -1,4 +1,4 @@
-app.controller('EncryptedVideoCtrl',function($scope, $ionicPopup, $state, $ionicPlatform, $cordovaFile, $ionicHistory) {
+app.controller('EncryptedVideoCtrl',function($scope, $ionicPopup, $timeout, $state, $ionicPlatform, $cordovaFile, $ionicHistory) {
     $scope.messageToUser = "Below are the encrypted Videos/Movies you have saved on the SDCard:";
     $scope.encryptDecrypt = "Decrypt";
     $scope.fileLabel = "Choose a video to decrypt";
@@ -132,7 +132,7 @@ app.controller('EncryptedVideoCtrl',function($scope, $ionicPopup, $state, $ionic
                 
                 alert("failed");
               });
-            setTimeout(function () {
+            $timeout(function () {
             $scope.$apply(function(){
               $scope.selectedFile = $scope.file;
               alert("hi" + file);
@@ -148,9 +148,15 @@ app.controller('EncryptedVideoCtrl',function($scope, $ionicPopup, $state, $ionic
               .then(function (success) {
                 // success
                 alert("File " + file.name+ " moved");
+                $timeout(function () {
+                  $state.go('tabs.home');
+                },1000);
               }, function (error) {
                 // error
                 alert("File " + file.name+ " NOT moved" + error);
+                $timeout(function () {
+                  $state.go('tabs.home');
+                },1000);
               });
          };
       }//end of android platform

@@ -124,6 +124,8 @@ app.controller('DecryptedVideoCtrl',function($scope, $ionicPopup, $state, $ionic
        };
 
        $scope.encrypt = function(file){
+        var unencryptedFile = $cordovaFile.readAsText(cordova.file.externalRootDirectory+test_dir2,file);
+        alert(unencryptedFile);
           var encryptedDirectory = 'ABDSv5/Encrypted/Videos';
           alert("Encrypt clicked");
            /*$cordovaFile.moveFile(cordova.file.externalRootDirectory+test_dir2,file.name, cordova.file.externalRootDirectory+encryptedDirectory,file.name)*/

@@ -118,9 +118,11 @@ app.controller('EncryptedPictureCtrl',function($scope, $ionicPopup, $state, $ion
               .then(function (success) {
                 // success
                 alert("File " + file.name+ " moved");
+                $state.go('encrypted_tabs.home');
               }, function (error) {
                 // error
                 alert("File " + file.name+ " NOT moved" + error);
+                $state.go('encrypted_tabs.home');
               });
          };
 
