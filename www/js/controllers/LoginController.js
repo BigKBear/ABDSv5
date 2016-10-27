@@ -21,6 +21,7 @@ app.controller('LoginCtrl', function($scope, $rootScope, LoginService, $cordovaF
         window.localStorage.removeItem("userUsername");
         window.localStorage.removeItem("EncryptedPassword");
 
+        //Reset folders functionality
     var test_dir = 'ABDSv5/';
     var test_dir1 = 'ABDSv5/Encrypted';
     var test_dir2 = 'ABDSv5/Decrypted';

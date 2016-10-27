@@ -97,7 +97,8 @@ app.config(function($stateProvider, $urlRouterProvider,$ionicConfigProvider) {
     url: "/tutorial",
     views: {
       'home-tab': {
-        templateUrl: "templates/homepage/tutorial.html"
+        templateUrl: "templates/homepage/tutorial.html",
+        controller:'HomeTabCtrl'
       }
     }
   })
@@ -246,6 +247,28 @@ app.config(function($stateProvider, $urlRouterProvider,$ionicConfigProvider) {
 });
 
 app.controller('HomeTabCtrl', function($scope,$ionicHistory) {
+   $scope.VIDEO = function() {
+            if (navigator.camera) {
+              navigator.camera.getPicture( cameraSuccess2, cameraError,
+              { sourceType: navigator.camera.PictureSourceType.PHOTOLIBRARY,
+               mediaType:navigator.camera.MediaType.VIDEO,
+                                         } );
+            } else {
+              $scope.image.src = "http://lorempixel.com/200/400/";
+              console.log('default image was set');
+            }
+                                }
+      function cameraSuccess2(VideoURI) {
+                $scope.video = document.getElementById('myVideo');
+                // hack until cordova 3.5.0 is released
+                if (VideoURI.substring(0,21)=="content://com.android") {
+                        var photo_split=VideoURI.split("%3A");
+                        VideoURI="content://media/external/video/media/"+photo_split[1];
+                                                                       }
+                $scope.VideoURI =  VideoURI;
+                $scope.video.src = $scope.VideoURI;
+                $scope.apply();
+           }
   console.log('HomeTabCtrl');
   $ionicHistory.clearHistory();
 });
