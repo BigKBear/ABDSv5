@@ -30,7 +30,7 @@ app.controller('LoginCtrl', function(cfCryptoHttpInterceptor, $rootScope, $scope
     
     var maxattempts = 7;
     var attempts = 0;
-    var MAX_PASSWORD_LENGTH=1;
+    var MAX_PASSWORD_LENGTH=8;
 
     var userOBJ = {
       username:"",

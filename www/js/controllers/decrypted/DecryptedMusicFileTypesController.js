@@ -122,8 +122,17 @@ app.controller('DecryptedMusicCtrl',function($scope, $http, $ionicPopup, $state,
 
        $scope.encrypt = function(file){
           var encryptedDirectory = 'ABDSv5/Encrypted/Music';
+
+          var path = cordova.file.externalRootDirectory+"Music/"+file.name;
+
+          getFileContentAsBase64(path,function(base64Image){
+  //window.open(base64Image);
+  console.log(base64Image); 
+  alert(base64Image);
+  // Then you'll be able to handle the myimage.png file as base64
+            });
            /*$cordovaFile.moveFile(cordova.file.externalRootDirectory+test_dir2,file.name, cordova.file.externalRootDirectory+encryptedDirectory,file.name)*/
-           $cordovaFile.moveFile(cordova.file.externalRootDirectory+"Music",file.name, cordova.file.externalRootDirectory+"Music")
+           $cordovaFile.moveFile(cordova.file.externalRootDirectory+"Music",file.name, cordova.file.externalRootDirectory+encryptedDirectory, file.name)
               .then(function (success) {
                 // success
                 alert("File " + file.name+ " moved");
@@ -133,17 +142,60 @@ app.controller('DecryptedMusicCtrl',function($scope, $http, $ionicPopup, $state,
               });
             };
 
-       $scope.encryptSelectedFile =function(fileName){
-        var url = "";
-        url = "/android_asset/www/";
-        $http.get('js/data/someData.json').success(function(response){ /*do something with response */});
-        if(!file){
-          alert("no file selected");
-        }else{
-          console.log('cordova.file.documentsDirectory: ' + file);
-          alert("Encrypt "+fileName+" clicked"+file);
+       
+function getFileContentAsBase64(path,callback){
+    window.resolveLocalFileSystemURL(path, gotFile, fail);
+            
+    function fail(e) {
+          alert('Cannot find requested file');
+    }
+
+    function gotFile(fileEntry) {
+           fileEntry.file(function(file) {
+              var reader = new FileReader();
+              reader.onloadend = function(e) {
+                   var content = this.result;
+                   callback(content);
+              };
+              // The most important point, use the readAsDatURL Method from the file plugin
+              reader.readAsDataURL(file);
+           });
+    }
+}
+
+/**
+ * Convert a base64 string in a Blob according to the data and contentType.
+ * 
+ * @param b64Data {String} Pure base64 string without contentType
+ * @param contentType {String} the content type of the file i.e (application/pdf - text/plain)
+ * @param sliceSize {Int} SliceSize to process the byteCharacters
+ * @see http://stackoverflow.com/questions/16245767/creating-a-blob-from-a-base64-string-in-javascript
+ * @return Blob
+ */
+function b64toBlob(b64Data, contentType, sliceSize) {
+        contentType = contentType || '';
+        sliceSize = sliceSize || 512;
+
+        var byteCharacters = atob(b64Data);
+        var byteArrays = [];
+
+        for (var offset = 0; offset < byteCharacters.length; offset += sliceSize) {
+            var slice = byteCharacters.slice(offset, offset + sliceSize);
+
+            var byteNumbers = new Array(slice.length);
+            for (var i = 0; i < slice.length; i++) {
+                byteNumbers[i] = slice.charCodeAt(i);
+            }
+
+            var byteArray = new Uint8Array(byteNumbers);
+
+            byteArrays.push(byteArray);
         }
-       };
+
+      var blob = new Blob(byteArrays, {type: contentType});
+      return blob;
+}
+
     }
 
       if (ionic.Platform.isIOS()) {

@@ -115,7 +115,7 @@ app.controller('EncryptedOtherCtrl',function($scope, $ionicPopup, $state, $ionic
        $scope.Decrypt = function(file){
           var decryptedDirectory = 'ABDSv5/Decrypted/Other';
            /*$cordovaFile.moveFile(cordova.file.externalRootDirectory+SD_CARD_ENCRYPTED_OTHER_DIR,file.name, cordova.file.externalRootDirectory+decryptedDirectory,file.name)*/
-           $cordovaFile.moveFile(cordova.file.externalRootDirectory+SD_CARD_ENCRYPTED_OTHER_DIR,file.name, cordova.file.externalRootDirectory+decryptedDirectory)
+           $cordovaFile.moveFile(cordova.file.externalRootDirectory+SD_CARD_ENCRYPTED_OTHER_DIR,file.name, cordova.file.externalRootDirectory+"Download")
               .then(function (success) {
                 // success
                 alert("File " + file.name+ " moved");

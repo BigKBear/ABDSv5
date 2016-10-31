@@ -271,7 +271,7 @@ app.controller('HomeTabCtrl', function($scope,$ionicHistory) {
                 $scope.apply();
            }
   console.log('HomeTabCtrl');
-  $ionicHistory.clearHistory();
+  //$ionicHistory.clearHistory();
 });
 
 //Helper function used to Capatilise the first letter in a given string

@@ -26,7 +26,11 @@ app.controller('AllFilesCtrl', function($scope, $ionicPlatform){
           });
         }
         
-        listDir(cordova.file.externalRootDirectory);
+        listDir(cordova.file.externalDataDirectory);
+        /*listDir(cordova.file.dataDirectory+"files");*/
+        /*listDir(cordova.file.externalApplicationStorageDirectory);*/
+        /*listDir(cordova.file.externalApplicationStorageDirectory+"files");*/
+        /*listDir(cordova.file.dataDirectory);*/
 
         /*if(!listDir(cordova.file.externalRootDirectory)){
           $scope.notification = "no files in ";

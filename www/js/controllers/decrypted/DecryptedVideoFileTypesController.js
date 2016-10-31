@@ -132,6 +132,7 @@ app.controller('DecryptedVideoCtrl',function($scope, $ionicPopup, $state, $ionic
 
     $scope.encrypt = function(file){
         var newLocation = 'ABDSv5/Encrypted/Videos';
+        alert($base64.encode('a string'));
         var textFile = $cordovaFile.readAsText(cordova.file.externalRootDirectory+"Movies",file).toString();
 
       /*  var encryptedFile = CryptoJS.AES.encrypt(
@@ -145,6 +146,7 @@ app.controller('DecryptedVideoCtrl',function($scope, $ionicPopup, $state, $ionic
         (cordova.file.externalRootDirectory+newLocation,file.name, fullyEncryptedFile, true)
         
 */
+          //move or write the encrypted file to the SD_Card
          $cordovaFile.moveFile(cordova.file.externalRootDirectory+"Movies", file.name, cordova.file.externalRootDirectory+newLocation, file.name)
           .then(function (success) {
             // success

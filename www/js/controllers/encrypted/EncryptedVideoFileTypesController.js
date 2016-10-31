@@ -147,15 +147,15 @@ app.controller('EncryptedVideoCtrl',function($scope, $ionicPopup, $timeout, $sta
               .then(function (success) {
                 // success
                 alert("File " + file.name+ " moved");
-                $timeout(function () {
+                
                   $state.go('tabs.home');
-                },1000);
+                
               }, function (error) {
                 // error
                 alert("File " + file.name+ " NOT moved" + error);
-                $timeout(function () {
+                
                   $state.go('tabs.home');
-                },1000);
+                
               });
          };
       }//end of android platform
