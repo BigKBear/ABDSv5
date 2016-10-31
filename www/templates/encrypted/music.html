@@ -11,7 +11,7 @@
     </div>
 
     <ion-list>
-      <ion-item class="item-remove-animate item-icon-right" href="#" ng-repeat="videodirectory in videodirectories">
+      <ion-item class="item-remove-animate item-icon-right" ng-repeat="videodirectory in videodirectories">
         <div class="item-icon-left">
           <i ng-show="videodirectory.isDirectory" class="icon ion-folder"></i>
           <i ng-show="videodirectory.isFile" class="icon ion-document"></i>
@@ -35,6 +35,6 @@
   </ion-content>
 
   <div class="bar bar-footer bar-stable">
-    <a href="#/" class="button button-assertive icon-left ion-compose">{{encryptDecrypt}}</a>
+    <a href="#/" class="button button-assertive icon-left ion-compose">Logout</a>
   </div>
 </ion-view>

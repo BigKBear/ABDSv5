@@ -86,7 +86,7 @@ app.controller('DecryptedPictureCtrl',function($scope, $ionicPopup, $state, $ion
     }
     
      
-      listDir(cordova.file.externalRootDirectory+"Images");
+      listDir(cordova.file.externalRootDirectory+"Pictures");
         /*if(!listDir(cordova.file.externalRootDirectory+test_dir2)){
           
           $scope.notification = "no files in "+ test_dir2;
@@ -121,11 +121,14 @@ app.controller('DecryptedPictureCtrl',function($scope, $ionicPopup, $state, $ion
          });
        };
 
+       $scope.listDir = function(file){
+          listDir(cordova.file.externalRootDirectory+file.path);
+       };
+
        $scope.encrypt = function(file){
           var encryptedDirectory = 'ABDSv5/Encrypted/Pictures';
-          alert("Encrypt clicked");
            /*$cordovaFile.moveFile(cordova.file.externalRootDirectory+test_dir2,file.name, cordova.file.externalRootDirectory+encryptedDirectory,file.name)*/
-           $cordovaFile.moveFile(cordova.file.externalRootDirectory+test_dir2,file.name, cordova.file.externalRootDirectory+encryptedDirectory)
+           $cordovaFile.moveFile(cordova.file.externalRootDirectory+"Pictures",file.name, cordova.file.externalRootDirectory+encryptedDirectory)
               .then(function (success) {
                 // success
                 alert("File " + file.name+ " moved");
@@ -134,25 +137,6 @@ app.controller('DecryptedPictureCtrl',function($scope, $ionicPopup, $state, $ion
                 alert("File " + file.name+ " NOT moved" + error);
               });
             };
-
-       $scope.selectedFile =function(fileName){
-        //not working
-        //var selectedFile = document.getElementById('fileInput').files[0];
-        //not working
-        //var newNameForSelectedFile = $scope.userFileName;
-        //not working
-        document.getElementById("fileInput").onchange = function () {
-            document.getElementById("uploadFile").value = this.value;
-            alert("Encrypt "+newNameForSelectedFile+" clicked"+selectedFile);
-        };
-        
-        /*if(!file){
-          alert("no file selected");
-        }else{
-          console.log('Selected file: ' + selectedFile.name);
-          alert("Encrypt "+fileName+" clicked"+selectedFile);
-        }*/
-       };
     }
 
       if (ionic.Platform.isIOS()) {

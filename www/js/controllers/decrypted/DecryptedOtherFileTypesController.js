@@ -1,5 +1,5 @@
 app.controller('DecryptedOtherCtrl',function($scope, $ionicPopup, $state, $ionicPlatform, $cordovaFile, $ionicHistory) {
-    $scope.messageToUser = "Below are the files and folders currently saved on the device that are not in any special folder:";
+    $scope.messageToUser = "Below are the files and folders currently saved on the device that are in the Download folder:";
     $scope.encryptDecrypt = "Encrypt";
     $scope.fileLabel = "Choose a file to encrypt:";
 
@@ -85,12 +85,15 @@ app.controller('DecryptedOtherCtrl',function($scope, $ionicPopup, $state, $ionic
       );
     }
   
-      if(!listDir(cordova.file.externalRootDirectory+test_dir2)){
-        $scope.notification = "no files in "+ test_dir2;
-      }else{
-        listDir(cordova.file.externalRootDirectory+test_dir2);
-        $scope.notification = "";
-      }  
+      listDir(cordova.file.externalRootDirectory+"Download");
+        /*if(!listDir(cordova.file.externalRootDirectory+test_dir2)){
+          
+          $scope.notification = "no files in "+ test_dir2;
+        }else{
+          listDir(cordova.file.externalRootDirectory+test_dir2);
+          listDir(cordova.file.externalRootDirectory);
+          $scope.notification = "";
+        }*/
 
       // A confirm dialog before deleting file
        $scope.Delete = function(file) {
@@ -119,9 +122,8 @@ app.controller('DecryptedOtherCtrl',function($scope, $ionicPopup, $state, $ionic
 
        $scope.encrypt = function(file){
           var encryptedDirectory = 'ABDSv5/Encrypted/Other';
-          alert("Encrypt clicked");
            /*$cordovaFile.moveFile(cordova.file.externalRootDirectory+test_dir2,file.name, cordova.file.externalRootDirectory+encryptedDirectory,file.name)*/
-           $cordovaFile.moveFile(cordova.file.externalRootDirectory+test_dir2,file.name, cordova.file.externalRootDirectory+encryptedDirectory)
+           $cordovaFile.moveFile(cordova.file.externalRootDirectory+"Download",file.name, cordova.file.externalRootDirectory+"Downloads")
               .then(function (success) {
                 // success
                 alert("File " + file.name+ " moved");

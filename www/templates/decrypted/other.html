@@ -1,29 +1,12 @@
 <ion-view cache-view="false" view-title="Other {{typeBeingViewed}} {{currentPlatform | capitalize}} files">
    <ion-content class="padding">
-        <div class="padding">          
-          <label class="item item-input">
-            <span class="input-label">{{fileLabel}}</span>
-            <input type="file" ng-model="editItem._attachments_uri.image" accept="*/*" app-filereader /> 
-          </label>
-
-          <label class="item item-input">
-              <input ng-model="userFileName" type="text" placeholder="Give the File a name..." id="userFileName"/>  
-          </label>     
-        </div>
-
-        <div class="padding-left padding-right">
-          <div class="button-bar">
-            <a class="button" ng-click="encryptSelectedFile(userFileName,editItem._attachments_uri.image)">Encrypt</a>
-          </div>
-        </div>
-
     <div class="padding">
       <p>{{messageToUser}}</p>
       <p>{{notification}}</p>
     </div>
 
     <ion-list>
-      <ion-item class="item-remove-animate item-icon-right" href="#" ng-repeat="videodirectory in videodirectories">
+      <ion-item class="item-remove-animate" ng-repeat="videodirectory in videodirectories">
         <div class="item-icon-left">
           <i ng-show="videodirectory.isDirectory" class="icon ion-folder"></i>
           <i ng-show="videodirectory.isFile" class="icon ion-document"></i>
@@ -36,17 +19,20 @@
           <i class="icon ion-arrow-right-b"></i>
         </div>
 
-        <ion-option-button class="button-positive" ng-click="encrypt(videodirectory)">
+        <ion-option-button ng-show="videodirectory.isFile" class="button-positive" ng-click="encrypt(videodirectory)">
           Encrypt
         </ion-option-button>
         <ion-option-button ng-show="videodirectory.isFile" class="button-info" ng-click="Delete(videodirectory)">
           Delete
+        </ion-option-button>
+        <ion-option-button ng-show="videodirectory.isDirectory" class="button-info" ng-click="listDir(videodirectory)">
+          Open
         </ion-option-button>
       </ion-item>
     </ion-list>
   </ion-content>
 
   <div class="bar bar-footer bar-stable">
-    <a href="#/" class="button button-assertive icon-left ion-compose">{{encryptDecrypt}}</a>
+    <a href="#/" class="button button-assertive icon-left ion-compose">Logout</a>
   </div>
 </ion-view>

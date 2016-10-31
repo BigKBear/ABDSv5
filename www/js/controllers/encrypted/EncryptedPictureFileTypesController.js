@@ -4,58 +4,58 @@ app.controller('EncryptedPictureCtrl',function($scope, $ionicPopup, $state, $ion
     $scope.fileLabel = "Choose a picture to decrypt";
     $scope.typeBeingViewed = "Encrypted";
 
-    var test_dir = 'ABDSv5/';
-    var test_dir1 = 'ABDSv5/Encrypted';
-    var test_dir2 = 'ABDSv5/Encrypted/Pictures';
+    var SD_CARD_ROOT_DIR = 'ABDSv5/';
+    var SD_CARD_ENCRYPTED_DIR = 'ABDSv5/Encrypted';
+    var SD_CARD_ENCRYPTED_PICTURES_DIR = 'ABDSv5/Encrypted/Pictures';
 
-    $cordovaFile.checkDir(cordova.file.externalRootDirectory, test_dir)
+    $cordovaFile.checkDir(cordova.file.externalRootDirectory, SD_CARD_ROOT_DIR)
       .then(function (success) {
         
-        $scope.stepone = 'Directory '+ test_dir +' Exist';
+        $scope.stepone = 'Directory '+ SD_CARD_ROOT_DIR +' Exist';
       }, function (error) {
         
-        $scope.stepone = 'Directory '+ test_dir +' Does not Exist';
+        $scope.stepone = 'Directory '+ SD_CARD_ROOT_DIR +' Does not Exist';
         
-         $cordovaFile.createDir(cordova.file.externalRootDirectory, test_dir, true)
+         $cordovaFile.createDir(cordova.file.externalRootDirectory, SD_CARD_ROOT_DIR, true)
          .then( function(success) {
           console.log('Directory was created: OK');
-          $scope.stepone = 'Directory '+test_dir+' was created.';
+          $scope.stepone = 'Directory '+SD_CARD_ROOT_DIR+' was created.';
         }, function(error){
-          $scope.stepone ='Directory '+test_dir+' was not created due to ' + error+'.';
+          $scope.stepone ='Directory '+SD_CARD_ROOT_DIR+' was not created due to ' + error+'.';
         });
       });
 
-    $cordovaFile.checkDir(cordova.file.externalRootDirectory, test_dir1)
+    $cordovaFile.checkDir(cordova.file.externalRootDirectory, SD_CARD_ENCRYPTED_DIR)
       .then(function (success) {
         
-        $scope.steptwo = 'Directory '+ test_dir1 +' Exist';
+        $scope.steptwo = 'Directory '+ SD_CARD_ENCRYPTED_DIR +' Exist';
       }, function (error) {
         
-        $scope.steptwo = 'Directory '+ test_dir1 +' Does not Exist';
+        $scope.steptwo = 'Directory '+ SD_CARD_ENCRYPTED_DIR +' Does not Exist';
         
-        $cordovaFile.createDir(cordova.file.externalRootDirectory, test_dir1, true)
+        $cordovaFile.createDir(cordova.file.externalRootDirectory, SD_CARD_ENCRYPTED_DIR, true)
          .then( function(success) {
           console.log('Directory was created: OK');
-          $scope.steptwo = 'Directory '+test_dir1+' was created.';
+          $scope.steptwo = 'Directory '+SD_CARD_ENCRYPTED_DIR+' was created.';
         }, function(error){
-          $scope.steptwo ='Directory '+test_dir1+' was not created due to ' + error+'.';
+          $scope.steptwo ='Directory '+SD_CARD_ENCRYPTED_DIR+' was not created due to ' + error+'.';
         });
       });
 
-    $cordovaFile.checkDir(cordova.file.externalRootDirectory, test_dir2)
+    $cordovaFile.checkDir(cordova.file.externalRootDirectory, SD_CARD_ENCRYPTED_PICTURES_DIR)
       .then(function (success) {
         
-        $scope.stepthree = 'Directory '+ test_dir2 +' Exist';
+        $scope.stepthree = 'Directory '+ SD_CARD_ENCRYPTED_PICTURES_DIR +' Exist';
       }, function (error) {
         
-        $scope.stepone = 'Directory '+ test_dir2 +' Does not Exist';
+        $scope.stepone = 'Directory '+ SD_CARD_ENCRYPTED_PICTURES_DIR +' Does not Exist';
         
-         $cordovaFile.createDir(cordova.file.externalRootDirectory, test_dir2, true)
+         $cordovaFile.createDir(cordova.file.externalRootDirectory, SD_CARD_ENCRYPTED_PICTURES_DIR, true)
          .then( function(success) {
           console.log('Directory was created: OK');
-          $scope.stepthree = 'Directory '+test_dir2+' was created.';
+          $scope.stepthree = 'Directory '+SD_CARD_ENCRYPTED_PICTURES_DIR+' was created.';
         }, function(error){
-          $scope.stepthree ='Directory '+test_dir2+' was not created due to ' + error+'.';
+          $scope.stepthree ='Directory '+SD_CARD_ENCRYPTED_PICTURES_DIR+' was not created due to ' + error+'.';
         });
       });
 
@@ -83,7 +83,7 @@ app.controller('EncryptedPictureCtrl',function($scope, $ionicPopup, $state, $ion
         }
       );
     }
-      listDir(cordova.file.externalRootDirectory+test_dir2);
+      listDir(cordova.file.externalRootDirectory+SD_CARD_ENCRYPTED_PICTURES_DIR);
 
       // A confirm dialog before deleting file
        $scope.Delete = function(file) {
@@ -94,7 +94,7 @@ app.controller('EncryptedPictureCtrl',function($scope, $ionicPopup, $state, $ion
 
          confirmPopup.then(function(res) {
            if(res) {
-             $cordovaFile.removeFile(cordova.file.externalRootDirectory+test_dir2, file.name)
+             $cordovaFile.removeFile(cordova.file.externalRootDirectory+SD_CARD_ENCRYPTED_PICTURES_DIR, file.name)
               .then(function (success) {
                 // success
                 alert("file was deleted");
@@ -112,9 +112,8 @@ app.controller('EncryptedPictureCtrl',function($scope, $ionicPopup, $state, $ion
 
        $scope.Decrypt = function(file){
           var decryptedDirectory = 'ABDSv5/Decrypted/Pictures';
-          alert("Decrypted clicked");
-           /*$cordovaFile.moveFile(cordova.file.externalRootDirectory+test_dir2,file.name, cordova.file.externalRootDirectory+decryptedDirectory,file.name)*/
-           $cordovaFile.moveFile(cordova.file.externalRootDirectory+test_dir2,file.name, cordova.file.externalRootDirectory+decryptedDirectory)
+           /*$cordovaFile.moveFile(cordova.file.externalRootDirectory+SD_CARD_ENCRYPTED_PICTURES_DIR,file.name, cordova.file.externalRootDirectory+decryptedDirectory,file.name)*/
+           $cordovaFile.moveFile(cordova.file.externalRootDirectory+SD_CARD_ENCRYPTED_PICTURES_DIR,file.name, cordova.file.externalRootDirectory+"Pictures")
               .then(function (success) {
                 // success
                 alert("File " + file.name+ " moved");

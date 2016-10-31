@@ -116,69 +116,42 @@ app.controller('DecryptedVideoCtrl',function($scope, $ionicPopup, $state, $ionic
          });
        };
 
-       $scope.encryptSelectedFile =function(fileName){
-        //var file =  $scope.editItem._attachments_uri.image ;
-        if(!fileName){
-          alert("No file name was given so the file will be encrypted using the original name \"here show name\"");
-          $scope.setFiles = function(files)
-          {
-          $scope.$apply(function() {
-          var file = files[0];
-          var reader = new FileReader();
-          reader.onload = function(e) {
-          console.log(e.target.result);
-          alert(e.target.result);
-          };
-          reader.readAsText(file);
-          alert(file.name);
-          });
-          }
-        }else{
-          alert("The file will be encrypted using " +fileName+" as the file name");
-            //filePath is the absolute path to the file(/mnt/sdcard/...)
-            /*window.plugins.Base64.encodeFile(filePath, function(base64){
-                console.log('file base64 encoding: ' + base64);
-            });*/
+    var getDecryptedPassword = function(){
+      var cipherParams = CryptoJS.lib.CipherParams.create({
+                ciphertext: CryptoJS.enc.Base64.parse(window.localStorage.getItem("EncryptedPassword"))
+                });
 
-            /*var encrypted = CryptoJS.AES.encrypt(
-                    fileAsText,
-                    $rootScope.base64Key,
-                    { iv: $rootScope.iv });
-              alert('encrypted = ' + encrypted);*/
+      var decrypted = CryptoJS.AES.decrypt(
+                  cipherParams,
+                  $rootScope.base64Key,
+                  { iv: $rootScope.iv });
+                  $scope.descrString = decrypted.toString(CryptoJS.enc.Utf8);
+        
+        return decrypted.toString(CryptoJS.enc.Utf8);
+    }
 
-            /*if(!file){
-              alert("no file selected");
-            }else{
-              alert('cordova.file.documentsDirectory: ' + file);
-              alert("Encrypt "+fileName+" clicked"+file);
-            }*/
-            $scope.setFiles = function(files)
-          {
-          $scope.$apply(function() {
-          var file = files[0];
-          var reader = new FileReader();
-          reader.onload = function(e) {
-          console.log(e.target.result);
-          alert(e.target.result);
-          };
-          reader.readAsText(file);
-          alert(file.name);
-          });
-          }
-        }
-       };
+    $scope.encrypt = function(file){
+        var newLocation = 'ABDSv5/Encrypted/Videos';
+        var textFile = $cordovaFile.readAsText(cordova.file.externalRootDirectory+"Movies",file).toString();
 
-       $scope.encrypt = function(file){
-        alert(file.name + " " + file.filesystem );
-        console.log("THE SELECTED FILE: "+ file);
-        /*$cordovaFile.moveFile(cordova.file.externalRootDirectory+test_dir2,file.name, cordova.file.externalRootDirectory+encryptedDirectory,file.name)*/
-        $cordovaFile.moveFile(cordova.file.externalRootDirectory+"Movies",file.name, cordova.file.externalRootDirectory+encryptedDirectory)
+      /*  var encryptedFile = CryptoJS.AES.encrypt(
+                textFile,
+                $rootScope.base64Key,
+                { iv: $rootScope.iv });
+      
+      var fullyEncryptedFile = encryptedFile.ciphertext.toString(CryptoJS.enc.Base64);
+      
+        alert(textFile);
+        (cordova.file.externalRootDirectory+newLocation,file.name, fullyEncryptedFile, true)
+        
+*/
+         $cordovaFile.moveFile(cordova.file.externalRootDirectory+"Movies", file.name, cordova.file.externalRootDirectory+newLocation, file.name)
           .then(function (success) {
             // success
               alert("File " + file.name+ " moved");
             }, function (error) {
               // error
-                alert("File " + file.name+ " NOT moved" + error);
+                alert("File " + file.name+ " NOT moved");
             });
       };
     }

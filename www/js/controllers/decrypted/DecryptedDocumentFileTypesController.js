@@ -82,7 +82,7 @@ app.controller('DecryptedDocumentCtrl',function($scope, $ionicPopup, $state, $io
       );
     }
     
-      listDir(cordova.file.externalRootDirectory+"DCMI");
+      listDir(cordova.file.externalRootDirectory+"Documents");
         /*if(!listDir(cordova.file.externalRootDirectory+test_dir2)){
           
           $scope.notification = "no files in "+ test_dir2;
@@ -119,9 +119,8 @@ app.controller('DecryptedDocumentCtrl',function($scope, $ionicPopup, $state, $io
 
        $scope.encrypt = function(file){
           var encryptedDirectory = 'ABDSv5/Encrypted/Documents';
-          alert("Encrypt clicked");
            /*$cordovaFile.moveFile(cordova.file.externalRootDirectory+test_dir2,file.name, cordova.file.externalRootDirectory+encryptedDirectory,file.name)*/
-           $cordovaFile.moveFile(cordova.file.externalRootDirectory+test_dir2,file.name, cordova.file.externalRootDirectory+encryptedDirectory)
+           $cordovaFile.moveFile(cordova.file.externalRootDirectory+"Documents", file.name, cordova.file.externalRootDirectory+encryptedDirectory, file.name)
               .then(function (success) {
                 // success
                 alert("File " + file.name+ " moved");

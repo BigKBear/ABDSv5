@@ -1,16 +1,36 @@
-app.controller('LoginCtrl', function($scope, $rootScope, LoginService, $cordovaFile, $timeout, $ionicHistory, $ionicPopup, $state){  
+app.controller('LoginCtrl', function(cfCryptoHttpInterceptor, $rootScope, $scope, LoginService, $cordovaFile, $timeout, $ionicHistory, $ionicPopup, $state){  
     var username = window.localStorage.getItem("userUsername");
     var encrypted ="";
+    var storedkey = window.localStorage.getItem("randomKey");
+    var storedIv = window.localStorage.getItem("randomIv");
 
     if (!username) {
       $scope.messagetouser = "Welcome first time user";
+      
+      //Create Key and IV
+      var randomKey = randomString(32);
+      var randomIv = randomString(32);   
+      window.localStorage.setItem("randomKey", randomKey);
+      window.localStorage.setItem("randomIv", randomIv);
+
+      storedkey = window.localStorage.getItem("randomKey");
+      storedIv = window.localStorage.getItem("randomIv");
+
+      //alert("Key: "+storedkey+"\n \n IV: "+storedIv);
+
+      $rootScope.base64Key = CryptoJS.enc.Base64.parse(storedkey);
+      $rootScope.iv = CryptoJS.enc.Base64.parse(storedIv);
       $state.go('register');
+
     } else {
       $scope.messagetouser = "Welcome Back " + window.localStorage.getItem("userUsername");
+      $rootScope.base64Key = CryptoJS.enc.Base64.parse(window.localStorage.getItem("randomKey"));
+      $rootScope.iv = CryptoJS.enc.Base64.parse(window.localStorage.getItem("randomIv"));
     }
     
     var maxattempts = 7;
     var attempts = 0;
+    var MAX_PASSWORD_LENGTH=1;
 
     var userOBJ = {
       username:"",
@@ -24,7 +44,7 @@ app.controller('LoginCtrl', function($scope, $rootScope, LoginService, $cordovaF
         //Reset folders functionality
     var test_dir = 'ABDSv5/';
     var test_dir1 = 'ABDSv5/Encrypted';
-    var test_dir2 = 'ABDSv5/Decrypted';
+    var SD_CARD_DECRYPTED_DIR = 'ABDSv5/Decrypted';
    
     document.addEventListener('deviceready', function () {
       $cordovaFile.checkDir(cordova.file.externalRootDirectory, test_dir)
@@ -39,13 +59,13 @@ app.controller('LoginCtrl', function($scope, $rootScope, LoginService, $cordovaF
         alert('Error clearing '+test_dir1+' folder.');
       });
 
-          $cordovaFile.removeRecursively(cordova.file.externalRootDirectory, test_dir2)
+          $cordovaFile.removeRecursively(cordova.file.externalRootDirectory, SD_CARD_DECRYPTED_DIR)
           .then(function (success) {
         // success
-        alert('Directory '+test_dir2+' was cleared.');
+        alert('Directory '+SD_CARD_DECRYPTED_DIR+' was cleared.');
       }, function (error) {
         // error
-        alert('Error clearing '+test_dir2+' folder.');
+        alert('Error clearing '+SD_CARD_DECRYPTED_DIR+' folder.');
       });
         }, function (error) {
           
@@ -106,6 +126,8 @@ app.controller('LoginCtrl', function($scope, $rootScope, LoginService, $cordovaF
         alert('Please enter all information above to register');
       }else if(pw != confirmpw){
         alert('Passwords do not match');
+      }else if(pw.length<MAX_PASSWORD_LENGTH){
+        alert('Passwords too short');
       }else{
         
         alert('Welcome ' +name);

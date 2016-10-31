@@ -1,4 +1,4 @@
-app.controller('DecryptedMusicCtrl',function($scope, $ionicPopup, $state, $ionicPlatform, $cordovaFile, $ionicHistory) {
+app.controller('DecryptedMusicCtrl',function($scope, $http, $ionicPopup, $state, $ionicPlatform, $cordovaFile, $ionicHistory) {
     $scope.messageToUser = "Below are the files and folders currently saved on the device in the Music folder:";
     $scope.encryptDecrypt = "Encrypt";
     $scope.fileLabel = "Choose a file to encrypt:";
@@ -122,9 +122,8 @@ app.controller('DecryptedMusicCtrl',function($scope, $ionicPopup, $state, $ionic
 
        $scope.encrypt = function(file){
           var encryptedDirectory = 'ABDSv5/Encrypted/Music';
-          alert("Encrypt clicked");
            /*$cordovaFile.moveFile(cordova.file.externalRootDirectory+test_dir2,file.name, cordova.file.externalRootDirectory+encryptedDirectory,file.name)*/
-           $cordovaFile.moveFile(cordova.file.externalRootDirectory+test_dir2,file.name, cordova.file.externalRootDirectory+encryptedDirectory)
+           $cordovaFile.moveFile(cordova.file.externalRootDirectory+"Music",file.name, cordova.file.externalRootDirectory+"Music")
               .then(function (success) {
                 // success
                 alert("File " + file.name+ " moved");
@@ -134,7 +133,10 @@ app.controller('DecryptedMusicCtrl',function($scope, $ionicPopup, $state, $ionic
               });
             };
 
-       $scope.encryptSelectedFile =function(fileName,file){
+       $scope.encryptSelectedFile =function(fileName){
+        var url = "";
+        url = "/android_asset/www/";
+        $http.get('js/data/someData.json').success(function(response){ /*do something with response */});
         if(!file){
           alert("no file selected");
         }else{
