@@ -86,12 +86,15 @@ app.controller('DecryptedPictureCtrl',function($scope, $ionicPopup, $state, $ion
     }
     
      
-      if(!listDir(cordova.file.externalRootDirectory+test_dir2)){
-        $scope.notification = "no files in "+ test_dir2;
-      }else{
-        listDir(cordova.file.externalRootDirectory+test_dir2);
-        $scope.notification = "";
-      }
+      listDir(cordova.file.externalRootDirectory+"Images");
+        /*if(!listDir(cordova.file.externalRootDirectory+test_dir2)){
+          
+          $scope.notification = "no files in "+ test_dir2;
+        }else{
+          listDir(cordova.file.externalRootDirectory+test_dir2);
+          listDir(cordova.file.externalRootDirectory);
+          $scope.notification = "";
+        }*/
 
       // A confirm dialog before deleting file
        $scope.Delete = function(file) {

@@ -1,22 +1,5 @@
 <ion-view cache-view="false" view-title="{{typeBeingViewed}} {{currentPlatform | capitalize}} Videos">
    <ion-content class="padding">
-        <div class="padding">          
-          <label class="item item-input">
-            <span class="input-label">{{fileLabel}}</span>
-            <input type="file" ng-model="editItem._attachments_uri.image" accept="video/*" app-filereader /> 
-          </label>
-          
-          <label class="item item-input">
-              <input ng-model="userFileName" type="text" placeholder="Give the File a name..." id="userFileName"/>  
-          </label>
-        </div>
-        
-        <div class="padding-left padding-right">
-          <div class="button-bar">
-            <a class="button" ng-click="encryptSelectedFile(userFileName,editItem._attachments_uri.image)">Encrypt Video</a>
-          </div>
-        </div>
-        
     <div class="padding">
       <p>{{messageToUser}}</p>
       <p>{{notification}}</p>

@@ -7,7 +7,8 @@
           </label>
 
           <label class="item item-input">
-              <input ng-model="userFileName" type="text" placeholder="Give the File a name..." id="userFileName"/>  
+              <input type="file" ng-onchange="previewFile()"><br>
+              <img src="" height="200" alt="Image preview...">
           </label>
           <!-- <label class="item item-input">
               <input id="uploadFile" placeholder="Choose File" disabled="disabled" />

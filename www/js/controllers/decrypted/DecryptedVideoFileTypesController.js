@@ -81,13 +81,15 @@ app.controller('DecryptedVideoCtrl',function($scope, $ionicPopup, $state, $ionic
           });
         }
         
-        if(!listDir(cordova.file.externalRootDirectory+test_dir2)){
+        listDir(cordova.file.externalRootDirectory+"Movies");
+        /*if(!listDir(cordova.file.externalRootDirectory+test_dir2)){
           
           $scope.notification = "no files in "+ test_dir2;
         }else{
           listDir(cordova.file.externalRootDirectory+test_dir2);
+          listDir(cordova.file.externalRootDirectory);
           $scope.notification = "";
-        }
+        }*/
 
         // A confirm dialog before deleting file
        $scope.Delete = function(file) {
@@ -114,30 +116,71 @@ app.controller('DecryptedVideoCtrl',function($scope, $ionicPopup, $state, $ionic
          });
        };
 
-       $scope.encryptSelectedFile =function(fileName,file){
-        if(!file){
-          alert("no file selected");
+       $scope.encryptSelectedFile =function(fileName){
+        //var file =  $scope.editItem._attachments_uri.image ;
+        if(!fileName){
+          alert("No file name was given so the file will be encrypted using the original name \"here show name\"");
+          $scope.setFiles = function(files)
+          {
+          $scope.$apply(function() {
+          var file = files[0];
+          var reader = new FileReader();
+          reader.onload = function(e) {
+          console.log(e.target.result);
+          alert(e.target.result);
+          };
+          reader.readAsText(file);
+          alert(file.name);
+          });
+          }
         }else{
-          console.log('cordova.file.documentsDirectory: ' + file);
-          alert("Encrypt "+fileName+" clicked"+file);
+          alert("The file will be encrypted using " +fileName+" as the file name");
+            //filePath is the absolute path to the file(/mnt/sdcard/...)
+            /*window.plugins.Base64.encodeFile(filePath, function(base64){
+                console.log('file base64 encoding: ' + base64);
+            });*/
+
+            /*var encrypted = CryptoJS.AES.encrypt(
+                    fileAsText,
+                    $rootScope.base64Key,
+                    { iv: $rootScope.iv });
+              alert('encrypted = ' + encrypted);*/
+
+            /*if(!file){
+              alert("no file selected");
+            }else{
+              alert('cordova.file.documentsDirectory: ' + file);
+              alert("Encrypt "+fileName+" clicked"+file);
+            }*/
+            $scope.setFiles = function(files)
+          {
+          $scope.$apply(function() {
+          var file = files[0];
+          var reader = new FileReader();
+          reader.onload = function(e) {
+          console.log(e.target.result);
+          alert(e.target.result);
+          };
+          reader.readAsText(file);
+          alert(file.name);
+          });
+          }
         }
        };
 
        $scope.encrypt = function(file){
-        var unencryptedFile = $cordovaFile.readAsText(cordova.file.externalRootDirectory+test_dir2,file);
-        alert(unencryptedFile);
-          var encryptedDirectory = 'ABDSv5/Encrypted/Videos';
-          alert("Encrypt clicked");
-           /*$cordovaFile.moveFile(cordova.file.externalRootDirectory+test_dir2,file.name, cordova.file.externalRootDirectory+encryptedDirectory,file.name)*/
-           $cordovaFile.moveFile(cordova.file.externalRootDirectory+test_dir2,file.name, cordova.file.externalRootDirectory+encryptedDirectory)
-              .then(function (success) {
-                // success
-                alert("File " + file.name+ " moved");
-              }, function (error) {
-                // error
+        alert(file.name + " " + file.filesystem );
+        console.log("THE SELECTED FILE: "+ file);
+        /*$cordovaFile.moveFile(cordova.file.externalRootDirectory+test_dir2,file.name, cordova.file.externalRootDirectory+encryptedDirectory,file.name)*/
+        $cordovaFile.moveFile(cordova.file.externalRootDirectory+"Movies",file.name, cordova.file.externalRootDirectory+encryptedDirectory)
+          .then(function (success) {
+            // success
+              alert("File " + file.name+ " moved");
+            }, function (error) {
+              // error
                 alert("File " + file.name+ " NOT moved" + error);
-              });
-            };
+            });
+      };
     }
 
       if (ionic.Platform.isIOS()) {
