@@ -21,6 +21,7 @@ var randomString = function(length) {
     }
     return text;
 }
+
 app.config(function($stateProvider, $urlRouterProvider,$ionicConfigProvider) {
   $ionicConfigProvider.tabs.position('top'); // other values: top
 
