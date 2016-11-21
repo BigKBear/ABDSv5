@@ -1,25 +1,29 @@
 <ion-view view-title="Home">
   <ion-content class="padding">
-    <p>
-      <a class="button icon icon-right ion-chevron-right" href="#/tab/device">Device information</a>
-    </p>
-    
-    <p>
-      <a class="button icon icon-right ion-chevron-right" href="#/tab/about">About the app</a>
-    </p>
+    <div class="padding-left padding-right" ng-controller="BackupCtrl">
+      <div class="button-bar">
+        <a class="button" ng-click="backup()">backup device now</a>
+      </div>
+    </div>
+    <br>
+    <div class="padding-left padding-right" ng-controller="RestoreCtrl">
+      <div class="button-bar">
+        <a class="button" ng-click="restore()">restore device now</a>
+      </div>
+    </div>
 
-    <p>
-      <a class="button icon icon-right ion-chevron-right" href="#/tab/tutorial">Tutorial Video</a>
-    </p>
+    <div class="padding">
+      <p>{{currentPlatform}}</p>
+    </div>
+    <div class="padding">
+      <p>{{freeSpace}}</p>
+    </div>
+    <div class="padding">
+      <p>{{timeNow}}</p>
+    </div>
     
-    <p>
-      <a class="button icon icon-right ion-chevron-right" href="#/tab/settings">Settings</a>
-    </p>
-
-    <p>
-      <a class="button icon icon-right ion-chevron-right" href="#/tab/contact_us">Contact Us</a>
-    </p>
   </ion-content>
+
   <div ng-controller="LoginCtrl" class="bar bar-footer bar-stable">
     <a ng-click="logout()"
       class="button button-assertive icon-left ion-compose">Logout</a>
