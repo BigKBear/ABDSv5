@@ -1,6 +1,5 @@
 app.controller('HomeTabCtrl', function($scope, $ionicPopup, $state, $ionicPlatform, $cordovaFile, $ionicHistory) {
-	console.log('HomeTabCtrl');
-
+	
 	var date = new Date();
 	var hour = date.getHours();
 	var min = date.getMinutes();
@@ -21,10 +20,10 @@ app.controller('HomeTabCtrl', function($scope, $ionicPopup, $state, $ionicPlatfo
 
 	document.addEventListener('deviceready', function () {
 		var currentPlatform = ionic.Platform.platform();
-		$scope.currentPlatform = "You are using "+ currentPlatform + " device.";
+		$scope.currentPlatform = "Step 1 You are using "+ currentPlatform + " device.";
 		$cordovaFile.getFreeDiskSpace()
 			.then(function (success) {
-				$scope.freeSpace = success +' kilobytes of free space';
+				$scope.freeSpace = 'Step 2 You have '+ success +' kilobytes of free space';
 			}, function (error) {
 				var alertPopup = $ionicPopup.alert({
 					title: 'No Free Space!',
@@ -32,17 +31,17 @@ app.controller('HomeTabCtrl', function($scope, $ionicPopup, $state, $ionicPlatfo
 				});
 			});//end of error free space
 
-					$cordovaFile.checkDir(cordova.file.externalRootDirectory, ROOT_OF_BACKUP_ANDRECOVERY)
+			$cordovaFile.checkDir(cordova.file.externalRootDirectory, ROOT_OF_BACKUP_ANDRECOVERY)
 					.then(function (success) {
-						$scope.directoryExist = 'Directory '+ ROOT_OF_BACKUP_ANDRECOVERY +' Exist';
+						$scope.rootDirectoryExist = 'Step 3 Does the ABDS root folder exist on the user external memory? '+ ROOT_OF_BACKUP_ANDRECOVERY + ' Exist';
 					}, function (error) {
-						$scope.directoryDoesNotExist = 'Directory '+ ROOT_OF_BACKUP_ANDRECOVERY +' Does not Exist';
+						$scope.rootDirectoryExist = 'Step 3 Does the ABDS root folder exist on the user external memory? '+ ROOT_OF_BACKUP_ANDRECOVERY +' Does not Exist';
 						$cordovaFile.createDir(cordova.file.externalRootDirectory, ROOT_OF_BACKUP_ANDRECOVERY, true)
 							.then( function(success) {
 								console.log('Directory '+ ROOT_OF_BACKUP_ANDRECOVERY +' was created successfully.');
-								$scope.directoryCreated = 'Directory '+ ROOT_OF_BACKUP_ANDRECOVERY +' was created.';
+								$scope.rootDirectoryCreated = 'Directory '+ ROOT_OF_BACKUP_ANDRECOVERY +' was created.';
 							}, function(error){
-								$scope.stepone ='Directory '+ ROOT_OF_BACKUP_ANDRECOVERY +' was not created due to ' + error +'.';
+								$scope.rootDirectoryCreated ='Directory '+ ROOT_OF_BACKUP_ANDRECOVERY +' was not created due to ' + error +'.';
 							});//end of error creating root of backup
 					});//end of error that the directory does not exist
 
@@ -64,12 +63,11 @@ app.controller('HomeTabCtrl', function($scope, $ionicPopup, $state, $ionicPlatfo
 							});//end of error creating root of backup
 					});//end of error that the directory does not exist
 
-					$scope.s1 = cordova.file.externalRootDirectory;
+					/*$scope.s1 = cordova.file.externalRootDirectory;*/
 
 
     $ionicPlatform.ready(function() {
       if (ionic.Platform.isAndroid()) {
-
         function listDir(path){
           window.resolveLocalFileSystemURL(path,
             function (fileSystem) {
@@ -105,7 +103,7 @@ app.controller('HomeTabCtrl', function($scope, $ionicPopup, $state, $ionicPlatfo
 				}, function (error) {
 					// error
 					console.log(error);
-					$scope.s2 = "here error "+ error.toString();
+					$scope.s2 = "here error trying to copy data from phone to SD Card";
 				});
 
 

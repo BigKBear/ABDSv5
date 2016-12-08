@@ -193,5 +193,5 @@ app.controller('LoginCtrl', function($scope, $rootScope, LoginService, $cordovaF
       $state.go('login');
     }
 
-    $ionicHistory.clearHistory();
+   $ionicHistory.clearHistory();
 });

@@ -20,7 +20,7 @@ app.controller('BackupCtrl', function($scope, $ionicPopup, $state, $ionicPlatfor
         }, function (error) {
              var alertPopup = $ionicPopup.alert({
                   title: 'No Free Space!',
-                  template: 'No free space available or m,emory card is corrupted.'
+                  template: 'No free space available or memory card is corrupted.'
               });
         });
 

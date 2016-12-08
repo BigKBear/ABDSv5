@@ -4,6 +4,7 @@ app.controller('SettingsCtrl', function($scope, $ionicPopup, $state, $ionicPlatf
   //$ionicHistory.clearHistory();
   $scope.restore = function(){
     console.log('Starting to Restore device');
+    $state.go('login');
   };
 
 

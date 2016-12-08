@@ -1,6 +1,11 @@
-<ion-view view-title="Home">
+<ion-view view-title="{{user}} Home page">
   <ion-content class="padding">
-    
+    <div class="padding-left padding-right">
+      <div class="button-bar">
+        <a class="button" ng-click="backup(timeNow)">backup device now</a>
+      </div>
+    </div>
+
     <br>
     <div class="padding-left padding-right" ng-controller="RestoreCtrl">
       <div class="button-bar">
@@ -16,20 +21,21 @@
     </div>
 
     <div class="padding">
+      <p>{{rootDirectoryExist}}</p>
+    </div>
+
+    <div class="padding">
+      <p>{{rootDirectoryCreated}}</p>
+    </div>
+
+    <div class="padding">
       <p>{{stepone}}</p>
     </div>
 
     
-    <div class="padding">
+    <!-- <div class="padding">
       <p>The name that will be given to this backup will be: Backup{{timeNow | date:'yyyy-MM-dd-HH-mm-ss'}}</p>
-      <!-- EEE, d MMM yyyy HH:mm:ss -->
-    </div>
-
-    <div class="padding-left padding-right">
-      <div class="button-bar">
-        <a class="button" ng-click="backup(timeNow)">backup device now</a>
-      </div>
-    </div>
+    </div> -->
 
     <div class="padding">
       <p>{{s1}}</p>
@@ -59,7 +65,7 @@
           <i class="icon ion-arrow-right-b"></i>
         </div>
       </ion-item>
-    </ion-list>
+    </ion-list> 
     
   </ion-content>
 
