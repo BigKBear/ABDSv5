@@ -64,6 +64,7 @@ app.controller('HomeTabCtrl', function($scope, $ionicPopup, $state, $ionicPlatfo
 					});//end of error that the directory does not exist
 
 					/*$scope.s1 = cordova.file.externalRootDirectory;*/
+					var videodirectories = [];
 
 					$ionicPlatform.ready(function() {
 				      if (ionic.Platform.isAndroid()) {
@@ -73,11 +74,10 @@ app.controller('HomeTabCtrl', function($scope, $ionicPopup, $state, $ionicPlatfo
 				              var reader = fileSystem.createReader();
 				              reader.readEntries(
 				                function (entries) {
-				                  //var videodirectories = entries;
 				                  //$scope.s3 = entries.length();
-				                  $scope.videodirectories = entries;
-				                  //window.localStorage.setItem('newsArticle12', localData);
-				                  
+				                  videodirectories = entries;
+				                  $scope.videodirectories = videodirectories;
+				                  //window.localStorage.setItem('newsArticle12', localData);				                  
 				              },
 				              function (err) {
 				                console.log(err);
@@ -88,8 +88,19 @@ app.controller('HomeTabCtrl', function($scope, $ionicPopup, $state, $ionicPlatfo
 				          }
 				        );
 				      }
-				        listDir(cordova.file.externalRootDirectory);    
-				    }});
+				        listDir(cordova.file.externalRootDirectory);
+				         	$cordovaFile.copyDir(cordova.file.externalRootDirectory,"Music",cordova.file.externalRootDirectory+BACKUP,"Music")
+							.then(function (success) {
+									// success
+									$scope.s2 = "here passed";
+
+							}, function (error) {
+								// error
+								console.log(error);
+								$scope.s2 = "here error trying to copy data from phone to SD Card";
+							});
+				    }//end of if platform is android
+				});//end of ionic platform ready
 
 				    /*$cordovaFile.copyFile(cordova.file.externalRootDirectory, "demo.mp4", cordova.file.externalRootDirectory+BACKUP,"demo.mp4")
 						.then(function (success) {                
@@ -98,18 +109,7 @@ app.controller('HomeTabCtrl', function($scope, $ionicPopup, $state, $ionicPlatfo
 		                
 		                $scope.s2 = "here error trying to copy data from phone to SD Card";
 		              });*/
-
-					// COPY
-					$cordovaFile.copyDir(cordova.file.externalRootDirectory,"Music",cordova.file.externalRootDirectory+BACKUP, "Music")
-						.then(function (success) {
-							// success
-							$scope.s2 = "here passed" ;
-
-					}, function (error) {
-						// error
-						console.log(error);
-						$scope.s2 = "here error trying to copy data from phone to SD Card";
-					});
+					
     	});//end of device ready
 	}//end of backup function
 });//end of home controller
