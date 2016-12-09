@@ -62,58 +62,54 @@ app.controller('HomeTabCtrl', function($scope, $ionicPopup, $state, $ionicPlatfo
 								$scope.stepone ='Directory '+ BACKUP +' was not created due to ' + error +'.';
 							});//end of error creating root of backup
 					});//end of error that the directory does not exist
+
 					/*$scope.s1 = cordova.file.externalRootDirectory;*/
 
-    $ionicPlatform.ready(function() {
-      if (ionic.Platform.isAndroid()) {
-        function listDir(path){
-          window.resolveLocalFileSystemURL(path,
-            function (fileSystem) {
-              var reader = fileSystem.createReader();
-              reader.readEntries(
-                function (entries) {
-                  var videodirectories = entries;
-                  //$scope.s3 = entries.length();
-                  $scope.videodirectories = videodirectories;
-                  //window.localStorage.setItem('newsArticle12', localData);
-                  
-              },
-              function (err) {
-                console.log(err);
-              }
-            );
-          }, function (err) {
-            console.log(err);
-          }
-        );
-      }
-        listDir(cordova.file.externalRootDirectory);    
+					$ionicPlatform.ready(function() {
+				      if (ionic.Platform.isAndroid()) {
+				        function listDir(path){
+				          window.resolveLocalFileSystemURL(path,
+				            function (fileSystem) {
+				              var reader = fileSystem.createReader();
+				              reader.readEntries(
+				                function (entries) {
+				                  //var videodirectories = entries;
+				                  //$scope.s3 = entries.length();
+				                  $scope.videodirectories = entries;
+				                  //window.localStorage.setItem('newsArticle12', localData);
+				                  
+				              },
+				              function (err) {
+				                console.log(err);
+				              }
+				            );
+				          }, function (err) {
+				            console.log(err);
+				          }
+				        );
+				      }
+				        listDir(cordova.file.externalRootDirectory);    
+				    }});
 
-    }});
+				    /*$cordovaFile.copyFile(cordova.file.externalRootDirectory, "demo.mp4", cordova.file.externalRootDirectory+BACKUP,"demo.mp4")
+						.then(function (success) {                
+		                $scope.s2 = "here passed" ;
+		              }, function (error) {
+		                
+		                $scope.s2 = "here error trying to copy data from phone to SD Card";
+		              });*/
 
-		/*$cordovaFile.copyFile(cordova.file.externalRootDirectory, "demo.mp4", cordova.file.externalRootDirectory+BACKUP,"demo.mp4")
-              .then(function (success) {
-                
-                $scope.s2 = "here passed" ;
-              }, function (error) {
-                
-                $scope.s2 = "here error trying to copy data from phone to SD Card";
-              });*/
+					// COPY
+					$cordovaFile.copyDir(cordova.file.externalRootDirectory,"Music",cordova.file.externalRootDirectory+BACKUP, "Music")
+						.then(function (success) {
+							// success
+							$scope.s2 = "here passed" ;
 
-$scope.s2 = videodirectories;/*
-				// COPY
-				$cordovaFile.copyDir(cordova.file.externalRootDirectory,"Music",cordova.file.externalRootDirectory+BACKUP, "Music")
-					.then(function (success) {
-						// success
-						$scope.s2 = "here passed" ;
-
-				}, function (error) {
-					// error
-					console.log(error);
-					$scope.s2 = "here error trying to copy data from phone to SD Card";
-				});*/
-
-    		});//end of device ready
+					}, function (error) {
+						// error
+						console.log(error);
+						$scope.s2 = "here error trying to copy data from phone to SD Card";
+					});
+    	});//end of device ready
 	}//end of backup function
-
 });//end of home controller
