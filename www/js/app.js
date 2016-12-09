@@ -1,4 +1,4 @@
-var app = angular.module('abds', ['ionic','angularjs-crypto', 'base64', 'ngCordova','login.service', 'cipher.factory']);
+var app = angular.module('abds', ['ionic','angularjs-crypto', 'base64', 'ngCordova','login.service']);
 
 app.run(
 function($ionicPlatform) {
@@ -13,6 +13,9 @@ function($ionicPlatform) {
   })
 });
 
+/*
+This function can now be used anywhere with in the application to generate a random string of any given length
+*/
 var randomString = function(length) {
     var text = "";
     var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
@@ -20,8 +23,11 @@ var randomString = function(length) {
         text += possible.charAt(Math.floor(Math.random() * possible.length));
     }
     return text;
-}
+};
 
+/*
+This defines the navigation for the entire application
+*/
 app.config(function($stateProvider, $urlRouterProvider,$ionicConfigProvider) {
   $ionicConfigProvider.tabs.position('top'); // other values: top
 
@@ -52,7 +58,7 @@ app.config(function($stateProvider, $urlRouterProvider,$ionicConfigProvider) {
     url: "/home",
     views: {
       'home-tab': {
-        templateUrl: "templates/home.html",
+        templateUrl: "templates/tabs/home.html",
         controller: 'HomeTabCtrl'
       }
     },
@@ -63,7 +69,7 @@ app.config(function($stateProvider, $urlRouterProvider,$ionicConfigProvider) {
     url: "/settings",
     views: {
       'settings-tab': {
-        templateUrl: "templates/settings.html",
+        templateUrl: "templates/tabs/settings.html",
         controller: 'SettingsCtrl'
       }
     },

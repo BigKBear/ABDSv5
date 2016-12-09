@@ -1,11 +1,11 @@
-app.controller('SettingsCtrl', function($scope, $ionicPopup, $state, $ionicPlatform, $cordovaFile, $ionicHistory) {
+app.controller('SettingsCtrl', function($scope, $state, $ionicPlatform, $cordovaFile, $ionicHistory) {
  
-  console.log('SettingsCtrl');
+  alert('SettingsCtrl');
   //$ionicHistory.clearHistory();
-  $scope.restore = function(){
+  /*$scope.restore = function(){
     console.log('Starting to Restore device');
     $state.go('login');
   };
-
+*/
 
 });
