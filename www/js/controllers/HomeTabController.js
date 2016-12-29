@@ -30,12 +30,12 @@ app.controller('HomeTabCtrl', function($scope, $ionicPopup, $state, $ionicPlatfo
 					template: 'No free space available or m,emory card is corrupted.'
 				});
 			});//end of error free space
-
+			$scope.rootDirectoryExist = 'Step 3 Does the ABDS root folder exist on the user external memory?';
 			$cordovaFile.checkDir(cordova.file.externalRootDirectory, ROOT_OF_BACKUP_ANDRECOVERY)
 					.then(function (success) {
-						$scope.rootDirectoryExist = 'Step 3 Does the ABDS root folder exist on the user external memory? '+ ROOT_OF_BACKUP_ANDRECOVERY + ' Exist';
+						$scope.rootDirectoryExist += ' '+ ROOT_OF_BACKUP_ANDRECOVERY + ' Exist';
 					}, function (error) {
-						$scope.rootDirectoryExist = 'Step 3 Does the ABDS root folder exist on the user external memory? '+ ROOT_OF_BACKUP_ANDRECOVERY +' Does not Exist';
+						$scope.rootDirectoryExist += ' '+ ROOT_OF_BACKUP_ANDRECOVERY +' Does not Exist';
 						$cordovaFile.createDir(cordova.file.externalRootDirectory, ROOT_OF_BACKUP_ANDRECOVERY, true)
 							.then( function(success) {
 								console.log('Directory '+ ROOT_OF_BACKUP_ANDRECOVERY +' was created successfully.');
@@ -88,17 +88,34 @@ app.controller('HomeTabCtrl', function($scope, $ionicPopup, $state, $ionicPlatfo
 				          }
 				        );
 				      }
-				        listDir(cordova.file.externalRootDirectory);
-				         	$cordovaFile.copyDir(cordova.file.externalRootDirectory,"Music",cordova.file.externalRootDirectory+BACKUP,"Music")
+
+				      function copyDirToBackUp(folder){
+				      	$cordovaFile.copyDir(cordova.file.externalRootDirectory,folder,cordova.file.externalRootDirectory+BACKUP,folder)
 							.then(function (success) {
 									// success
-									$scope.s2 = "here passed";
+									$scope.s2 += "\n\n Folder "+folder+" was copied\n";
 
 							}, function (error) {
 								// error
 								console.log(error);
-								$scope.s2 = "here error trying to copy data from phone to SD Card";
+								$scope.s2 += "\n\nFolder "+folder+"Was not coppied to external memory\n";
 							});
+				      }
+				        listDir(cordova.file.externalRootDirectory);
+				        $scope.s2 += "Report from "+BACKUP+"\n";
+				        copyDirToBackUp("Download");
+				        copyDirToBackUp("Music");
+				        copyDirToBackUp("Pictures");
+				        copyDirToBackUp("Movies");
+				        copyDirToBackUp("Documents");
+				        copyDirToBackUp("DCIM");
+				        copyDirToBackUp("Android");
+				        copyDirToBackUp("Studio");
+				        copyDirToBackUp("Playlists");
+				        copyDirToBackUp("Ringtones");
+				        copyDirToBackUp("Podcasts");
+				        copyDirToBackUp("Notifications");
+				        copyDirToBackUp("Alarms");				         	
 				    }//end of if platform is android
 				});//end of ionic platform ready
 
