@@ -1,3 +1,4 @@
+/*The BackupCtrl*/
 app.controller('BackupCtrl', function($scope, $ionicPopup, $state, $ionicPlatform, $cordovaFile, $ionicHistory) {
 	
   console.log('BackupCtrl');
