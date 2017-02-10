@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<widget id="com.ionicframework.abdsv5451959" version="0.0.1" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
+<widget id="com.ionicframework.abdsv5451959" version="0.0.2" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
   <name>ABDSv5</name>
-  <description>&#xD;
-        An Ionic Framework and Cordova project.&#xD;
+  <description>&#xD;&#xD;
+        An Ionic Framework and Cordova project.&#xD;&#xD;
     </description>
-  <author email="you@example.com" href="http://example.com.com/">&#xD;
-      Your Name Here&#xD;
+  <author email="you@example.com" href="http://example.com.com/">&#xD;&#xD;
+      Your Name Here&#xD;&#xD;
     </author>
   <content src="index.html"/>
   <access origin="*"/>
@@ -18,11 +18,12 @@
   <preference name="BackupWebStorage" value="none"/>
   <preference name="SplashScreen" value="screen"/>
   <preference name="Orientation" value="portrait"/>
-  <preference name="AndroidPersistentFileLocation" value="Internal" />
+  <preference name="AndroidPersistentFileLocation" value="Internal"/>
   <feature name="StatusBar">
     <param name="ios-package" value="CDVStatusBar" onload="true"/>
   </feature>
   <platform name="android">
+    <preference name="android-manifest/@android:installLocation" value="auto"/>
     <icon src="resources\android\icon\drawable-ldpi-icon.png" density="ldpi"/>
     <icon src="resources\android\icon\drawable-mdpi-icon.png" density="mdpi"/>
     <icon src="resources\android\icon\drawable-hdpi-icon.png" density="hdpi"/>

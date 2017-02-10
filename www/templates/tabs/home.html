@@ -1,0 +1,75 @@
+<ion-view view-title="{{user}} Home page">
+  <ion-content class="padding">
+    <div class="padding-left padding-right">
+      <div class="button-bar">
+        <a class="button" ng-click="backup(timeNow)">backup device now</a>
+      </div>
+    </div>
+
+    <br>
+    <div class="padding-left padding-right" ng-controller="RestoreCtrl">
+      <div class="button-bar">
+        <a class="button" ng-click="restore()">restore device now</a>
+      </div>
+    </div>
+
+    <div class="padding">
+      <p>{{currentPlatform}}</p>
+    </div>
+    <div class="padding">
+      <p>{{freeSpace}}</p>
+    </div>
+
+    <div class="padding">
+      <p>{{rootDirectoryExist}}</p>
+    </div>
+
+    <div class="padding">
+      <p>{{rootDirectoryCreated}}</p>
+    </div>
+
+    <div class="padding">
+      <p>{{stepone}}</p>
+    </div>
+    
+    <!-- <div class="padding">
+      <p>The name that will be given to this backup will be: Backup{{timeNow | date:'yyyy-MM-dd-HH-mm-ss'}}</p>
+    </div> -->
+
+    <div class="padding">
+      <p>{{s1}}</p>
+    </div>
+
+    <div class="padding">
+      <p>{{s2}}</p>
+    </div>
+
+    <div class="padding">
+      <p>{{s3}}</p>
+    </div>
+
+
+
+    <ion-list class="padding-bottom">
+      <ion-item class="item-remove-animate item-icon-right" href="" ng-repeat="videodirectory in videodirectories">
+        <div class="item-icon-left">
+          <i ng-show="videodirectory.isDirectory" class="icon ion-folder"></i>
+          <i ng-show="videodirectory.isFile" class="icon ion-document"></i>
+          <h2>{{videodirectory.name}}</h2>
+          <p>{{videodirectory.filesystem}}</p>
+          <p>{{videodirectory.nativeURL}}</p>
+        </div>
+
+        <div class="item-icon-right">
+          <i class="icon ion-arrow-right-b"></i>
+        </div>
+      </ion-item>
+    </ion-list> 
+    
+  </ion-content>
+
+  <div ng-controller="LoginCtrl" class="bar bar-footer bar-stable">
+    <a ng-click="logout()"
+      class="button button-assertive icon-left ion-compose">Logout</a>
+  </div>
+</ion-view>
