@@ -40,7 +40,7 @@ app.controller('LoginCtrl', function($scope, $rootScope, LoginService, $cordovaF
         
       }else{
         try{
-          $scope.messagetouser = "Welcome Back " + window.localStorage.getItem("userUsername");
+          $scope.titleToShowUser = "Welcome Back " + window.localStorage.getItem("userUsername");
           $rootScope.base64Key = CryptoJS.enc.Base64.parse(window.localStorage.getItem("randomKey"));
           $rootScope.iv = CryptoJS.enc.Base64.parse(window.localStorage.getItem("randomIv"));
         }catch(error){
@@ -128,7 +128,6 @@ app.controller('LoginCtrl', function($scope, $rootScope, LoginService, $cordovaF
       window.localStorage.setItem("userUsername", userOBJ.username);
     }
 
-
     /* Buttons on view functionality*/
     
     $scope.saveData = function(name,pw,confirmpw){
@@ -150,7 +149,7 @@ app.controller('LoginCtrl', function($scope, $rootScope, LoginService, $cordovaF
           };
           saveUsername();
           saveEncryptPassword();
-          $state.go('login');
+          $state.go('tabs.home');
         },1000);
       }
     }

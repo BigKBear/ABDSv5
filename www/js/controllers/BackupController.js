@@ -2,6 +2,7 @@
 app.controller('BackupCtrl', function($scope, $ionicPopup, $state, $ionicPlatform, $cordovaFile, $ionicHistory) {
 	
   console.log('BackupCtrl');
+  $scope.titleToShowUser = window.localStorage.getItem("userUsername") +" Home Page";
   //$ionicHistory.clearHistory();
   
   $scope.backup = function(){

@@ -72,8 +72,7 @@ app.config(function($stateProvider, $urlRouterProvider,$ionicConfigProvider) {
         templateUrl: "templates/tabs/settings.html",
         controller: 'SettingsCtrl'
       }
-    },
-    cache: false
+    }
   })
 
   $urlRouterProvider.otherwise('/login');
