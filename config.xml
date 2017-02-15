@@ -5,11 +5,10 @@
         An Ionic Framework and Cordova project.&#xD;&#xD;
     </description>
   <author email="you@example.com" href="http://example.com.com/">&#xD;&#xD;
-      Your Name Here&#xD;&#xD;
+      Kyle St. Hill&#xD;&#xD;
     </author>
   <content src="index.html"/>
   <access origin="*"/>
-  <!-- <preference name="AndroidExtraFilesystems" value="files,files-external,documents,sdcard,cache,cache-external,assets,root" /> -->
   <preference name="webviewbounce" value="false"/>
   <preference name="UIWebViewBounce" value="false"/>
   <preference name="DisallowOverscroll" value="true"/>
@@ -19,11 +18,18 @@
   <preference name="BackupWebStorage" value="none"/>
   <preference name="SplashScreen" value="screen"/>
   <preference name="Orientation" value="portrait"/>
-  <!-- <preference name="AndroidPersistentFileLocation" value="Internal"/> -->
+  
+  <preference name="AndroidPersistentFileLocation" value="Internal"/>
+  <preference name="AndroidExtraFilesystems" value="files,files-external,documents,sdcard,cache,cache-external,assets,root" />
+  
   <feature name="StatusBar">
     <param name="ios-package" value="CDVStatusBar" onload="true"/>
   </feature>
   <platform name="android">
+    
+    <preference name="AndroidPersistentFileLocation" value="Compatibility" />
+    <preference name="AndroidExtraFilesystems" value="sdcard,cache" />
+
     <preference name="android-manifest/@android:installLocation" value="auto"/>
     <icon src="resources\android\icon\drawable-ldpi-icon.png" density="ldpi"/>
     <icon src="resources\android\icon\drawable-mdpi-icon.png" density="mdpi"/>

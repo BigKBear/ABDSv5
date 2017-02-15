@@ -24,23 +24,70 @@ app.controller('HomeTabCtrl', function($scope, $ionicPopup, $state, $ionicPlatfo
 
 		 	document.addEventListener('deviceready', function () {
 
-		 		       window.resolveLocalFileSystemURL(cordova.file.externalRootDirectory, function(fileSystem) {
-            console.log("Root = " + cordova.file.externalRootDirectory);
-            fileSystem.getDirectory("newDir", {create: true, exclusive: false},
+		 		// FAILED
+		 		//fsPath = "file:///"; 												//RESULT: Error resolveLocalFileSystemURL code 5 (ENCODING_ERR)
+		 		//fsPath = "/storage/extSdCard/"; 									//RESULT: Error resolveLocalFileSystemURL code 5 (ENCODING_ERR)
+		 		//fsPath = "/storage/sdcard1/";  									//RESULT: Error resolveLocalFileSystemURL code 5 (ENCODING_ERR)
+		 		//fsPath = "/storage/usbcard1/";  									//RESULT: Error resolveLocalFileSystemURL code 5 (ENCODING_ERR)
+		 		//fsPath = "/storage/sdcard0/";  									//RESULT: Error resolveLocalFileSystemURL code 5 (ENCODING_ERR)
+		 		//fsPath = "storage/extSdCard/"; 									//RESULT: Error resolveLocalFileSystemURL code 5 (ENCODING_ERR)
+		 		//fsPath = "file:///storage/extSdCard/"; 							//RESULT: Error resolveLocalFileSystemURL code 5 (ENCODING_ERR)
+		 		//fsPath = "file:///storage/sdcard1/";								//RESULT: Error resolveLocalFileSystemURL code 5 (ENCODING_ERR)
+		 		//fsPath = "file:///storage/sdcard0/";								//RESULT: Error resolveLocalFileSystemURL code 5 (ENCODING_ERR)
+		 		//fsPath = "file:///storage/usbcard1/";								//RESULT: Error resolveLocalFileSystemURL code 5 (ENCODING_ERR)
+		 		fsPath = 'file:///storage/extSdCard/‌​';							//RESULT: Error resolveLocalFileSystemURL code 5 (ENCODING_ERR)
+		 		//fsPath = "file:///data/user/0/com.ionicframework.abdsv5451959/"; 	//RESULT: Error resolveLocalFileSystemURL code 5 (ENCODING_ERR)
+		 		//fsPath = cordova.file.applicationStorageDirectory;				//RESULT: Error resolveLocalFileSystemURL code 5 (ENCODING_ERR)
+		 		
+		 		//PARTIALLY WORKS		 		
+		 		//fsPath = cordova.file.externalRootDirectory; 		//RESULT: folder created on phone Local storage NOT SD Card
+		 		//fsPath = "file:///storage/emulated/0/"; 			//RESULT: folder created on phone Local storage NOT SD Card
 
-            function(dirEntry) {
-                dirEntry.getFile("newFile.txt", {create: true, exclusive: false}, function (fileEntry) {
-                    console.log("File = " + fileEntry.fullPath);
-                }, function (error) {
-                    alert(error.code);
-                });
-            }, function (error) {
-               alert(error.code);
-            });
-       }, function (error) {
-               alert(error.code);
-       });
+		 		//PERFECT Creates a folder on hte SDCard
+		 		//TODO: Find the correct path to have folder created/copied to the memory card
+		 		
 
+
+// http://stackoverflow.com/questions/26126319/create-directory-on-external-sdcard-in-cordova
+alert('Device ready function called '+fsPath+' is being passed to to resolveLocalFileSystemURL');
+
+		 		                 window.resolveLocalFileSystemURL(fsPath, function(fileSystem) {
+						            console.log("Root = " + fsPath);
+						            fileSystem.getDirectory("newDir4", {create: true, exclusive: false},
+
+						            function(dirEntry) {
+						                dirEntry.getFile("newFile4.txt", {create: true, exclusive: false}, function (fileEntry) {
+						                    console.log("File = " + fileEntry.fullPath);
+						                    alert("SUCCESSFUL");
+						                }, function (error) {
+						                    alert('fileEntry: ' +error.code);
+						                });
+						            }, function (error) {
+						               alert('dirEntry: ' +error.code);
+						            });
+						       }, function (error) {
+						               alert('resolveLocalFileSystemURL: ' +error.code);
+						       });
+
+		 	/*	//Check the  External storage (SD card) root. (Android, BlackBerry 10) for a folder named ABDSv5
+		 		$cordovaFile.checkDir(cordova.file.externalDataDirectory, ROOT_OF_BACKUP_AND_RECOVERY)
+		 				//If the ABDSv5 folder is found
+		 				.then(function (success) {
+		 					alert(ROOT_OF_BACKUP_AND_RECOVERY + " folder found");
+		 					$scope.rootDirectoryExist += ' '+ ROOT_OF_BACKUP_AND_RECOVERY + ' Exist';
+		 				}, function (error) {
+		 					alert(ROOT_OF_BACKUP_AND_RECOVERY + " folder was NOT found");
+		 					$scope.rootDirectoryExist += ' '+ ROOT_OF_BACKUP_AND_RECOVERY +' Does not Exist';
+		 					$cordovaFile.createDir(cordova.file.externalDataDirectory, ROOT_OF_BACKUP_AND_RECOVERY, true)
+		 						.then( function(success) {
+		 							alert('Directory '+ ROOT_OF_BACKUP_AND_RECOVERY +' was created successfully.');
+		 							$scope.rootDirectoryCreated = 'Directory '+ ROOT_OF_BACKUP_AND_RECOVERY +' was created successfully.';
+		 						}, function(error){
+		 							alert('Directory '+ ROOT_OF_BACKUP_AND_RECOVERY +' was not created due to ' + error +'.');
+		 							$scope.rootDirectoryCreated ='Directory '+ ROOT_OF_BACKUP_AND_RECOVERY +' was not created due to ' + error +'.';
+							});//end of error creating root of backup
+					});//end of error that the directory does not exist
+*/
 
 		 		/*var currentPlatform = ionic.Platform.platform();
 		 		$scope.currentPlatform = "Step 1: You are using "+ currentPlatform + " device.";
