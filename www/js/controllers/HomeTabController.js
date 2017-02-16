@@ -7,67 +7,111 @@ app.controller('HomeTabCtrl', function($scope, $ionicPopup, $state, $ionicPlatfo
 	var seconds = date.getSeconds();
 
 	var timeStamp = hour+"-"+min+"-"+seconds;
-		$scope.timeNow = date;
+	$scope.timeNow = date;
 		console.log(timeStamp);
 
-		 $scope.backup = function(){
-		 	/*create the file  or folder for the backup to be saved in.
-		 	The file will be named using the current date and time and a user input*/
-		 	console.log('Starting backup');
-		 	//clear the Report screen
-		 	$scope.s2 = "";
+	//Tells the application what folder to create or look for when doing backup
+	var ROOT_OF_BACKUP_AND_RECOVERY = 'ABDSv5/';
+	/*var ROOT_OF_BACKUP_AND_RECOVERY = 'ABDSBackupFolder';*/
+		 	
+ 	/*var BACKUP = 'ABDSv5/Backup'+timeStamp;*/
+ 	var BACKUP = 'ABDSv5/ABDSBackupFolder';
 
-		 	//create backup name and folder on SD card
-		 	var ROOT_OF_BACKUP_AND_RECOVERY = 'ABDSv5/';
-		 	/*var BACKUP = 'ABDSv5/Backup'+timeStamp;*/
-		 	var BACKUP = 'ABDSv5/Backup';
+ 	// FAILED
+	//var fsPath = "file:///"; 												//RESULT: Error resolveLocalFileSystemURL code 5 (ENCODING_ERR)
+	//var fsPath = "/storage/extSdCard/"; 									//RESULT: Error resolveLocalFileSystemURL code 5 (ENCODING_ERR)
+	//var fsPath = "/storage/sdcard1/";  									//RESULT: Error resolveLocalFileSystemURL code 5 (ENCODING_ERR)
+	//var fsPath = "/storage/usbcard1/";  									//RESULT: Error resolveLocalFileSystemURL code 5 (ENCODING_ERR)
+	//var fsPath = "/storage/sdcard0/";  									//RESULT: Error resolveLocalFileSystemURL code 5 (ENCODING_ERR)
+	//var fsPath = "storage/extSdCard/"; 									//RESULT: Error resolveLocalFileSystemURL code 5 (ENCODING_ERR)
+	//var fsPath = "file:///storage/extSdCard/"; 							//RESULT: Error resolveLocalFileSystemURL code 5 (ENCODING_ERR)
+	//var fsPath = "file:///storage/sdcard1/";								//RESULT: Error resolveLocalFileSystemURL code 5 (ENCODING_ERR)
+	//var fsPath = "file:///storage/sdcard0/";								//RESULT: Error resolveLocalFileSystemURL code 5 (ENCODING_ERR)
+	//var fsPath = "file:///storage/usbcard1/";								//RESULT: Error resolveLocalFileSystemURL code 5 (ENCODING_ERR)
+	//var fsPath = 'file:///storage/extSdCard/‌​';							//RESULT: Error resolveLocalFileSystemURL code 5 (ENCODING_ERR)
+	//var fsPath = "file:///data/user/0/com.ionicframework.abdsv5451959/"; 	//RESULT: Error resolveLocalFileSystemURL code 5 (ENCODING_ERR)
+	//var fsPath = cordova.file.applicationStorageDirectory;				//RESULT: Error resolveLocalFileSystemURL code 5 (ENCODING_ERR)
+	
+	//PARTIALLY WORKS		 		
+	var fsPath = cordova.file.externalRootDirectory; 		//RESULT: folder created on phone Local storage NOT SD Card
+	//var fsPath = cordova.file.externalApplicationStorageDirectory; 		//RESULT: folder created on phone Local storage NOT SD Card
+	//var fsPath = "file:///storage/emulated/0/"; 			//RESULT: folder created on phone Local storage NOT SD Card
 
-		 	document.addEventListener('deviceready', function () {
+	//PERFECT Creates a folder on hte SDCard
+	//TODO: Find the correct path to have folder created/copied to the memory card
 
-		 		// FAILED
-		 		//fsPath = "file:///"; 												//RESULT: Error resolveLocalFileSystemURL code 5 (ENCODING_ERR)
-		 		//fsPath = "/storage/extSdCard/"; 									//RESULT: Error resolveLocalFileSystemURL code 5 (ENCODING_ERR)
-		 		//fsPath = "/storage/sdcard1/";  									//RESULT: Error resolveLocalFileSystemURL code 5 (ENCODING_ERR)
-		 		//fsPath = "/storage/usbcard1/";  									//RESULT: Error resolveLocalFileSystemURL code 5 (ENCODING_ERR)
-		 		//fsPath = "/storage/sdcard0/";  									//RESULT: Error resolveLocalFileSystemURL code 5 (ENCODING_ERR)
-		 		//fsPath = "storage/extSdCard/"; 									//RESULT: Error resolveLocalFileSystemURL code 5 (ENCODING_ERR)
-		 		//fsPath = "file:///storage/extSdCard/"; 							//RESULT: Error resolveLocalFileSystemURL code 5 (ENCODING_ERR)
-		 		//fsPath = "file:///storage/sdcard1/";								//RESULT: Error resolveLocalFileSystemURL code 5 (ENCODING_ERR)
-		 		//fsPath = "file:///storage/sdcard0/";								//RESULT: Error resolveLocalFileSystemURL code 5 (ENCODING_ERR)
-		 		//fsPath = "file:///storage/usbcard1/";								//RESULT: Error resolveLocalFileSystemURL code 5 (ENCODING_ERR)
-		 		fsPath = 'file:///storage/extSdCard/‌​';							//RESULT: Error resolveLocalFileSystemURL code 5 (ENCODING_ERR)
-		 		//fsPath = "file:///data/user/0/com.ionicframework.abdsv5451959/"; 	//RESULT: Error resolveLocalFileSystemURL code 5 (ENCODING_ERR)
-		 		//fsPath = cordova.file.applicationStorageDirectory;				//RESULT: Error resolveLocalFileSystemURL code 5 (ENCODING_ERR)
-		 		
-		 		//PARTIALLY WORKS		 		
-		 		//fsPath = cordova.file.externalRootDirectory; 		//RESULT: folder created on phone Local storage NOT SD Card
-		 		//fsPath = "file:///storage/emulated/0/"; 			//RESULT: folder created on phone Local storage NOT SD Card
+	/*
+	Function name: backup
+	Parameters: Nil
+	Functionality:
+	 	STEP ONE BACKUP USER DATA
+	 	-create the file  or folder for the backup to be saved in.
+	 	-The file will be named using the current date and time and a user input.
+	 	-The above was changed to just have one backup of all user data in a folder called ABDSBackupFolder.
+		because we did not want to have the user waste memory having multiple backups.
+		NB this could be changed to say maximum of five backups
+		-
+	*/
+	$scope.backup = function(){
+	 	//Displays in the console exactly when the backup function was called
+	 	console.log('Starting backup of user data');
+	 	//clear the screen that keeps the user informed
+	 	clearReportAreaForBackup();
 
-		 		//PERFECT Creates a folder on hte SDCard
-		 		//TODO: Find the correct path to have folder created/copied to the memory card
-		 		
+	 	document.addEventListener('deviceready', DeviceReadyFunction);//end of device ready
+	}//end of backup function
 
+	//Clear the Report screen
+	//the Report screen is the area on the homt.html page that updates the user about the backup.
+	var clearReportAreaForBackup = function(){
+		$scope.s2 = "";
+	}//end of clear the Report screen function
 
-// http://stackoverflow.com/questions/26126319/create-directory-on-external-sdcard-in-cordova
-alert('Device ready function called '+fsPath+' is being passed to to resolveLocalFileSystemURL');
+	var successfullyAccessedFileSystem = function(fileSystem) {
+		console.log("Root = " + fsPath);
+		fileSystem.getDirectory("ABDSBackupFolder", {create: true, exclusive: false}, afterDirectoryIsCreated,dirEntryError);
+   	}
 
-		 		                 window.resolveLocalFileSystemURL(fsPath, function(fileSystem) {
-						            console.log("Root = " + fsPath);
-						            fileSystem.getDirectory("newDir4", {create: true, exclusive: false},
+   	var errorAccessedFileSystem = function (error) {
+   		alert('resolveLocalFileSystemURL: ' +error.code);
+   	}
 
-						            function(dirEntry) {
-						                dirEntry.getFile("newFile4.txt", {create: true, exclusive: false}, function (fileEntry) {
-						                    console.log("File = " + fileEntry.fullPath);
-						                    alert("SUCCESSFUL");
-						                }, function (error) {
-						                    alert('fileEntry: ' +error.code);
-						                });
-						            }, function (error) {
-						               alert('dirEntry: ' +error.code);
-						            });
-						       }, function (error) {
-						               alert('resolveLocalFileSystemURL: ' +error.code);
-						       });
+   	var dirEntryError = function (error) {
+   		alert('dirEntry: ' +error.code);
+   	}
+
+   	var fileEntryError = function (error) {
+   		alert('fileEntry: ' +error.code);
+   	}
+
+   	var pathToCreatedFile = function (fileEntry) {
+   		console.log("File = " + fileEntry.fullPath);
+   		alert("SUCCESSFUL");
+   	}
+
+   	var afterDirectoryIsCreated = function(dirEntry) {
+   		dirEntry.getFile("newFile5.txt", {create: true, exclusive: false}, pathToCreatedFile,fileEntryError);
+   	}
+
+   	var onFileSystemSuccess = function(fileSystem) {
+	    console.log('File System name: '+fileSystem.name);
+	    //alert('File System sucess name of file system is: '+ fileSystem.name);
+	}
+
+	var onFileSystemError = function(error){
+		alert('FileSystemError: ' +evt.target.error.code);
+	}
+
+	var DeviceReadyFunction = function () {
+		// http://stackoverflow.com/questions/26126319/create-directory-on-external-sdcard-in-cordova
+		alert('Device ready function called '+fsPath+' is being passed to to resolveLocalFileSystemURL');
+
+		// request the persistent file system a file system in which to store application data.
+		window.requestFileSystem(LocalFileSystem.PERSISTENT, 0, onFileSystemSuccess, onFileSystemError);
+
+		//window.resolveLocalFileSystemURL(url, successCallback, errorCallback);
+		//the function Retrieve a DirectoryEntry or FileEntry using local URL. (Function)
+//window.resolveLocalFileSystemURL(fsPath, successfullyAccessedFileSystem, errorAccessedFileSystem);
 
 		 	/*	//Check the  External storage (SD card) root. (Android, BlackBerry 10) for a folder named ABDSv5
 		 		$cordovaFile.checkDir(cordova.file.externalDataDirectory, ROOT_OF_BACKUP_AND_RECOVERY)
@@ -87,7 +131,7 @@ alert('Device ready function called '+fsPath+' is being passed to to resolveLoca
 		 							$scope.rootDirectoryCreated ='Directory '+ ROOT_OF_BACKUP_AND_RECOVERY +' was not created due to ' + error +'.';
 							});//end of error creating root of backup
 					});//end of error that the directory does not exist
-*/
+			*/
 
 		 		/*var currentPlatform = ionic.Platform.platform();
 		 		$scope.currentPlatform = "Step 1: You are using "+ currentPlatform + " device.";
@@ -226,6 +270,5 @@ alert('Device ready function called '+fsPath+' is being passed to to resolveLoca
 		    //             $scope.s2 = "here error trying to copy data from phone to SD Card";
 		    //           });
 					*/
-    	});//end of device ready
-	}//end of backup function
+    	}
 });//end of home controller
