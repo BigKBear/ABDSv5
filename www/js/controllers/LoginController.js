@@ -59,38 +59,37 @@ app.controller('LoginCtrl', function($scope, $rootScope, LoginService, $cordovaF
     }
 
     var reset = function() {
-        window.localStorage.removeItem("userUsername");
-        window.localStorage.removeItem("EncryptedPassword");
+      window.localStorage.removeItem("userUsername");
+      window.localStorage.removeItem("EncryptedPassword");
 
-        //Reset folders functionality
-    var test_dir = 'ABDSv5/';
-    var test_dir1 = 'ABDSv5/Encrypted';
-    var test_dir2 = 'ABDSv5/Decrypted';
-   
-    document.addEventListener('deviceready', function () {
-      //checks if the ABDSv5 folder exist
-      $cordovaFile.checkDir(cordova.file.externalRootDirectory, test_dir)
-        .then(function (success) {
-          //remove all folders with in the ABDSv5
-          $cordovaFile.removeRecursively(cordova.file.externalRootDirectory, test_dir)
+      //Reset folders functionality
+      var test_dir = 'ABDSv5/';
+
+      document.addEventListener('deviceready', function () {
+        //checks if the ABDSv5 folder exist
+        $cordovaFile.checkDir(cordova.file.externalRootDirectory, test_dir)
           .then(function (success) {
-        // success
-        alert('Directory '+test_dir+' was cleared.');
-      }, function (error) {
-        // error
-        alert('Error clearing '+test_dir+' folder.');
-      });
-    }, function (error) {
-      alert('Directory '+ test_dir +' Does not Exist');
-      //creates the directory snce it does not exist
-      $cordovaFile.createDir(cordova.file.externalRootDirectory, test_dir, true)
-        .then( function(success) {
-          console.log('Directory was created: OK');
-          alert('Directory '+test_dir+' was created.');
-        }, function(error){
-            alert('Directory '+test_dir+' was not created due to ' + error+'.');
+              //remove all folders with in the ABDSv5
+              $cordovaFile.removeRecursively(cordova.file.externalRootDirectory, test_dir)
+                .then(function (success) {
+                  // success
+                  alert('Directory '+test_dir+' was cleared.');
+                }, function (error) {
+                  // error
+                  alert('Error clearing '+test_dir+' folder.');
+                });
+          }, function (error) {
+            alert('Directory '+ test_dir +' Does not Exist');
+
+            //creates the directory snce it does not exist
+            $cordovaFile.createDir(cordova.file.externalRootDirectory, test_dir, true)
+              .then( function(success) {
+                console.log('Directory was created: OK');
+                alert('Directory '+test_dir+' was created.');
+              }, function(error){
+                alert('Directory '+test_dir+' was not created due to ' + error+'.');
+              });
         });
-    });
   });
     $state.go('register');
     $scope.messagetouser = "Username and password erased";
