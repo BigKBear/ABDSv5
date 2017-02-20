@@ -98,7 +98,8 @@ app.controller('HomeTabCtrl', function($scope, $ionicPopup, $state, $ionicPlatfo
 							}, function (error) {
 								// error
 								console.log(error);
-								$scope.s2 += "\n\nFolder "+folder+"Was not coppied to external memory\n";
+								copyDirToBackUp(folder);
+								//$scope.s2 += "\n\nFolder "+folder+"Was not coppied to external memory\n";
 							});
 				      }
 				        listDir(cordova.file.externalRootDirectory);
