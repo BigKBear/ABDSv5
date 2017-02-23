@@ -132,7 +132,6 @@ app.controller('HomeTabCtrl', function($scope, $ionicPopup, $state, $ionicPlatfo
 					});//end of error creating root of backup
 			});//end of error that the directory does not exist
 
-alert('hi kyle '+BACKUP);
  			//Check to see if a BACKUP already exist
  			$cordovaFile.checkDir(fsPath, BACKUP)
  				.then(function (success) {
@@ -156,43 +155,79 @@ alert('hi kyle '+BACKUP);
 
 			$ionicPlatform.ready(function() {
 		      if (ionic.Platform.isAndroid()) {
-		        /*function listDir(path){
-		          window.resolveLocalFileSystemURL(path,
-		            function (fileSystem) {
-		              var reader = fileSystem.createReader();
-		              reader.readEntries(
-		                function (entries) {
-		                  //$scope.s3 = entries.length();
-		                  videodirectories = entries;
-		                  $scope.videodirectories = videodirectories;
-		                  //window.localStorage.setItem('newsArticle12', localData);				                  
-		              },
-		              function (err) {
-		                console.log(err);
-		              }
-		            );
-		          }, function (err) {
-		            console.log(err);
-		          }
-		        );
-		    }*/
+		    //     function listDir(path){
+		    //       window.resolveLocalFileSystemURL(path,
+		    //         function (fileSystem) {
+		    //           var reader = fileSystem.createReader();
+		    //           reader.readEntries(
+		    //             function (entries) {
+		    //               //$scope.s3 = entries.length();
+		    //               videodirectories = entries;
+		    //               $scope.videodirectories = videodirectories;
+		    //               alert(videodirectories[0]);
+		    //               //window.localStorage.setItem('newsArticle12', localData);				                  
+		    //           },
+		    //           function (err) {
+		    //             console.log(err);
+		    //           }
+		    //         );
+		    //       }, function (err) {
+		    //         console.log(err);
+		    //       }
+		    //     );
+		    // }//end of listDir function
+
 
 		      function copyDirToBackUp(folder){
-		      	//The cordova file library is being used to coppy the given folder to the user external root directory
-		      	//cordova.file.externalDataDirectory
-		      	$cordovaFile.copyDir(fsPath,folder,fsPath+BACKUP,folder)
-					.then(function (success) {
-							// success
-							$scope.s2 += "Folder "+folder+" was copied. \n";
-
-					}, function (error) {
-						// error
-						console.log(error);
-						$scope.s2 += "Folder "+folder+" was NOT coppied to external memory. \n";
-						//ensures that if the folder was not coppied the first time it gets copied the second time
-						//copyDirToBackUp(folder);
-					});
-		      }
+		      	//check if the folder already exist in data backup
+		      	$cordovaFile.checkDir(fsPath+BACKUP, folder)
+ 				.then(function (success) {
+ 					alert('directory '+folder +' exist');
+ 					//Delete the already existing directory
+ 					$cordovaFile.removeDir(fsPath+BACKUP,folder)
+				      .then(function (success) {
+				      	alert('sucessfully removed directory'+ folder);
+				      	// success fully removed previous backup of the directory
+				        //The cordova file library is being used to coppy the given folder to the user external root directory
+				      	//cordova.file.externalDataDirectory
+				      	$cordovaFile.copyDir(fsPath,folder,fsPath+BACKUP,folder)
+							.then(function (success) {
+									alert("Folder "+folder+" was copied. \n");
+									// success
+									$scope.s2 += "Folder "+folder+" was copied. \n";
+							}, function (error) {
+								alert("Folder "+folder+" was NOT copied. \n")
+								//copyDirToBackUp(folder);
+								// error
+								console.log(error);
+								//$scope.s2 += "Folder "+folder+" was NOT coppied to external memory. \n";
+								alert(error,code);
+								//ensures that if the folder was not coppied the first time it gets copied the second time						
+							});
+				      }, function (error) {
+				        // error removing previous backup of the directory
+				        console.log(error);
+				        $scope.s2 += "Folder "+folder+" was not removed sucssfully. \n";
+				        alert("Folder "+folder+" was not removed sucssfully. \n");
+				      });
+ 				}, function (error) {
+ 					alert('directory '+folder +' does NOT exist');
+ 					//The directory does not exist in the backup
+ 					//The cordova file library is being used to coppy the given folder to the user external root directory
+				      	//cordova.file.externalDataDirectory
+				      	$cordovaFile.copyDir(fsPath,folder,fsPath+BACKUP,folder)
+							.then(function (success) {
+									// success
+									$scope.s2 += "Folder "+folder+" was copied. \n";
+							}, function (error) {
+								copyDirToBackUp(folder);
+								// error
+								console.log(error);
+								$scope.s2 += "Folder "+folder+" was NOT coppied to external memory. \n";
+								//ensures that if the folder was not coppied the first time it gets copied the second time						
+							});
+				}
+				);}//end of copyDirToBackup
 
 		      /*function copyBackupToSDCard(folder){
 		      	//The cordova file library is being used to coppy the given folder to the user external root directory
@@ -212,16 +247,16 @@ alert('hi kyle '+BACKUP);
 		      }*/
 		      
 		      // The below shows a lists of all the files and folders currently on the users root directory
-		      //listDir(cordova.file.externalRootDirectory);
+		      //listDir(fsPath);
 
 		        $scope.s2 = "";
 		        $scope.s2 += "Report from "+BACKUP+":";
 		        // copyDirToBackUp("Download");
 		        // copyDirToBackUp("Music");
-		        // copyDirToBackUp("Pictures");
+		        //copyDirToBackUp("Pictures");
 		        // copyDirToBackUp("Movies");
 		        copyDirToBackUp("Documents");
-		        // copyDirToBackUp("DCIM");
+		        copyDirToBackUp("DCIM");
 		        // copyDirToBackUp("Android");
 		        // copyDirToBackUp("Studio");
 		        // copyDirToBackUp("Playlists");
