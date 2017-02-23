@@ -59,6 +59,7 @@ app.config(function($stateProvider, $urlRouterProvider,$ionicConfigProvider) {
     views: {
       'home-tab': {
         templateUrl: "templates/tabs/home.html",
+        // controller: 'BackupCtrl'
         controller: 'HomeTabCtrl'
       }
     },

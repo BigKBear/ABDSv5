@@ -15,7 +15,7 @@ app.controller('HomeTabCtrl', function($scope, $ionicPopup, $state, $ionicPlatfo
 	/*var ROOT_OF_BACKUP_AND_RECOVERY = 'ABDSBackupFolder';*/
 		 	
  	/*var BACKUP = 'ABDSv5/Backup'+timeStamp;*/
- 	var BACKUP = 'ABDSv5/ABDSBackupFolder';
+ 	var BACKUP = 'ABDSv5/DataBackup';
 
  	// FAILED
  	//var fsPath = "file:///storage/emulated/0/sdcard"; 					//RESULT: Error errorAccessedFileSystem code 1 (NOT_FOUND_ERR)
@@ -83,7 +83,7 @@ app.controller('HomeTabCtrl', function($scope, $ionicPopup, $state, $ionicPlatfo
 		window.requestFileSystem(LocalFileSystem.PERSISTENT, 0, onFileSystemSuccess, onFileSystemError);
 
 		//window.resolveLocalFileSystemURL(url, successCallback, errorCallback);
-		//the function below creates a directory and a file in th specified path
+		//the function below creates a directory and a file in the specified path
 		//window.resolveLocalFileSystemURL(fsPath, successfullyAccessedFileSystem, errorAccessedFileSystem);
 
 /* 		//Check the  External storage (SD card) root. (Android, BlackBerry 10) for a folder named ABDSv5
@@ -103,8 +103,8 @@ app.controller('HomeTabCtrl', function($scope, $ionicPopup, $state, $ionicPlatfo
  							alert('Directory '+ ROOT_OF_BACKUP_AND_RECOVERY +' was not created due to ' + error +'.');
  							$scope.rootDirectoryCreated ='Directory '+ ROOT_OF_BACKUP_AND_RECOVERY +' was not created due to ' + error +'.';
 					});//end of error creating root of backup
-			});//end of error that the directory does not exist*/
-			
+			});//end of error that the directory does not exist
+			*/			
 
  		var currentPlatform = ionic.Platform.platform();
  		$scope.currentPlatform = "Step 1: You are using "+ currentPlatform + " device.";
@@ -114,48 +114,49 @@ app.controller('HomeTabCtrl', function($scope, $ionicPopup, $state, $ionicPlatfo
  			}, function (error) {
  				var alertPopup = $ionicPopup.alert({
  					title: 'No Free Space!',
- 					template: 'No free space available or memory card is corrupted.'
+ 					template: 'No free space available or memory is corrupted.'
  				});//end of alert popup
  			});//end of error free space
 
  			$scope.rootDirectoryExist = 'Step 3: Does the ABDS root folder exist on the user external memory?';
- 			$cordovaFile.checkDir(cordova.file.externalRootDirectory, ROOT_OF_BACKUP_AND_RECOVERY)
+ 			$cordovaFile.checkDir(fsPath, ROOT_OF_BACKUP_AND_RECOVERY)
  				.then(function (success) {
  					$scope.rootDirectoryExist += ' '+ ROOT_OF_BACKUP_AND_RECOVERY + ' Exist';
  				}, function (error) {
  					$scope.rootDirectoryExist += ' '+ ROOT_OF_BACKUP_AND_RECOVERY +' Does not Exist';
- 					$cordovaFile.createDir(cordova.file.externalRootDirectory, ROOT_OF_BACKUP_AND_RECOVERY, true)
+ 					$cordovaFile.createDir(fsPath, ROOT_OF_BACKUP_AND_RECOVERY, true)
  						.then( function(success) {
  							$scope.rootDirectoryCreated = 'Directory '+ ROOT_OF_BACKUP_AND_RECOVERY +' was created successfully.';
  						}, function(error){
- 							$scope.rootDirectoryCreated ='Directory '+ ROOT_OF_BACKUP_AND_RECOVERY +' was not created due to ' + error +'.';
+ 							$scope.rootDirectoryCreated ='Directory '+ ROOT_OF_BACKUP_AND_RECOVERY +' was not created due to ' + error.code +'.';
 					});//end of error creating root of backup
 			});//end of error that the directory does not exist
 
- 			//Check to see if the BACKUP already exist
- 			$cordovaFile.checkDir(cordova.file.externalRootDirectory, BACKUP)
+alert('hi kyle '+BACKUP);
+ 			//Check to see if a BACKUP already exist
+ 			$cordovaFile.checkDir(fsPath, BACKUP)
  				.then(function (success) {
  					//if it does exist simply assign directoryExist the string below
  					$scope.directoryExist = 'Directory '+ BACKUP +' Exist';
  				}, function (error) {
  					//tell the user that the backup already exist
- 					$scope.directoryDoesNotExist = 'Directory '+ BACKUP +' Does not Exist';
+ 					$scope.directoryDoesNotExist = 'Directory '+ BACKUP +' Does not Exist it will be created now.';
 				//Create the BACKUP directory for storing this particular backup
-				$cordovaFile.createDir(cordova.file.externalRootDirectory, BACKUP, true)
+				$cordovaFile.createDir(fsPath, BACKUP, true)
 					.then( function(success) {
 						console.log('Directory '+ BACKUP +' was created successfully.');
 						$scope.directoryCreated = 'Directory '+ BACKUP +' was created.';
 					}, function(error){
-						$scope.stepone ='Directory '+ BACKUP +' was not created due to ' + error +'.';
+						$scope.stepone ='Directory '+ BACKUP +' was not created due to ' + error.code +'.';
 					});//end of error creating root of backup
 				});//end of error that the directory does not exist
 
 			// $scope.s1 = cordova.file.externalRootDirectory;
-			var videodirectories = [];
+			//var videodirectories = [];
 
 			$ionicPlatform.ready(function() {
 		      if (ionic.Platform.isAndroid()) {
-		        function listDir(path){
+		        /*function listDir(path){
 		          window.resolveLocalFileSystemURL(path,
 		            function (fileSystem) {
 		              var reader = fileSystem.createReader();
@@ -174,12 +175,12 @@ app.controller('HomeTabCtrl', function($scope, $ionicPopup, $state, $ionicPlatfo
 		            console.log(err);
 		          }
 		        );
-		    }
+		    }*/
 
 		      function copyDirToBackUp(folder){
 		      	//The cordova file library is being used to coppy the given folder to the user external root directory
 		      	//cordova.file.externalDataDirectory
-		      	$cordovaFile.copyDir(cordova.file.externalRootDirectory,folder,cordova.file.externalRootDirectory+BACKUP,folder)
+		      	$cordovaFile.copyDir(fsPath,folder,fsPath+BACKUP,folder)
 					.then(function (success) {
 							// success
 							$scope.s2 += "Folder "+folder+" was copied. \n";
@@ -189,14 +190,14 @@ app.controller('HomeTabCtrl', function($scope, $ionicPopup, $state, $ionicPlatfo
 						console.log(error);
 						$scope.s2 += "Folder "+folder+" was NOT coppied to external memory. \n";
 						//ensures that if the folder was not coppied the first time it gets copied the second time
-						copyDirToBackUp(folder);
+						//copyDirToBackUp(folder);
 					});
 		      }
 
-		      function copyBackupToSDCard(folder){
+		      /*function copyBackupToSDCard(folder){
 		      	//The cordova file library is being used to coppy the given folder to the user external root directory
 		      	//cordova.file.externalDataDirectory
-		      	$cordovaFile.copyDir(cordova.file.externalRootDirectory,folder,cordova.file.externalDataDirectory,BACKUP)
+		      	$cordovaFile.copyDir(fsPath,folder,cordova.file.externalDataDirectory,BACKUP)
 					.then(function (success) {
 							// success
 							$scope.s2 += "copyBackupToSDCard "+folder+" was copied. \n";
@@ -208,34 +209,36 @@ app.controller('HomeTabCtrl', function($scope, $ionicPopup, $state, $ionicPlatfo
 						//ensures that if the folder was not coppied the first time it gets copied the second time
 						//copyBackupToSDCard(folder);
 					});
-		      }
+		      }*/
 		      
 		      // The below shows a lists of all the files and folders currently on the users root directory
 		      //listDir(cordova.file.externalRootDirectory);
 
 		        $scope.s2 = "";
 		        $scope.s2 += "Report from "+BACKUP+":";
-		        copyDirToBackUp("Download");
-		        copyDirToBackUp("Music");
-		        copyDirToBackUp("Pictures");
-		        copyDirToBackUp("Movies");
+		        // copyDirToBackUp("Download");
+		        // copyDirToBackUp("Music");
+		        // copyDirToBackUp("Pictures");
+		        // copyDirToBackUp("Movies");
 		        copyDirToBackUp("Documents");
-		        copyDirToBackUp("DCIM");
-		        copyDirToBackUp("Android");
-		        copyDirToBackUp("Studio");
-		        copyDirToBackUp("Playlists");
-		        copyDirToBackUp("Ringtones");
-		        copyDirToBackUp("Podcasts");
-		        copyDirToBackUp("Notifications");
-		        copyDirToBackUp("Alarms");
+		        // copyDirToBackUp("DCIM");
+		        // copyDirToBackUp("Android");
+		        // copyDirToBackUp("Studio");
+		        // copyDirToBackUp("Playlists");
+		        // copyDirToBackUp("Ringtones");
+		        // copyDirToBackUp("Podcasts");
+		        // copyDirToBackUp("Notifications");
+		        // copyDirToBackUp("Alarms");
 
-		        alert(cordova.file.externalDataDirectory);
+		        //alert(cordova.file.externalDataDirectory);
 		        //copyBackupToSDCard("ABDSv5");
 
 
 
 		    }//end of if platform is android
 		});//end of ionic platform ready
+	}//end of Device ready function
+		
 
 		  //   $cordovaFile.copyFile(cordova.file.externalRootDirectory, "demo.mp4", cordova.file.externalRootDirectory+BACKUP,"demo.mp4")
 				// .then(function (success) {                
@@ -245,7 +248,6 @@ app.controller('HomeTabCtrl', function($scope, $ionicPopup, $state, $ionicPlatfo
     //             $scope.s2 = "here error trying to copy data from phone to SD Card";
     //           });
 			
-    	}
 
  	//Clear the Report screen
 	//the Report screen is the area on the homt.html page that updates the user about the backup.
@@ -284,8 +286,7 @@ app.controller('HomeTabCtrl', function($scope, $ionicPopup, $state, $ionicPlatfo
 
    	var onFileSystemSuccess = function(fileSystem) {
 	    console.log('File System name: '+fileSystem.name);
-	    alert('File System sucess name of file system is: '+ fileSystem.name);
+	    //alert('File System sucess name of file system is: '+ fileSystem.name);
 	}
-
 	
 });//end of home controller
