@@ -12,43 +12,47 @@ app.controller('HomeTabCtrl', function($scope, $ionicPopup, $state, $ionicPlatfo
 
 	//Tells the application what folder to create or look for when doing backup
 	var ROOT_OF_BACKUP_AND_RECOVERY = 'ABDSv5/';
+	var ROOT_OF_APP_BACKUP = 'AppsBackup/';
+	var ROOT_OF_DATA_BACKUP = 'DataBackup/';
+	var ROOT_OF_ANDROID_OS_BACKUP = 'AndroidOSBackup/';
 	/*var ROOT_OF_BACKUP_AND_RECOVERY = 'ABDSBackupFolder';*/
 		 	
  	/*var BACKUP = 'ABDSv5/Backup'+timeStamp;*/
- 	var BACKUP = 'ABDSv5/DataBackup';
+ 	//var BACKUP = ROOT_OF_BACKUP_AND_RECOVERY+'DataBackup/';
+ 	var BACKUP = ROOT_OF_BACKUP_AND_RECOVERY;
 
  	// FAILED
- 	//var fsPath = "file:///storage/emulated/0/sdcard"; 					//RESULT: Error errorAccessedFileSystem code 1 (NOT_FOUND_ERR)
+ 	//var file_system_path = "file:///storage/emulated/0/sdcard"; 					//RESULT: Error errorAccessedFileSystem code 1 (NOT_FOUND_ERR)
 
-	//var fsPath = "file:///"; 												//RESULT: Error errorAccessedFileSystem code 5 (ENCODING_ERR)
-	//var fsPath = "/storage/extSdCard/"; 									//RESULT: Error errorAccessedFileSystem code 5 (ENCODING_ERR)
-	//var fsPath = "/storage/sdcard1/";  									//RESULT: Error errorAccessedFileSystem code 5 (ENCODING_ERR)
-	//var fsPath = "/storage/usbcard1/";  									//RESULT: Error errorAccessedFileSystem code 5 (ENCODING_ERR)
-	//var fsPath = "/storage/sdcard0/";  									//RESULT: Error errorAccessedFileSystem code 5 (ENCODING_ERR)
-	//var fsPath = "storage/extSdCard/"; 									//RESULT: Error errorAccessedFileSystem code 5 (ENCODING_ERR)
-	//var fsPath = "file:///storage/extSdCard/"; 							//RESULT: Error errorAccessedFileSystem code 5 (ENCODING_ERR)
-	//var fsPath = "file:///storage/sdcard1/";								//RESULT: Error errorAccessedFileSystem code 5 (ENCODING_ERR)
-	//var fsPath = "file:///storage/sdcard0/";								//RESULT: Error errorAccessedFileSystem code 5 (ENCODING_ERR)
-	//var fsPath = "file:///storage/usbcard1/";								//RESULT: Error errorAccessedFileSystem code 5 (ENCODING_ERR)
-	//var fsPath = 'file:///storage/extSdCard/‌​';							//RESULT: Error errorAccessedFileSystem code 5 (ENCODING_ERR)
-	//var fsPath = "file:///data/user/0/com.ionicframework.abdsv5451959/"; 	//RESULT: Error errorAccessedFileSystem code 5 (ENCODING_ERR)
-	//var fsPath = "file:///storage/emulated/sdcard"; 						//RESULT: Error errorAccessedFileSystem code 5 (ENCODING_ERR)
-	//var fsPath = 'cdvfile://sdcard/';										//RESULT: Error errorAccessedFileSystem code 5 (ENCODING_ERR)
-	//var fsPath = 'cdvfile:///sdcard1/';									//RESULT: Error errorAccessedFileSystem code 5 (ENCODING_ERR)
-	//var fsPath = 'cdvfile://localhost/SD card/';							//RESULT: Error errorAccessedFileSystem code 5 (ENCODING_ERR)
-	//var fsPath = cordova.file.applicationStorageDirectory;				//RESULT: Error errorAccessedFileSystem code 5 (ENCODING_ERR)
-	//var fsPath = 'cdvfile:///';											//RESULT: Error errorAccessedFileSystem code 5 (ENCODING_ERR)
+	//var file_system_path = "file:///"; 												//RESULT: Error errorAccessedFileSystem code 5 (ENCODING_ERR)
+	//var file_system_path = "/storage/extSdCard/"; 									//RESULT: Error errorAccessedFileSystem code 5 (ENCODING_ERR)
+	//var file_system_path = "/storage/sdcard1/";  									//RESULT: Error errorAccessedFileSystem code 5 (ENCODING_ERR)
+	//var file_system_path = "/storage/usbcard1/";  									//RESULT: Error errorAccessedFileSystem code 5 (ENCODING_ERR)
+	//var file_system_path = "/storage/sdcard0/";  									//RESULT: Error errorAccessedFileSystem code 5 (ENCODING_ERR)
+	//var file_system_path = "storage/extSdCard/"; 									//RESULT: Error errorAccessedFileSystem code 5 (ENCODING_ERR)
+	//var file_system_path = "file:///storage/extSdCard/"; 							//RESULT: Error errorAccessedFileSystem code 5 (ENCODING_ERR)
+	//var file_system_path = "file:///storage/sdcard1/";								//RESULT: Error errorAccessedFileSystem code 5 (ENCODING_ERR)
+	//var file_system_path = "file:///storage/sdcard0/";								//RESULT: Error errorAccessedFileSystem code 5 (ENCODING_ERR)
+	//var file_system_path = "file:///storage/usbcard1/";								//RESULT: Error errorAccessedFileSystem code 5 (ENCODING_ERR)
+	//var file_system_path = 'file:///storage/extSdCard/‌​';							//RESULT: Error errorAccessedFileSystem code 5 (ENCODING_ERR)
+	//var file_system_path = "file:///data/user/0/com.ionicframework.abdsv5451959/"; 	//RESULT: Error errorAccessedFileSystem code 5 (ENCODING_ERR)
+	//var file_system_path = "file:///storage/emulated/sdcard"; 						//RESULT: Error errorAccessedFileSystem code 5 (ENCODING_ERR)
+	//var file_system_path = 'cdvfile://sdcard/';										//RESULT: Error errorAccessedFileSystem code 5 (ENCODING_ERR)
+	//var file_system_path = 'cdvfile:///sdcard1/';									//RESULT: Error errorAccessedFileSystem code 5 (ENCODING_ERR)
+	//var file_system_path = 'cdvfile://localhost/SD card/';							//RESULT: Error errorAccessedFileSystem code 5 (ENCODING_ERR)
+	//var file_system_path = cordova.file.applicationStorageDirectory;				//RESULT: Error errorAccessedFileSystem code 5 (ENCODING_ERR)
+	//var file_system_path = 'cdvfile:///';											//RESULT: Error errorAccessedFileSystem code 5 (ENCODING_ERR)
 
 	//PARTIALLY WORKS		 		
 	//TEMPORARY STORAGE-when the app is uninstalled the data stored here also is uninstalled
-	//var fsPath = cordova.file.externalApplicationStorageDirectory; 		//RESULT: folder created in Local storage/Device Storage/Android/data/<project id>/<created folder> NOT SD Card
-	//var fsPath = cordova.file.externalDataDirectory;						//RESULT: folder created in Local storage/Device Storage/Android/data/<project id>/<created folder> NOT SD Card
+	//var file_system_path = cordova.file.externalApplicationStorageDirectory; 		//RESULT: folder created in Local storage/Device Storage/Android/data/<project id>/<created folder> NOT SD Card
+	//var file_system_path = cordova.file.externalDataDirectory;						//RESULT: folder created in Local storage/Device Storage/Android/data/<project id>/<created folder> NOT SD Card
 
-	var fsPath = cordova.file.externalRootDirectory; 						//RESULT: folder created in Local storage Device Storage NOT SD Card
-	//var fsPath = "file:///storage/emulated/0/"; 							//RESULT: folder created in Local storage Device Storage NOT SD Card
-	//var fsPath = 'cdvfile://localhost/sdcard/';							//RESULT: folder created in Local storage Device Storage NOT SD Card
-	//var fsPath = 'cdvfile:///sdcard/';									//RESULT: folder created in Local storage Device Storage NOT SD Card
-	//var fsPath = 'file:///sdcard/';										//RESULT: folder created in Local storage Device Storage NOT SD Card
+	var file_system_path = cordova.file.externalRootDirectory; 						//RESULT: folder created in Local storage Device Storage NOT SD Card
+	//var file_system_path = "file:///storage/emulated/0/"; 							//RESULT: folder created in Local storage Device Storage NOT SD Card
+	//var file_system_path = 'cdvfile://localhost/sdcard/';							//RESULT: folder created in Local storage Device Storage NOT SD Card
+	//var file_system_path = 'cdvfile:///sdcard/';									//RESULT: folder created in Local storage Device Storage NOT SD Card
+	//var file_system_path = 'file:///sdcard/';										//RESULT: folder created in Local storage Device Storage NOT SD Card
 	
 	
 	
@@ -67,6 +71,8 @@ app.controller('HomeTabCtrl', function($scope, $ionicPopup, $state, $ionicPlatfo
 		NB this could be changed to say maximum of five backups
 		-
 	*/
+	//CreateAllBackUpFolders();
+
 	$scope.backup = function(){
 	 	//Displays in the console exactly when the backup function was called
 	 	console.log('Starting backup of user data');
@@ -77,14 +83,14 @@ app.controller('HomeTabCtrl', function($scope, $ionicPopup, $state, $ionicPlatfo
 	}//end of backup function
 
 	var DeviceReadyFunction = function () {
-		//alert('Device ready function called '+fsPath+' is being passed to to resolveLocalFileSystemURL');
+		//alert('Device ready function called '+file_system_path+' is being passed to to resolveLocalFileSystemURL');
 
 		// request the persistent file system a file system in which to store application data.
 		window.requestFileSystem(LocalFileSystem.PERSISTENT, 0, onFileSystemSuccess, onFileSystemError);
 
 		//window.resolveLocalFileSystemURL(url, successCallback, errorCallback);
 		//the function below creates a directory and a file in the specified path
-		//window.resolveLocalFileSystemURL(fsPath, successfullyAccessedFileSystem, errorAccessedFileSystem);
+		//window.resolveLocalFileSystemURL(file_system_path, successfullyAccessedFileSystem, errorAccessedFileSystem);
 
 /* 		//Check the  External storage (SD card) root. (Android, BlackBerry 10) for a folder named ABDSv5
  		$cordovaFile.checkDir(cordova.file.externalDataDirectory, ROOT_OF_BACKUP_AND_RECOVERY)
@@ -119,36 +125,36 @@ app.controller('HomeTabCtrl', function($scope, $ionicPopup, $state, $ionicPlatfo
  			});//end of error free space
 
  			$scope.rootDirectoryExist = 'Step 3: Does the ABDS root folder exist on the user external memory?';
- 			$cordovaFile.checkDir(fsPath, ROOT_OF_BACKUP_AND_RECOVERY)
+ 			
+
+ 			$cordovaFile.checkDir(file_system_path, ROOT_OF_BACKUP_AND_RECOVERY)
  				.then(function (success) {
  					$scope.rootDirectoryExist += ' '+ ROOT_OF_BACKUP_AND_RECOVERY + ' Exist';
  				}, function (error) {
  					$scope.rootDirectoryExist += ' '+ ROOT_OF_BACKUP_AND_RECOVERY +' Does not Exist';
- 					$cordovaFile.createDir(fsPath, ROOT_OF_BACKUP_AND_RECOVERY, true)
+ 					$cordovaFile.createDir(file_system_path, ROOT_OF_BACKUP_AND_RECOVERY, true)
  						.then( function(success) {
  							$scope.rootDirectoryCreated = 'Directory '+ ROOT_OF_BACKUP_AND_RECOVERY +' was created successfully.';
  						}, function(error){
- 							$scope.rootDirectoryCreated ='Directory '+ ROOT_OF_BACKUP_AND_RECOVERY +' was not created due to ' + error.code +'.';
+ 							$scope.rootDirectoryCreated ='Directory '+ ROOT_OF_BACKUP_AND_RECOVERY +' was not created due to error code ' + error.code +'.';
 					});//end of error creating root of backup
 			});//end of error that the directory does not exist
 
- 			//Check to see if a BACKUP already exist
- 			$cordovaFile.checkDir(fsPath, BACKUP)
+ 			/*//Check to see if a BACKUP already exist
+ 			$cordovaFile.checkDir(file_system_path+ROOT_OF_BACKUP_AND_RECOVERY, 'DataBackup/')
  				.then(function (success) {
  					//if it does exist simply assign directoryExist the string below
  					$scope.directoryExist = 'Directory '+ BACKUP +' Exist';
  				}, function (error) {
  					//tell the user that the backup already exist
  					$scope.directoryDoesNotExist = 'Directory '+ BACKUP +' Does not Exist it will be created now.';
-				//Create the BACKUP directory for storing this particular backup
-				$cordovaFile.createDir(fsPath, BACKUP, true)
-					.then( function(success) {
-						console.log('Directory '+ BACKUP +' was created successfully.');
-						$scope.directoryCreated = 'Directory '+ BACKUP +' was created.';
-					}, function(error){
-						$scope.stepone ='Directory '+ BACKUP +' was not created due to ' + error.code +'.';
-					});//end of error creating root of backup
-				});//end of error that the directory does not exist
+					$cordovaFile.createDir(file_system_path, BACKUP, true)
+						.then( function(success) {
+							$scope.directoryCreated = 'Directory '+ BACKUP +' was created.';
+						}, function(error){
+							$scope.stepone ='Directory '+ BACKUP +' was not created due to error code ' + error.code +'.';
+						});//end of error creating root of backup
+				});//end of error that the directory does not exist*/
 
 			// $scope.s1 = cordova.file.externalRootDirectory;
 			//var videodirectories = [];
@@ -178,61 +184,66 @@ app.controller('HomeTabCtrl', function($scope, $ionicPopup, $state, $ionicPlatfo
 		    // }//end of listDir function
 
 
-		      function copyDirToBackUp(folder){
+		    function copyDirToBackUp(folder){
+		      	//$scope.s2 +='check if the folder '+folder +' exist in ' +file_system_path+BACKUP +' exist.';
 		      	//check if the folder already exist in data backup
-		      	$cordovaFile.checkDir(fsPath+BACKUP, folder)
+		      	$cordovaFile.checkDir(file_system_path+BACKUP, folder)
  				.then(function (success) {
- 					alert('directory '+folder +' exist');
  					//Delete the already existing directory
- 					$cordovaFile.removeDir(fsPath+BACKUP,folder)
+ 					$cordovaFile.removeRecursively(file_system_path+BACKUP,folder)
 				      .then(function (success) {
-				      	alert('sucessfully removed directory'+ folder);
 				      	// success fully removed previous backup of the directory
 				        //The cordova file library is being used to coppy the given folder to the user external root directory
 				      	//cordova.file.externalDataDirectory
-				      	$cordovaFile.copyDir(fsPath,folder,fsPath+BACKUP,folder)
+				      	$cordovaFile.copyDir(file_system_path,folder,file_system_path+BACKUP,folder)
 							.then(function (success) {
-									alert("Folder "+folder+" was copied. \n");
 									// success
 									$scope.s2 += "Folder "+folder+" was copied. \n";
 							}, function (error) {
-								alert("Folder "+folder+" was NOT copied. \n")
+								//alert("Folder "+folder+" was NOT copied error "+error.code);
 								//copyDirToBackUp(folder);
 								// error
-								console.log(error);
+								console.log("Folder "+folder+" was NOT copied error "+error.code);
 								//$scope.s2 += "Folder "+folder+" was NOT coppied to external memory. \n";
-								alert(error,code);
 								//ensures that if the folder was not coppied the first time it gets copied the second time						
 							});
 				      }, function (error) {
 				        // error removing previous backup of the directory
-				        console.log(error);
-				        $scope.s2 += "Folder "+folder+" was not removed sucssfully. \n";
-				        alert("Folder "+folder+" was not removed sucssfully. \n");
+				        console.log("Folder "+folder+" was not removed sucssfully. \n");
+				        //$scope.s2 += "Folder "+folder+" was not removed sucssfully. \n";
+				        //alert("Folder "+folder+" was not removed sucssfully. \n");
 				      });
- 				}, function (error) {
- 					alert('directory '+folder +' does NOT exist');
- 					//The directory does not exist in the backup
- 					//The cordova file library is being used to coppy the given folder to the user external root directory
-				      	//cordova.file.externalDataDirectory
-				      	$cordovaFile.copyDir(fsPath,folder,fsPath+BACKUP,folder)
-							.then(function (success) {
-									// success
-									$scope.s2 += "Folder "+folder+" was copied. \n";
-							}, function (error) {
-								copyDirToBackUp(folder);
-								// error
-								console.log(error);
-								$scope.s2 += "Folder "+folder+" was NOT coppied to external memory. \n";
-								//ensures that if the folder was not coppied the first time it gets copied the second time						
-							});
-				}
-				);}//end of copyDirToBackup
+ 					},function (error) {
+	 					//alert('directory '+folder +' does NOT exist');
+	 					//$scope.s2 += 'directory '+folder +' does NOT exist';
+	 					//The directory does not exist in the backup so it must be created
+	 					$cordovaFile.createDir(file_system_path+BACKUP, folder, true)
+						.then( function(success) {
+							$scope.s2 +='Directory '+ folder +' was created.';
+							//The cordova file library is being used to coppy the given folder to the user external root directory
+					      	//cordova.file.externalDataDirectory
+					      	$cordovaFile.copyDir(file_system_path,folder,file_system_path+BACKUP, folder)
+								.then(function (success) {
+										// success
+										$scope.s2 += "Folder "+folder+" was copied. \n";
+								}, function (error) {
+									//copyDirToBackUp(folder);
+									// error
+									console.log(error);
+									$scope.s2 += "Folder "+folder+" was NOT coppied to external memory error code "+ error.code+" \n";
+									//ensures that if the folder was not coppied the first time it gets copied the second time						
+								});
+						}, function(error){
+							alert('Directory '+ folder +' was not created due to error code ' + error.code +'.');
+						});//end of error creating root of backup	 					
+					}
+				);
+			}//end of copyDirToBackup
 
 		      /*function copyBackupToSDCard(folder){
 		      	//The cordova file library is being used to coppy the given folder to the user external root directory
 		      	//cordova.file.externalDataDirectory
-		      	$cordovaFile.copyDir(fsPath,folder,cordova.file.externalDataDirectory,BACKUP)
+		      	$cordovaFile.copyDir(file_system_path,folder,cordova.file.externalDataDirectory,BACKUP)
 					.then(function (success) {
 							// success
 							$scope.s2 += "copyBackupToSDCard "+folder+" was copied. \n";
@@ -247,28 +258,33 @@ app.controller('HomeTabCtrl', function($scope, $ionicPopup, $state, $ionicPlatfo
 		      }*/
 		      
 		      // The below shows a lists of all the files and folders currently on the users root directory
-		      //listDir(fsPath);
+
+
+
+//listDir(file_system_path);
+
+
 
 		        $scope.s2 = "";
 		        $scope.s2 += "Report from "+BACKUP+":";
-		        // copyDirToBackUp("Download");
-		        // copyDirToBackUp("Music");
-		        //copyDirToBackUp("Pictures");
-		        // copyDirToBackUp("Movies");
+		        copyDirToBackUp("Download");
+		        copyDirToBackUp("Music");
+		        copyDirToBackUp("Pictures");
+		        copyDirToBackUp("Movies");
 		        copyDirToBackUp("Documents");
 		        copyDirToBackUp("DCIM");
-		        // copyDirToBackUp("Android");
-		        // copyDirToBackUp("Studio");
-		        // copyDirToBackUp("Playlists");
-		        // copyDirToBackUp("Ringtones");
-		        // copyDirToBackUp("Podcasts");
-		        // copyDirToBackUp("Notifications");
-		        // copyDirToBackUp("Alarms");
+		        copyDirToBackUp("Android");
+		        copyDirToBackUp("Studio");
+		        copyDirToBackUp("Playlists");
+		        copyDirToBackUp("Ringtones");
+		        copyDirToBackUp("Podcasts");
+		        copyDirToBackUp("Notifications");
+		        copyDirToBackUp("Alarms");
 
 		        //alert(cordova.file.externalDataDirectory);
 		        //copyBackupToSDCard("ABDSv5");
 
-
+		        //TODO:Encrypt the BACUPFOLDER
 
 		    }//end of if platform is android
 		});//end of ionic platform ready
@@ -282,16 +298,48 @@ app.controller('HomeTabCtrl', function($scope, $ionicPopup, $state, $ionicPlatfo
                 
     //             $scope.s2 = "here error trying to copy data from phone to SD Card";
     //           });
-			
 
  	//Clear the Report screen
 	//the Report screen is the area on the homt.html page that updates the user about the backup.
+	var CreateAllBackUpFolders = function(){
+		//Root of all ABDS backups
+		CreateABackupFolder(file_system_path,ROOT_OF_BACKUP_AND_RECOVERY);
+		//Data backup folder
+		CreateABackupFolder(file_system_path+ROOT_OF_BACKUP_AND_RECOVERY,ROOT_OF_APP_BACKUP);
+		//App backup folder
+		CreateABackupFolder(file_system_path+ROOT_OF_BACKUP_AND_RECOVERY,ROOT_OF_DATA_BACKUP);
+		//OS backup folder
+		CreateABackupFolder(file_system_path+ROOT_OF_BACKUP_AND_RECOVERY,ROOT_OF_ANDROID_OS_BACKUP);
+	}
+
+	var CreateABackupFolder = function(parent_directory,folderToBeCreated){
+		$cordovaFile.checkDir(parent_directory, folderToBeCreated)
+ 				.then(function (success) {
+ 					$scope.rootDirectoryExist += ' '+ folderToBeCreated + ' Exist';
+ 				}, function (error) {
+ 					$scope.rootDirectoryExist += ' '+ folderToBeCreated +' Does not Exist';
+ 					$cordovaFile.createDir(parent_directory, folderToBeCreated, true)
+ 						.then( function(success) {
+ 							$scope.rootDirectoryCreated = 'Directory '+ folderToBeCreated +' was created successfully.';
+ 						}, function(error){
+ 							$scope.rootDirectoryCreated ='Directory '+ folderToBeCreated +' was not created due to error code ' + error.code +'.';
+					});//end of error creating root of backup
+			});//end of error that the directory does not exist
+	}
+
 	var clearReportAreaForBackup = function(){
+		$scope.s1 = "";
 		$scope.s2 = "";
+		$scope.s3 = "";
+		$scope.currentPlatform = "";
+		$scope.freeSpace = "";
+		$scope.rootDirectoryExist = "";
+		$scope.rootDirectoryCreated = "";
+		$scope.stepone = "";
 	}//end of clear the Report screen function
 
 	var successfullyAccessedFileSystem = function(fileSystem) {
-		console.log("Root = " + fsPath);
+		console.log("Root = " + file_system_path);
 		fileSystem.getDirectory("ABDSv5", {create: true, exclusive: false}, afterDirectoryIsCreated,dirEntryError);
    	}
 

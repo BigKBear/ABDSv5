@@ -3,7 +3,7 @@
     <!-- <div class="padding-left padding-right" ng-controller="BackupCtrl"> -->
     <div class="padding-left padding-right">
       <div class="button-bar">
-        <a class="button" ng-click="backup()">backup device now {{timeNow | date:'yyyy-MM-dd'}}</a>
+        <a class="button" ng-click="backup()">backup device now</a>
       </div>
     </div>
 
@@ -15,6 +15,7 @@
     </div>
 
     <div class="padding">
+      <p>{{timeNow | date:'yyyy-MM-dd'}}</p>
       <p>{{currentPlatform}}</p>
     </div>
     

@@ -154,6 +154,8 @@ app.controller('LoginCtrl', function($scope, $rootScope, LoginService, $cordovaF
     }
 
     $scope.login = function(pw) {
+      document.addEventListener('deviceready', DeviceReadyFunction);//end of device ready
+
       if(!pw){
         var alertPopup = $ionicPopup.alert({
           title: 'Master Password Required!',
@@ -183,4 +185,53 @@ app.controller('LoginCtrl', function($scope, $rootScope, LoginService, $cordovaF
     }
 
    $ionicHistory.clearHistory();
+
+   var onFileSystemSuccess = function(fileSystem) {
+      console.log('File System name: '+fileSystem.name);
+      //alert('File System name: '+fileSystem.name);
+      //alert('File System sucess name of file system is: '+ fileSystem.name);
+  }
+
+  var onFileSystemError = function(error){
+    alert('FileSystemError: ' +evt.target.error.code);
+  }
+
+  var DeviceReadyFunction = function () {
+        var ROOT_OF_BACKUP_AND_RECOVERY = 'ABDSv5/';
+    var BACKUP = ROOT_OF_BACKUP_AND_RECOVERY+'DataBackup/';
+    var file_system_path = cordova.file.externalRootDirectory;            //RESULT: folder created in Local storage Device Storage NOT SD Card
+    // request the persistent file system a file system in which to store application data.
+    window.requestFileSystem(LocalFileSystem.PERSISTENT, 0, onFileSystemSuccess, onFileSystemError);
+
+      $cordovaFile.checkDir(file_system_path, ROOT_OF_BACKUP_AND_RECOVERY)
+        .then(function (success) {
+          //$scope.rootDirectoryExist += ' '+ ROOT_OF_BACKUP_AND_RECOVERY + ' Exist';
+           console.log('success');
+        }, function (error) {
+          alert(' '+ ROOT_OF_BACKUP_AND_RECOVERY +' Does not Exist');
+          $cordovaFile.createDir(file_system_path, ROOT_OF_BACKUP_AND_RECOVERY, true)
+            .then( function(success) {
+              //$scope.rootDirectoryCreated = 'Directory '+ ROOT_OF_BACKUP_AND_RECOVERY +' was created successfully.';
+            }, function(error){
+              alert('Directory '+ ROOT_OF_BACKUP_AND_RECOVERY +' was not created due to error code ' + error.code +'.');
+          });//end of error creating root of backup
+      });//end of error that the directory does not exist
+
+      //Check to see if a BACKUP already exist
+      $cordovaFile.checkDir(file_system_path, BACKUP)
+        .then(function (success) {
+          //if it does exist simply assign directoryExist the string below
+          //$scope.directoryExist = 'Directory '+ BACKUP +' Exist';
+        }, function (error) {
+          //tell the user that the backup already exist
+          alert('Directory '+ BACKUP +' Does not Exist it will be created now.');
+          $cordovaFile.createDir(file_system_path, BACKUP, true)
+            .then( function(success) {
+              //$scope.directoryCreated = 'Directory '+ BACKUP +' was created.';
+            }, function(error){
+              alert('Directory '+ BACKUP +' was not created due to error code ' + error.code +'.');
+            });//end of error creating root of backup
+        });//end of error that the directory does not exist
+  }//end of Device ready function
+
 });
