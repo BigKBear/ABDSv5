@@ -15,38 +15,9 @@ app.controller('HomeTabCtrl', function($scope, $ionicPopup, $state, $ionicPlatfo
 	var ROOT_OF_APP_BACKUP = 'AppsBackup/';
 	var ROOT_OF_DATA_BACKUP = 'DataBackup/';
 	var ROOT_OF_ANDROID_OS_BACKUP = 'AndroidOSBackup/';
-	/*var ROOT_OF_BACKUP_AND_RECOVERY = 'ABDSBackupFolder';*/
-		 	
- 	/*var BACKUP = 'ABDSv5/Backup'+timeStamp;*/
- 	//var BACKUP = ROOT_OF_BACKUP_AND_RECOVERY+'DataBackup/';
- 	var BACKUP = ROOT_OF_BACKUP_AND_RECOVERY;
-
- 	// FAILED
- 	//var file_system_path = "file:///storage/emulated/0/sdcard"; 					//RESULT: Error errorAccessedFileSystem code 1 (NOT_FOUND_ERR)
-
-	//var file_system_path = "file:///"; 												//RESULT: Error errorAccessedFileSystem code 5 (ENCODING_ERR)
-	//var file_system_path = "/storage/extSdCard/"; 									//RESULT: Error errorAccessedFileSystem code 5 (ENCODING_ERR)
-	//var file_system_path = "/storage/sdcard1/";  									//RESULT: Error errorAccessedFileSystem code 5 (ENCODING_ERR)
-	//var file_system_path = "/storage/usbcard1/";  									//RESULT: Error errorAccessedFileSystem code 5 (ENCODING_ERR)
-	//var file_system_path = "/storage/sdcard0/";  									//RESULT: Error errorAccessedFileSystem code 5 (ENCODING_ERR)
-	//var file_system_path = "storage/extSdCard/"; 									//RESULT: Error errorAccessedFileSystem code 5 (ENCODING_ERR)
-	//var file_system_path = "file:///storage/extSdCard/"; 							//RESULT: Error errorAccessedFileSystem code 5 (ENCODING_ERR)
-	//var file_system_path = "file:///storage/sdcard1/";								//RESULT: Error errorAccessedFileSystem code 5 (ENCODING_ERR)
-	//var file_system_path = "file:///storage/sdcard0/";								//RESULT: Error errorAccessedFileSystem code 5 (ENCODING_ERR)
-	//var file_system_path = "file:///storage/usbcard1/";								//RESULT: Error errorAccessedFileSystem code 5 (ENCODING_ERR)
-	//var file_system_path = 'file:///storage/extSdCard/‌​';							//RESULT: Error errorAccessedFileSystem code 5 (ENCODING_ERR)
-	//var file_system_path = "file:///data/user/0/com.ionicframework.abdsv5451959/"; 	//RESULT: Error errorAccessedFileSystem code 5 (ENCODING_ERR)
-	//var file_system_path = "file:///storage/emulated/sdcard"; 						//RESULT: Error errorAccessedFileSystem code 5 (ENCODING_ERR)
-	//var file_system_path = 'cdvfile://sdcard/';										//RESULT: Error errorAccessedFileSystem code 5 (ENCODING_ERR)
-	//var file_system_path = 'cdvfile:///sdcard1/';									//RESULT: Error errorAccessedFileSystem code 5 (ENCODING_ERR)
-	//var file_system_path = 'cdvfile://localhost/SD card/';							//RESULT: Error errorAccessedFileSystem code 5 (ENCODING_ERR)
-	//var file_system_path = cordova.file.applicationStorageDirectory;				//RESULT: Error errorAccessedFileSystem code 5 (ENCODING_ERR)
-	//var file_system_path = 'cdvfile:///';											//RESULT: Error errorAccessedFileSystem code 5 (ENCODING_ERR)
-
-	//PARTIALLY WORKS		 		
-	//TEMPORARY STORAGE-when the app is uninstalled the data stored here also is uninstalled
-	//var file_system_path = cordova.file.externalApplicationStorageDirectory; 		//RESULT: folder created in Local storage/Device Storage/Android/data/<project id>/<created folder> NOT SD Card
-	//var file_system_path = cordova.file.externalDataDirectory;						//RESULT: folder created in Local storage/Device Storage/Android/data/<project id>/<created folder> NOT SD Card
+	
+	//The below is no longer being used
+ 	//var BACKUP = ROOT_OF_BACKUP_AND_RECOVERY;
 
 	var file_system_path = cordova.file.externalRootDirectory; 						//RESULT: folder created in Local storage Device Storage NOT SD Card
 	//var file_system_path = "file:///storage/emulated/0/"; 							//RESULT: folder created in Local storage Device Storage NOT SD Card
@@ -71,14 +42,13 @@ app.controller('HomeTabCtrl', function($scope, $ionicPopup, $state, $ionicPlatfo
 		NB this could be changed to say maximum of five backups
 		-
 	*/
-	//CreateAllBackUpFolders();
 
 	$scope.backup = function(){
 	 	//Displays in the console exactly when the backup function was called
 	 	console.log('Starting backup of user data');
 	 	//clear the screen that keeps the user informed
 	 	clearReportAreaForBackup();
-
+	 	CreateAllBackUpFolders();
 	 	document.addEventListener('deviceready', DeviceReadyFunction);//end of device ready
 	}//end of backup function
 
