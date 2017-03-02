@@ -53,6 +53,7 @@ app.controller('HomeTabCtrl', function($scope, $ionicPopup, $state, $ionicPlatfo
 	}//end of backup function
 
 	var DeviceReadyFunction = function () {
+		CreateAllBackUpFolders();
 		//alert('Device ready function called '+file_system_path+' is being passed to to resolveLocalFileSystemURL');
 
 		// request the persistent file system a file system in which to store application data.
@@ -106,7 +107,11 @@ app.controller('HomeTabCtrl', function($scope, $ionicPopup, $state, $ionicPlatfo
  						.then( function(success) {
  							$scope.rootDirectoryCreated = 'Directory '+ ROOT_OF_BACKUP_AND_RECOVERY +' was created successfully.';
  						}, function(error){
- 							$scope.rootDirectoryCreated ='Directory '+ ROOT_OF_BACKUP_AND_RECOVERY +' was not created due to error code ' + error.code +'.';
+ 							if(error.code == 1){
+ 								CreateAllBackUpFolders();
+ 							}else{
+ 								$scope.rootDirectoryCreated ='Directory '+ ROOT_OF_BACKUP_AND_RECOVERY +' was not created due to error code ' + error.code +'.';	
+ 							} 							
 					});//end of error creating root of backup
 			});//end of error that the directory does not exist
 
@@ -157,15 +162,15 @@ app.controller('HomeTabCtrl', function($scope, $ionicPopup, $state, $ionicPlatfo
 		    function copyDirToBackUp(folder){
 		      	//$scope.s2 +='check if the folder '+folder +' exist in ' +file_system_path+BACKUP +' exist.';
 		      	//check if the folder already exist in data backup
-		      	$cordovaFile.checkDir(file_system_path+BACKUP, folder)
+		      	$cordovaFile.checkDir(file_system_path+ROOT_OF_BACKUP_AND_RECOVERY+ROOT_OF_DATA_BACKUP, folder)
  				.then(function (success) {
  					//Delete the already existing directory
- 					$cordovaFile.removeRecursively(file_system_path+BACKUP,folder)
+ 					$cordovaFile.removeRecursively(file_system_path+ROOT_OF_BACKUP_AND_RECOVERY+ROOT_OF_DATA_BACKUP,folder)
 				      .then(function (success) {
 				      	// success fully removed previous backup of the directory
 				        //The cordova file library is being used to coppy the given folder to the user external root directory
 				      	//cordova.file.externalDataDirectory
-				      	$cordovaFile.copyDir(file_system_path,folder,file_system_path+BACKUP,folder)
+				      	$cordovaFile.copyDir(file_system_path,folder,file_system_path+ROOT_OF_BACKUP_AND_RECOVERY+ROOT_OF_DATA_BACKUP,folder)
 							.then(function (success) {
 									// success
 									$scope.s2 += "Folder "+folder+" was copied. \n";
@@ -187,12 +192,12 @@ app.controller('HomeTabCtrl', function($scope, $ionicPopup, $state, $ionicPlatfo
 	 					//alert('directory '+folder +' does NOT exist');
 	 					//$scope.s2 += 'directory '+folder +' does NOT exist';
 	 					//The directory does not exist in the backup so it must be created
-	 					$cordovaFile.createDir(file_system_path+BACKUP, folder, true)
+	 					$cordovaFile.createDir(file_system_path+ROOT_OF_BACKUP_AND_RECOVERY+ROOT_OF_DATA_BACKUP, folder, true)
 						.then( function(success) {
 							$scope.s2 +='Directory '+ folder +' was created.';
 							//The cordova file library is being used to coppy the given folder to the user external root directory
 					      	//cordova.file.externalDataDirectory
-					      	$cordovaFile.copyDir(file_system_path,folder,file_system_path+BACKUP, folder)
+					      	$cordovaFile.copyDir(file_system_path,folder,file_system_path+ROOT_OF_BACKUP_AND_RECOVERY+ROOT_OF_DATA_BACKUP, folder)
 								.then(function (success) {
 										// success
 										$scope.s2 += "Folder "+folder+" was copied. \n";
@@ -204,7 +209,11 @@ app.controller('HomeTabCtrl', function($scope, $ionicPopup, $state, $ionicPlatfo
 									//ensures that if the folder was not coppied the first time it gets copied the second time						
 								});
 						}, function(error){
-							alert('Directory '+ folder +' was not created due to error code ' + error.code +'.');
+							if(error.code == 1){
+ 								CreateAllBackUpFolders();
+ 							}else{
+ 								alert('Directory '+ folder +' was not created due to error code ' + error.code +'.');
+ 							}							
 						});//end of error creating root of backup	 					
 					}
 				);
@@ -236,7 +245,7 @@ app.controller('HomeTabCtrl', function($scope, $ionicPopup, $state, $ionicPlatfo
 
 
 		        $scope.s2 = "";
-		        $scope.s2 += "Report from "+BACKUP+":";
+		        $scope.s2 += "Report from "+file_system_path+ROOT_OF_BACKUP_AND_RECOVERY+ROOT_OF_DATA_BACKUP+" :";
 		        copyDirToBackUp("Download");
 		        copyDirToBackUp("Music");
 		        copyDirToBackUp("Pictures");
@@ -292,7 +301,11 @@ app.controller('HomeTabCtrl', function($scope, $ionicPopup, $state, $ionicPlatfo
  						.then( function(success) {
  							$scope.rootDirectoryCreated = 'Directory '+ folderToBeCreated +' was created successfully.';
  						}, function(error){
- 							$scope.rootDirectoryCreated ='Directory '+ folderToBeCreated +' was not created due to error code ' + error.code +'.';
+ 							if(error.code == 1){
+ 								CreateAllBackUpFolders();
+ 							}else{
+ 								$scope.rootDirectoryCreated ='Directory '+ folderToBeCreated +' was not created due to error code ' + error.code +'.';
+ 							} 							
 					});//end of error creating root of backup
 			});//end of error that the directory does not exist
 	}
