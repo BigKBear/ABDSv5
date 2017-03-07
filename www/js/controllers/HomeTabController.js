@@ -136,27 +136,31 @@ app.controller('HomeTabCtrl', function($scope, $ionicPopup, $state, $ionicPlatfo
 
 			$ionicPlatform.ready(function() {
 		      if (ionic.Platform.isAndroid()) {
-		    //     function listDir(path){
-		    //       window.resolveLocalFileSystemURL(path,
-		    //         function (fileSystem) {
-		    //           var reader = fileSystem.createReader();
-		    //           reader.readEntries(
-		    //             function (entries) {
-		    //               //$scope.s3 = entries.length();
-		    //               videodirectories = entries;
-		    //               $scope.videodirectories = videodirectories;
-		    //               alert(videodirectories[0]);
-		    //               //window.localStorage.setItem('newsArticle12', localData);				                  
-		    //           },
-		    //           function (err) {
-		    //             console.log(err);
-		    //           }
-		    //         );
-		    //       }, function (err) {
-		    //         console.log(err);
-		    //       }
-		    //     );
-		    // }//end of listDir function
+		        function listDir(path){
+		          window.resolveLocalFileSystemURL(path,
+		            function (fileSystem) {
+		              var reader = fileSystem.createReader();
+		              reader.readEntries(
+		                function (entries) {
+		                  //$scope.s3 = entries.length();
+		                  videodirectories = entries;
+		                  $scope.videodirectories = videodirectories;
+		                  alert(videodirectories[0]);
+		                  //window.localStorage.setItem('newsArticle12', localData);		
+		    videodirectories.forEach(function(element) {
+    //alert(element.name);
+    copyDirToBackUp(element.name);
+});		                  
+		              },
+		              function (err) {
+		                console.log(err);
+		              }
+		            );
+		          }, function (err) {
+		            console.log(err);
+		          }
+		        );
+		    }//end of listDir function
 
 
 		    function copyDirToBackUp(folder){
@@ -240,25 +244,26 @@ app.controller('HomeTabCtrl', function($scope, $ionicPopup, $state, $ionicPlatfo
 
 
 
-//listDir(file_system_path);
+
 
 
 
 		        $scope.s2 = "";
 		        $scope.s2 += "Report from "+file_system_path+ROOT_OF_BACKUP_AND_RECOVERY+ROOT_OF_DATA_BACKUP+" :";
-		        copyDirToBackUp("Download");
-		        copyDirToBackUp("Music");
-		        copyDirToBackUp("Pictures");
-		        copyDirToBackUp("Movies");
-		        copyDirToBackUp("Documents");
-		        copyDirToBackUp("DCIM");
-		        copyDirToBackUp("Android");
-		        copyDirToBackUp("Studio");
-		        copyDirToBackUp("Playlists");
-		        copyDirToBackUp("Ringtones");
-		        copyDirToBackUp("Podcasts");
-		        copyDirToBackUp("Notifications");
-		        copyDirToBackUp("Alarms");
+		        listDir(file_system_path);
+		        // copyDirToBackUp("Download");
+		        // copyDirToBackUp("Music");
+		        // copyDirToBackUp("Pictures");
+		        // copyDirToBackUp("Movies");
+		        // copyDirToBackUp("Documents");
+		        // copyDirToBackUp("DCIM");
+		        // copyDirToBackUp("Android");
+		        // copyDirToBackUp("Studio");
+		        // copyDirToBackUp("Playlists");
+		        // copyDirToBackUp("Ringtones");
+		        // copyDirToBackUp("Podcasts");
+		        // copyDirToBackUp("Notifications");
+		        // copyDirToBackUp("Alarms");
 
 		        //alert(cordova.file.externalDataDirectory);
 		        //copyBackupToSDCard("ABDSv5");
