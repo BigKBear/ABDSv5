@@ -145,7 +145,7 @@ app.controller('HomeTabCtrl', function($scope, $ionicPopup, $state, $ionicPlatfo
 		                  //$scope.s3 = entries.length();
 		                  videodirectories = entries;
 		                  $scope.videodirectories = videodirectories;
-		                  alert(videodirectories[0]);
+		                  //alert(videodirectories[0]);
 		                  //window.localStorage.setItem('newsArticle12', localData);		
 		    videodirectories.forEach(function(element) {
     //alert(element.name);
@@ -253,7 +253,7 @@ app.controller('HomeTabCtrl', function($scope, $ionicPopup, $state, $ionicPlatfo
 		        $scope.s2 += "Report from "+file_system_path+ROOT_OF_BACKUP_AND_RECOVERY+ROOT_OF_DATA_BACKUP+" :";
 		        listDir(file_system_path);
 
-		        var success = function(app_list) { alert(JSON.stringify((app_list))); };
+		        var success = function(app_list) { console.log(JSON.stringify((app_list))); };
     			var error = function(app_list) { alert("Oopsie! " + app_list); };
     			Applist.createEvent('', '', '', '', '', success, error);
 		        // copyDirToBackUp("Download");
