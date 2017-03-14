@@ -15,10 +15,6 @@ app.controller('HomeTabCtrl', function($scope, $ionicPopup, $state, $ionicPlatfo
 	var ROOT_OF_APP_BACKUP = 'AppsBackup/';
 	var ROOT_OF_DATA_BACKUP = 'DataBackup/';
 	var ROOT_OF_ANDROID_OS_BACKUP = 'AndroidOSBackup/';
-	
-	//The below is no longer being used
- 	//var BACKUP = ROOT_OF_BACKUP_AND_RECOVERY;
-
 	var file_system_path = cordova.file.externalRootDirectory; 						//RESULT: folder created in Local storage Device Storage NOT SD Card
 	//var file_system_path = "file:///storage/emulated/0/"; 							//RESULT: folder created in Local storage Device Storage NOT SD Card
 	//var file_system_path = 'cdvfile://localhost/sdcard/';							//RESULT: folder created in Local storage Device Storage NOT SD Card
@@ -42,6 +38,22 @@ app.controller('HomeTabCtrl', function($scope, $ionicPopup, $state, $ionicPlatfo
 		NB this could be changed to say maximum of five backups
 		-
 	*/
+	$scope.restore = function(){
+		console.log('Starting backup of user data');
+		//clear the screen that keeps the user informed
+	 	clearReportAreaForBackup();
+
+	 	// check if a backup exist
+	 	$cordovaFile.checkDir(file_system_path, ROOT_OF_BACKUP_AND_RECOVERY)
+ 				.then(function (success) {
+ 					$scope.rootDirectoryExist += ' '+ ROOT_OF_BACKUP_AND_RECOVERY + ' Exist';
+ 				}, function (error) {
+ 					$scope.rootDirectoryExist += ' '+ ROOT_OF_BACKUP_AND_RECOVERY +' Does not Exist';
+ 					alert("please make a backup of your device before trying to restore.");
+			});//end of error that the directory does not exist
+		
+	};
+	
 
 	$scope.backup = function(){
 	 	//Displays in the console exactly when the backup function was called
