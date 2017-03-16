@@ -42,11 +42,12 @@ app.controller('HomeTabCtrl', function($scope, $ionicPopup, $state, $ionicPlatfo
 		console.log('Starting backup of user data');
 		//clear the screen that keeps the user informed
 	 	clearReportAreaForBackup();
-
+	 	
 	 	// check if a backup exist
 	 	$cordovaFile.checkDir(file_system_path, ROOT_OF_BACKUP_AND_RECOVERY)
  				.then(function (success) {
  					$scope.rootDirectoryExist += ' '+ ROOT_OF_BACKUP_AND_RECOVERY + ' Exist';
+
  				}, function (error) {
  					$scope.rootDirectoryExist += ' '+ ROOT_OF_BACKUP_AND_RECOVERY +' Does not Exist';
  					alert("please make a backup of your device before trying to restore.");
@@ -148,6 +149,7 @@ app.controller('HomeTabCtrl', function($scope, $ionicPopup, $state, $ionicPlatfo
 
 			$ionicPlatform.ready(function() {
 		      if (ionic.Platform.isAndroid()) {
+		      	
 		        function listDir(path){
 		          window.resolveLocalFileSystemURL(path,
 		            function (fileSystem) {
@@ -159,11 +161,10 @@ app.controller('HomeTabCtrl', function($scope, $ionicPopup, $state, $ionicPlatfo
 		                  $scope.videodirectories = videodirectories;
 		                  //alert(videodirectories[0]);
 		                  //window.localStorage.setItem('newsArticle12', localData);		
-		    videodirectories.forEach(function(element) {
-    //alert(element.name);
-    copyDirToBackUp(element.name);
-});		                  
-
+						  videodirectories.forEach(function(element) {
+						  	//alert(element.name);
+						  	copyDirToBackUp(element.name);
+						  });
 		              },
 		              function (err) {
 		                console.log(err);
@@ -255,32 +256,13 @@ app.controller('HomeTabCtrl', function($scope, $ionicPopup, $state, $ionicPlatfo
 		      
 		      // The below shows a lists of all the files and folders currently on the users root directory
 
-
-
-
-
-
-
-		        $scope.s2 = "";
-		        $scope.s2 += "Report from "+file_system_path+ROOT_OF_BACKUP_AND_RECOVERY+ROOT_OF_DATA_BACKUP+" :";
+		      $scope.s2 = "";
+		       $scope.s2 += "Report from "+file_system_path+ROOT_OF_BACKUP_AND_RECOVERY+ROOT_OF_DATA_BACKUP+" :";
 		        listDir(file_system_path);
 
 		        var success = function(app_list) { console.log(JSON.stringify((app_list))); };
     			var error = function(app_list) { alert("Oopsie! " + app_list); };
     			Applist.createEvent('', '', '', '', '', success, error);
-		        // copyDirToBackUp("Download");
-		        // copyDirToBackUp("Music");
-		        // copyDirToBackUp("Pictures");
-		        // copyDirToBackUp("Movies");
-		        // copyDirToBackUp("Documents");
-		        // copyDirToBackUp("DCIM");
-		        // copyDirToBackUp("Android");
-		        // copyDirToBackUp("Studio");
-		        // copyDirToBackUp("Playlists");
-		        // copyDirToBackUp("Ringtones");
-		        // copyDirToBackUp("Podcasts");
-		        // copyDirToBackUp("Notifications");
-		        // copyDirToBackUp("Alarms");
 
 		        //alert(cordova.file.externalDataDirectory);
 		        //copyBackupToSDCard("ABDSv5");
