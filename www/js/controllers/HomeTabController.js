@@ -10,18 +10,11 @@ app.controller('HomeTabCtrl', function($scope, $ionicPopup, $state, $ionicPlatfo
 	$scope.timeNow = date;
 		console.log(timeStamp);
 
-	//Tells the application what folder to create or look for when doing backup
 	var ROOT_OF_BACKUP_AND_RECOVERY = 'ABDSv5/';
 	var ROOT_OF_APP_BACKUP = 'AppsBackup/';
 	var ROOT_OF_DATA_BACKUP = 'DataBackup/';
 	var ROOT_OF_ANDROID_OS_BACKUP = 'AndroidOSBackup/';
-	var file_system_path = cordova.file.externalRootDirectory; 						//RESULT: folder created in Local storage Device Storage NOT SD Card
-	//var file_system_path = "file:///storage/emulated/0/"; 							//RESULT: folder created in Local storage Device Storage NOT SD Card
-	//var file_system_path = 'cdvfile://localhost/sdcard/';							//RESULT: folder created in Local storage Device Storage NOT SD Card
-	//var file_system_path = 'cdvfile:///sdcard/';									//RESULT: folder created in Local storage Device Storage NOT SD Card
-	//var file_system_path = 'file:///sdcard/';										//RESULT: folder created in Local storage Device Storage NOT SD Card
-		
-	//PERFECT Creates a folder on hte SDCard
+	var file_system_path = cordova.file.externalRootDirectory;
 	//TODO: Find the correct path to have folder created/copied to the memory card
 
 	/*
@@ -38,47 +31,138 @@ app.controller('HomeTabCtrl', function($scope, $ionicPopup, $state, $ionicPlatfo
 	*/
 	$scope.restore = function(){
 		console.log('Starting restore of user data');
-		//clear the screen that keeps the user informed
 	 	clearReportAreaForBackup();
-	 	document.addEventListener('deviceready', RecoverDeviceReadyFunction);//end of device ready
-	 	
-	}//end of the restore function
+	 	CreateTempFolder();
+	 	document.addEventListener('deviceready',listRecoveryDir(file_system_path+ROOT_OF_BACKUP_AND_RECOVERY+ROOT_OF_DATA_BACKUP));
+	 	//DeleteFolder(file_system_path,'ABDSTEMP/');
+	}
 
-	var RecoverDeviceReadyFunction = function(){
-		// check if a backup exist
-		$cordovaFile.checkDir(file_system_path, ROOT_OF_BACKUP_AND_RECOVERY)
- 				.then(function (success) {
- 					$scope.rootDirectoryExist += ' '+ ROOT_OF_BACKUP_AND_RECOVERY + ' Exist';
- 					//delete all current data
- 					recoverData(ROOT_OF_BACKUP_AND_RECOVERY);
- 				}, function (error) {
- 					$scope.rootDirectoryExist += ' '+ ROOT_OF_BACKUP_AND_RECOVERY +' Does not Exist';
- 					alert("please make a backup of your device before trying to restore.");
-		});//end of error that the directory does not exist
-	}//end of recover device ready function
 
-	var recoverData = function(path){
-		    		window.resolveLocalFileSystemURL(path,
-		    			function (fileSystem) {
-		    				var reader = fileSystem.createReader();
-		    				reader.readEntries(
-		    					function (entries) {
-		    						alert("here");
-		    						directoriesInBackUpFolder = entries;
-		    						//$scope.directoriesInBackUpFolder = directoriesInBackUpFolder;
-		    						directoriesInBackUpFolder.forEach(function(element) {
-						  	alert(element.name);
+
+		  function listRecoveryDir(path){
+		  	var successResult = "";
+		  	var errorResult = "";
+		  	$ionicPlatform.ready(function() {
+		      if (ionic.Platform.isAndroid()) {
+		          window.resolveLocalFileSystemURL(path, function(fileSystem) {
+		          	var reader = fileSystem.createReader();
+		          	reader.readEntries(
+		          		function (entries) {
+		                  existingBackupDirectory = entries;
+						  existingBackupDirectory.forEach(function(element) {
+						  	MoveFolder(file_system_path,element.name,'ABDSTEMP/',element.name);
+						  	pause();
+				 					$cordovaFile.removeRecursively(file_system_path,element.name)
+								      .then(function (success) {
+								      	// success fully removed previous backup of the directory
+								        //The cordova file library is being used to coppy the given folder to the user external root directory
+								      	//cordova.file.externalDataDirectory
+								      	$cordovaFile.copyDir(file_system_path+ROOT_OF_BACKUP_AND_RECOVERY+ROOT_OF_DATA_BACKUP,element.name,file_system_path,element.name)
+											.then(function (success) {
+													// success
+													successResult += element.name;
+											}, function (error) {
+												//alert("Folder "+folder+" was NOT copied error "+error.code);
+												errorResult += element.name + 'not coppid due to '+ error.code;
+											});
+								      }, function (error) {
+								        // error removing previous backup of the directory
+								        console.log("Folder "+element.name+" was not removed sucssfully. \n");
+								        alert("Folder "+element.name+" was not removed sucssfully. \n");
+								      });
+								  });
+				 					// },function (error) {
+				 					// 	//error
+				 					// 	alert(error.code);
+				 					// });
 						  });
 		              },
 		              function (err) {
+		              	alert('hi'+err.code);
 		                console.log(err);
-		              }
-		            );
-		          }, function (err) {
+		              });
+		          }else{
+		    	alert('The user is not on and android device');
+		    }//end of platform ready
+		});
+
+		          /*, function (err) {
+		          	alert('hi'+err);
 		            console.log(err);
-		          }
-		        );
-	}//end of recover data function
+		          });*/
+		    	alert('successfully recovered: '+successResult+'/n \n  ERROR' + errorResult +' NOT recovered');
+		}
+		    
+	
+
+	var RecoverFromBackUp = function(){
+
+		MoveFolder(file_system_path,'Pictures/','ABDSTEMP/','Pictures/');
+		CheckThatBackupExist();
+
+	 	$cordovaFile.checkDir(file_system_path, 'Pictures/')
+ 				.then(function (success) {
+ 					//Delete the already existing directory
+ 					$cordovaFile.removeRecursively(file_system_path,'Pictures/')
+				      .then(function (success) {
+				      	// success fully removed previous backup of the directory
+				        //The cordova file library is being used to coppy the given folder to the user external root directory
+				      	//cordova.file.externalDataDirectory
+				      	$cordovaFile.copyDir(file_system_path+ROOT_OF_BACKUP_AND_RECOVERY+ROOT_OF_DATA_BACKUP,'Pictures/',file_system_path,'Pictures/')
+							.then(function (success) {
+									// success
+									alert('success pictures recovered');
+							}, function (error) {
+								//alert("Folder "+folder+" was NOT copied error "+error.code);
+								alert('error pictures NOT recovered');
+							});
+				      }, function (error) {
+				        // error removing previous backup of the directory
+				        console.log("Folder "+folder+" was not removed sucssfully. \n");
+				        //$scope.s2 += "Folder "+folder+" was not removed sucssfully. \n";
+				        //alert("Folder "+folder+" was not removed sucssfully. \n");
+				      });
+ 					},function (error) {
+ 						//error
+ 						alert(error);
+ 					});
+
+ 			}
+
+	var DeleteFolder = function(parent_directory,folderToBeDeleted){
+		alert('here');
+		  $cordovaFile.removeRecursively(parent_directory, folderToBeDeleted)
+      .then(function (success) {
+        // success
+      }, function (error) {
+        // error
+      });
+	}
+
+	var MoveFolder = function(currentFolderLocation,FolderToBeMoved,NewLocation,NewFolderName){
+		$cordovaFile.moveDir(currentFolderLocation, FolderToBeMoved, NewLocation, NewFolderName)
+      .then(function (success) {
+        // success
+        alert('The current '+FolderToBeMoved + 'folder was moved to '+ NewLocation + 'and was given the name '+ NewFolderName +'.');
+      }, function (error) {
+        // error
+        alert('The current '+FolderToBeMoved + 'folder was NOT moved to '+ NewLocation + 'due to ERROR code '+ error.code +'.');
+      });
+	}
+
+	var CheckThatBackupExist = function(){
+		$cordovaFile.checkDir(file_system_path, ROOT_OF_BACKUP_AND_RECOVERY+ROOT_OF_DATA_BACKUP)
+ 				.then(function (success) {
+ 					$scope.rootDirectoryExist += ' '+ ROOT_OF_BACKUP_AND_RECOVERY+ROOT_OF_DATA_BACKUP + ' Exist';
+ 				}, function (error) {
+ 					$scope.rootDirectoryExist += ' '+ ROOT_OF_BACKUP_AND_RECOVERY+ROOT_OF_DATA_BACKUP +' Does not Exist';
+ 					alert("please make a backup of your device before trying to restore.");
+		});
+	}
+
+	var CreateTempFolder = function(){
+		CreateABackupFolder(file_system_path,'ABDSTEMP');
+	}
 
 	/*
 	Function name: backup
