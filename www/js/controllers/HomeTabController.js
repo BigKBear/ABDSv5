@@ -20,11 +20,65 @@ app.controller('HomeTabCtrl', function($scope, $ionicPopup, $state, $ionicPlatfo
 	//var file_system_path = 'cdvfile://localhost/sdcard/';							//RESULT: folder created in Local storage Device Storage NOT SD Card
 	//var file_system_path = 'cdvfile:///sdcard/';									//RESULT: folder created in Local storage Device Storage NOT SD Card
 	//var file_system_path = 'file:///sdcard/';										//RESULT: folder created in Local storage Device Storage NOT SD Card
-	
-	
-	
+		
 	//PERFECT Creates a folder on hte SDCard
 	//TODO: Find the correct path to have folder created/copied to the memory card
+
+	/*
+	Function name: restore
+	Parameters: Nil
+	Functionality:
+	 	STEP ONE CHECK IF USER HAS DATA BACKUP
+	 	-create the file  or folder for the backup to be saved in.
+	 	-The file will be named using the current date and time and a user input.
+	 	-The above was changed to just have one backup of all user data in a folder called ABDSBackupFolder.
+		because we did not want to have the user waste memory having multiple backups.
+		NB this could be changed to say maximum of five backups
+		-
+	*/
+	$scope.restore = function(){
+		console.log('Starting restore of user data');
+		//clear the screen that keeps the user informed
+	 	clearReportAreaForBackup();
+	 	document.addEventListener('deviceready', RecoverDeviceReadyFunction);//end of device ready
+	 	
+	}//end of the restore function
+
+	var RecoverDeviceReadyFunction = function(){
+		// check if a backup exist
+		$cordovaFile.checkDir(file_system_path, ROOT_OF_BACKUP_AND_RECOVERY)
+ 				.then(function (success) {
+ 					$scope.rootDirectoryExist += ' '+ ROOT_OF_BACKUP_AND_RECOVERY + ' Exist';
+ 					//delete all current data
+ 					recoverData(ROOT_OF_BACKUP_AND_RECOVERY);
+ 				}, function (error) {
+ 					$scope.rootDirectoryExist += ' '+ ROOT_OF_BACKUP_AND_RECOVERY +' Does not Exist';
+ 					alert("please make a backup of your device before trying to restore.");
+		});//end of error that the directory does not exist
+	}//end of recover device ready function
+
+	var recoverData = function(path){
+		    		window.resolveLocalFileSystemURL(path,
+		    			function (fileSystem) {
+		    				var reader = fileSystem.createReader();
+		    				reader.readEntries(
+		    					function (entries) {
+		    						alert("here");
+		    						directoriesInBackUpFolder = entries;
+		    						//$scope.directoriesInBackUpFolder = directoriesInBackUpFolder;
+		    						directoriesInBackUpFolder.forEach(function(element) {
+						  	alert(element.name);
+						  });
+		              },
+		              function (err) {
+		                console.log(err);
+		              }
+		            );
+		          }, function (err) {
+		            console.log(err);
+		          }
+		        );
+	}//end of recover data function
 
 	/*
 	Function name: backup
@@ -38,24 +92,6 @@ app.controller('HomeTabCtrl', function($scope, $ionicPopup, $state, $ionicPlatfo
 		NB this could be changed to say maximum of five backups
 		-
 	*/
-	$scope.restore = function(){
-		console.log('Starting backup of user data');
-		//clear the screen that keeps the user informed
-	 	clearReportAreaForBackup();
-	 	
-	 	// check if a backup exist
-	 	$cordovaFile.checkDir(file_system_path, ROOT_OF_BACKUP_AND_RECOVERY)
- 				.then(function (success) {
- 					$scope.rootDirectoryExist += ' '+ ROOT_OF_BACKUP_AND_RECOVERY + ' Exist';
-
- 				}, function (error) {
- 					$scope.rootDirectoryExist += ' '+ ROOT_OF_BACKUP_AND_RECOVERY +' Does not Exist';
- 					alert("please make a backup of your device before trying to restore.");
-			});//end of error that the directory does not exist
-		
-	};
-	
-
 	$scope.backup = function(){
 	 	//Displays in the console exactly when the backup function was called
 	 	console.log('Starting backup of user data');
@@ -149,7 +185,7 @@ app.controller('HomeTabCtrl', function($scope, $ionicPopup, $state, $ionicPlatfo
 
 			$ionicPlatform.ready(function() {
 		      if (ionic.Platform.isAndroid()) {
-		      	
+
 		        function listDir(path){
 		          window.resolveLocalFileSystemURL(path,
 		            function (fileSystem) {
@@ -175,7 +211,6 @@ app.controller('HomeTabCtrl', function($scope, $ionicPopup, $state, $ionicPlatfo
 		          }
 		        );
 		    }//end of listDir function
-
 
 		    function copyDirToBackUp(folder){
 		      	//$scope.s2 +='check if the folder '+folder +' exist in ' +file_system_path+BACKUP +' exist.';
