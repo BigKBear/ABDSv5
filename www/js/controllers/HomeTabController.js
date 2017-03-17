@@ -1,5 +1,6 @@
 app.controller('HomeTabCtrl', function($scope, $ionicPopup, $state, $ionicPlatform, $cordovaFile, $ionicHistory) {
-	
+	var successResult = "";
+	var errorResult = "";
 	$scope.titleToShowUser = window.localStorage.getItem("userUsername") +" Home Page";
 	var date = new Date();
 	var hour = date.getHours();
@@ -34,14 +35,12 @@ app.controller('HomeTabCtrl', function($scope, $ionicPopup, $state, $ionicPlatfo
 	 	clearReportAreaForBackup();
 	 	CreateTempFolder();
 	 	document.addEventListener('deviceready',listRecoveryDir(file_system_path+ROOT_OF_BACKUP_AND_RECOVERY+ROOT_OF_DATA_BACKUP));
-	 	//DeleteFolder(file_system_path,'ABDSTEMP/');
+	 	alert('successfully recovered: '+successResult+'/n \n  ERROR' + errorResult +' NOT recovered');
 	}
 
 
 
 		  function listRecoveryDir(path){
-		  	var successResult = "";
-		  	var errorResult = "";
 		  	$ionicPlatform.ready(function() {
 		      if (ionic.Platform.isAndroid()) {
 		          window.resolveLocalFileSystemURL(path, function(fileSystem) {
@@ -50,84 +49,43 @@ app.controller('HomeTabCtrl', function($scope, $ionicPopup, $state, $ionicPlatfo
 		          		function (entries) {
 		                  existingBackupDirectory = entries;
 						  existingBackupDirectory.forEach(function(element) {
-						  	MoveFolder(file_system_path,element.name,'ABDSTEMP/',element.name);
-						  	pause();
-				 					$cordovaFile.removeRecursively(file_system_path,element.name)
+						  	// MoveFolder(file_system_path,element.name,'ABDSTEMP/',element.name);
+						  	// for each folder in the backup create replacing if the folder already exist the folder on th root then copy the content from backup into the folder
+				 					$cordovaFile.createDir(file_system_path,element.name,true)
 								      .then(function (success) {
-								      	// success fully removed previous backup of the directory
-								        //The cordova file library is being used to coppy the given folder to the user external root directory
-								      	//cordova.file.externalDataDirectory
+								      	// successfully created directory
+								      	//copy from backyp data folder to the root
 								      	$cordovaFile.copyDir(file_system_path+ROOT_OF_BACKUP_AND_RECOVERY+ROOT_OF_DATA_BACKUP,element.name,file_system_path,element.name)
 											.then(function (success) {
 													// success
+													alert('successfully restored' +element.name);
 													successResult += element.name;
 											}, function (error) {
-												//alert("Folder "+folder+" was NOT copied error "+error.code);
+												alert("Folder "+folder+" was NOT copied error "+error.code);
 												errorResult += element.name + 'not coppid due to '+ error.code;
 											});
 								      }, function (error) {
 								        // error removing previous backup of the directory
 								        console.log("Folder "+element.name+" was not removed sucssfully. \n");
-								        alert("Folder "+element.name+" was not removed sucssfully. \n");
+								        alert("Folder "+element.name+" was not Created sucssfully. \n"+ error.code);
 								      });
 								  });
-				 					// },function (error) {
-				 					// 	//error
-				 					// 	alert(error.code);
-				 					// });
 						  });
-		              },
-		              function (err) {
+		              }, function(err) {
 		              	alert('hi'+err.code);
 		                console.log(err);
 		              });
 		          }else{
-		    	alert('The user is not on and android device');
-		    }//end of platform ready
-		});
+		          	alert('The user is not on and android device');
+		          }
+		    });
 
 		          /*, function (err) {
 		          	alert('hi'+err);
 		            console.log(err);
 		          });*/
-		    	alert('successfully recovered: '+successResult+'/n \n  ERROR' + errorResult +' NOT recovered');
+		          return;
 		}
-		    
-	
-
-	var RecoverFromBackUp = function(){
-
-		MoveFolder(file_system_path,'Pictures/','ABDSTEMP/','Pictures/');
-		CheckThatBackupExist();
-
-	 	$cordovaFile.checkDir(file_system_path, 'Pictures/')
- 				.then(function (success) {
- 					//Delete the already existing directory
- 					$cordovaFile.removeRecursively(file_system_path,'Pictures/')
-				      .then(function (success) {
-				      	// success fully removed previous backup of the directory
-				        //The cordova file library is being used to coppy the given folder to the user external root directory
-				      	//cordova.file.externalDataDirectory
-				      	$cordovaFile.copyDir(file_system_path+ROOT_OF_BACKUP_AND_RECOVERY+ROOT_OF_DATA_BACKUP,'Pictures/',file_system_path,'Pictures/')
-							.then(function (success) {
-									// success
-									alert('success pictures recovered');
-							}, function (error) {
-								//alert("Folder "+folder+" was NOT copied error "+error.code);
-								alert('error pictures NOT recovered');
-							});
-				      }, function (error) {
-				        // error removing previous backup of the directory
-				        console.log("Folder "+folder+" was not removed sucssfully. \n");
-				        //$scope.s2 += "Folder "+folder+" was not removed sucssfully. \n";
-				        //alert("Folder "+folder+" was not removed sucssfully. \n");
-				      });
- 					},function (error) {
- 						//error
- 						alert(error);
- 					});
-
- 			}
 
 	var DeleteFolder = function(parent_directory,folderToBeDeleted){
 		alert('here');
@@ -187,34 +145,8 @@ app.controller('HomeTabCtrl', function($scope, $ionicPopup, $state, $ionicPlatfo
 
 	var DeviceReadyFunction = function () {
 		CreateAllBackUpFolders();
-		//alert('Device ready function called '+file_system_path+' is being passed to to resolveLocalFileSystemURL');
-
 		// request the persistent file system a file system in which to store application data.
-		window.requestFileSystem(LocalFileSystem.PERSISTENT, 0, onFileSystemSuccess, onFileSystemError);
-
-		//window.resolveLocalFileSystemURL(url, successCallback, errorCallback);
-		//the function below creates a directory and a file in the specified path
-		//window.resolveLocalFileSystemURL(file_system_path, successfullyAccessedFileSystem, errorAccessedFileSystem);
-
-/* 		//Check the  External storage (SD card) root. (Android, BlackBerry 10) for a folder named ABDSv5
- 		$cordovaFile.checkDir(cordova.file.externalDataDirectory, ROOT_OF_BACKUP_AND_RECOVERY)
- 				//If the ABDSv5 folder is found
- 				.then(function (success) {
- 					alert(ROOT_OF_BACKUP_AND_RECOVERY + " folder found");
- 					$scope.rootDirectoryExist += ' '+ ROOT_OF_BACKUP_AND_RECOVERY + ' Exist';
- 				}, function (error) {
- 					alert(ROOT_OF_BACKUP_AND_RECOVERY + " folder was NOT found");
- 					$scope.rootDirectoryExist += ' '+ ROOT_OF_BACKUP_AND_RECOVERY +' Does not Exist';
- 					$cordovaFile.createDir(cordova.file.externalDataDirectory, ROOT_OF_BACKUP_AND_RECOVERY, true)
- 						.then( function(success) {
- 							alert('Directory '+ ROOT_OF_BACKUP_AND_RECOVERY +' was created successfully.');
- 							$scope.rootDirectoryCreated = 'Directory '+ ROOT_OF_BACKUP_AND_RECOVERY +' was created successfully.';
- 						}, function(error){
- 							alert('Directory '+ ROOT_OF_BACKUP_AND_RECOVERY +' was not created due to ' + error +'.');
- 							$scope.rootDirectoryCreated ='Directory '+ ROOT_OF_BACKUP_AND_RECOVERY +' was not created due to ' + error +'.';
-					});//end of error creating root of backup
-			});//end of error that the directory does not exist
-			*/			
+		window.requestFileSystem(LocalFileSystem.PERSISTENT, 0, onFileSystemSuccess, onFileSystemError);		
 
  		var currentPlatform = ionic.Platform.platform();
  		$scope.currentPlatform = "Step 1: You are using "+ currentPlatform + " device.";
@@ -247,25 +179,6 @@ app.controller('HomeTabCtrl', function($scope, $ionicPopup, $state, $ionicPlatfo
  							} 							
 					});//end of error creating root of backup
 			});//end of error that the directory does not exist
-
- 			/*//Check to see if a BACKUP already exist
- 			$cordovaFile.checkDir(file_system_path+ROOT_OF_BACKUP_AND_RECOVERY, 'DataBackup/')
- 				.then(function (success) {
- 					//if it does exist simply assign directoryExist the string below
- 					$scope.directoryExist = 'Directory '+ BACKUP +' Exist';
- 				}, function (error) {
- 					//tell the user that the backup already exist
- 					$scope.directoryDoesNotExist = 'Directory '+ BACKUP +' Does not Exist it will be created now.';
-					$cordovaFile.createDir(file_system_path, BACKUP, true)
-						.then( function(success) {
-							$scope.directoryCreated = 'Directory '+ BACKUP +' was created.';
-						}, function(error){
-							$scope.stepone ='Directory '+ BACKUP +' was not created due to error code ' + error.code +'.';
-						});//end of error creating root of backup
-				});//end of error that the directory does not exist*/
-
-			// $scope.s1 = cordova.file.externalRootDirectory;
-			//var videodirectories = [];
 
 			$ionicPlatform.ready(function() {
 		      if (ionic.Platform.isAndroid()) {
@@ -439,6 +352,8 @@ app.controller('HomeTabCtrl', function($scope, $ionicPopup, $state, $ionicPlatfo
 		$scope.rootDirectoryExist = "";
 		$scope.rootDirectoryCreated = "";
 		$scope.stepone = "";
+		successResult = "";
+		errorResult = "";
 	}//end of clear the Report screen function
 
 	var successfullyAccessedFileSystem = function(fileSystem) {
