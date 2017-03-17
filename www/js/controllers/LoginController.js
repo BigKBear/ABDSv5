@@ -40,7 +40,7 @@ app.controller('LoginCtrl', function($scope, $rootScope, LoginService, $cordovaF
         
       }else{
         try{
-          $scope.messagetouser = "Welcome Back " + window.localStorage.getItem("userUsername");
+          $scope.titleToShowUser = "Welcome Back " + window.localStorage.getItem("userUsername");
           $rootScope.base64Key = CryptoJS.enc.Base64.parse(window.localStorage.getItem("randomKey"));
           $rootScope.iv = CryptoJS.enc.Base64.parse(window.localStorage.getItem("randomIv"));
         }catch(error){
@@ -59,38 +59,37 @@ app.controller('LoginCtrl', function($scope, $rootScope, LoginService, $cordovaF
     }
 
     var reset = function() {
-        window.localStorage.removeItem("userUsername");
-        window.localStorage.removeItem("EncryptedPassword");
+      window.localStorage.removeItem("userUsername");
+      window.localStorage.removeItem("EncryptedPassword");
 
-        //Reset folders functionality
-    var test_dir = 'ABDSv5/';
-    var test_dir1 = 'ABDSv5/Encrypted';
-    var test_dir2 = 'ABDSv5/Decrypted';
-   
-    document.addEventListener('deviceready', function () {
-      //checks if the ABDSv5 folder exist
-      $cordovaFile.checkDir(cordova.file.externalRootDirectory, test_dir)
-        .then(function (success) {
-          //remove all folders with in the ABDSv5
-          $cordovaFile.removeRecursively(cordova.file.externalRootDirectory, test_dir)
+      //Reset folders functionality
+      var test_dir = 'ABDSv5/';
+
+      document.addEventListener('deviceready', function () {
+        //checks if the ABDSv5 folder exist
+        $cordovaFile.checkDir(cordova.file.externalRootDirectory, test_dir)
           .then(function (success) {
-        // success
-        alert('Directory '+test_dir+' was cleared.');
-      }, function (error) {
-        // error
-        alert('Error clearing '+test_dir+' folder.');
-      });
-    }, function (error) {
-      alert('Directory '+ test_dir +' Does not Exist');
-      //creates the directory snce it does not exist
-      $cordovaFile.createDir(cordova.file.externalRootDirectory, test_dir, true)
-        .then( function(success) {
-          console.log('Directory was created: OK');
-          alert('Directory '+test_dir+' was created.');
-        }, function(error){
-            alert('Directory '+test_dir+' was not created due to ' + error+'.');
+              //remove all folders with in the ABDSv5
+              $cordovaFile.removeRecursively(cordova.file.externalRootDirectory, test_dir)
+                .then(function (success) {
+                  // success
+                  alert('Directory '+test_dir+' was cleared.');
+                }, function (error) {
+                  // error
+                  alert('Error clearing '+test_dir+' folder.');
+                });
+          }, function (error) {
+            alert('Directory '+ test_dir +' Does not Exist');
+
+            //creates the directory snce it does not exist
+            $cordovaFile.createDir(cordova.file.externalRootDirectory, test_dir, true)
+              .then( function(success) {
+                console.log('Directory was created: OK');
+                alert('Directory '+test_dir+' was created.');
+              }, function(error){
+                alert('Directory '+test_dir+' was not created due to ' + error+'.');
+              });
         });
-    });
   });
     $state.go('register');
     $scope.messagetouser = "Username and password erased";
@@ -128,7 +127,6 @@ app.controller('LoginCtrl', function($scope, $rootScope, LoginService, $cordovaF
       window.localStorage.setItem("userUsername", userOBJ.username);
     }
 
-
     /* Buttons on view functionality*/
     
     $scope.saveData = function(name,pw,confirmpw){
@@ -150,12 +148,14 @@ app.controller('LoginCtrl', function($scope, $rootScope, LoginService, $cordovaF
           };
           saveUsername();
           saveEncryptPassword();
-          $state.go('login');
+          $state.go('tabs.home');
         },1000);
       }
     }
 
     $scope.login = function(pw) {
+      document.addEventListener('deviceready', DeviceReadyFunction);//end of device ready
+
       if(!pw){
         var alertPopup = $ionicPopup.alert({
           title: 'Master Password Required!',
@@ -185,4 +185,53 @@ app.controller('LoginCtrl', function($scope, $rootScope, LoginService, $cordovaF
     }
 
    $ionicHistory.clearHistory();
+
+   var onFileSystemSuccess = function(fileSystem) {
+      console.log('File System name: '+fileSystem.name);
+      //alert('File System name: '+fileSystem.name);
+      //alert('File System sucess name of file system is: '+ fileSystem.name);
+  }
+
+  var onFileSystemError = function(error){
+    alert('FileSystemError: ' +evt.target.error.code);
+  }
+
+  var DeviceReadyFunction = function () {
+        var ROOT_OF_BACKUP_AND_RECOVERY = 'ABDSv5/';
+    var BACKUP = ROOT_OF_BACKUP_AND_RECOVERY+'DataBackup/';
+    var file_system_path = cordova.file.externalRootDirectory;            //RESULT: folder created in Local storage Device Storage NOT SD Card
+    // request the persistent file system a file system in which to store application data.
+    window.requestFileSystem(LocalFileSystem.PERSISTENT, 0, onFileSystemSuccess, onFileSystemError);
+
+      $cordovaFile.checkDir(file_system_path, ROOT_OF_BACKUP_AND_RECOVERY)
+        .then(function (success) {
+          //$scope.rootDirectoryExist += ' '+ ROOT_OF_BACKUP_AND_RECOVERY + ' Exist';
+           console.log('success');
+        }, function (error) {
+          alert(' '+ ROOT_OF_BACKUP_AND_RECOVERY +' Does not Exist');
+          $cordovaFile.createDir(file_system_path, ROOT_OF_BACKUP_AND_RECOVERY, true)
+            .then( function(success) {
+              //$scope.rootDirectoryCreated = 'Directory '+ ROOT_OF_BACKUP_AND_RECOVERY +' was created successfully.';
+            }, function(error){
+              alert('Directory '+ ROOT_OF_BACKUP_AND_RECOVERY +' was not created due to error code ' + error.code +'.');
+          });//end of error creating root of backup
+      });//end of error that the directory does not exist
+
+      //Check to see if a BACKUP already exist
+      $cordovaFile.checkDir(file_system_path, BACKUP)
+        .then(function (success) {
+          //if it does exist simply assign directoryExist the string below
+          //$scope.directoryExist = 'Directory '+ BACKUP +' Exist';
+        }, function (error) {
+          //tell the user that the backup already exist
+          alert('Directory '+ BACKUP +' Does not Exist it will be created now.');
+          $cordovaFile.createDir(file_system_path, BACKUP, true)
+            .then( function(success) {
+              //$scope.directoryCreated = 'Directory '+ BACKUP +' was created.';
+            }, function(error){
+              alert('Directory '+ BACKUP +' was not created due to error code ' + error.code +'.');
+            });//end of error creating root of backup
+        });//end of error that the directory does not exist
+  }//end of Device ready function
+
 });
