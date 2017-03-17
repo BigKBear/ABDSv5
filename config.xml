@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<widget id="com.ionicframework.abdsv5451959" version="0.0.2" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
-  <name>ABDSv5</name>
+<widget id="com.ionicframework.abdsv5451959" version="0.0.5" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
+  <name>ABDSv3
+  </name>
   <description>&#xD;&#xD;
         An Ionic Framework and Cordova project.&#xD;&#xD;
     </description>
-  <author email="you@example.com" href="http://example.com.com/">&#xD;&#xD;
-      Your Name Here&#xD;&#xD;
-    </author>
+  <author email="kyle@globalwirelesstelecom.com" href="http://example.com.com/">&#xD;&#xD;
+      Kyle St. Hill&#xD;&#xD;
+  </author>
   <content src="index.html"/>
   <access origin="*"/>
   <preference name="webviewbounce" value="false"/>
@@ -18,10 +19,17 @@
   <preference name="BackupWebStorage" value="none"/>
   <preference name="SplashScreen" value="screen"/>
   <preference name="Orientation" value="portrait"/>
-  <preference name="AndroidPersistentFileLocation" value="Internal"/>
+
+  <preference name="AndroidPersistentFileLocation" value="Compatibility"/>
+  <preference name="AndroidExtraFilesystems" value="sdcard,cache" />
+  
+  <!-- <preference name="AndroidPersistentFileLocation" value="Internal"/> -->
+  <!-- <preference name="AndroidExtraFilesystems" value="files,files-external,documents,sdcard,cache,cache-external,assets,root" /> -->
+  
   <feature name="StatusBar">
     <param name="ios-package" value="CDVStatusBar" onload="true"/>
   </feature>
+
   <platform name="android">
     <preference name="android-manifest/@android:installLocation" value="auto"/>
     <icon src="resources\android\icon\drawable-ldpi-icon.png" density="ldpi"/>
@@ -35,5 +43,6 @@
     <splash src="resources\android\splash\drawable-port-ldpi-screen.png" density="port-ldpi"/>
     <splash src="resources\android\splash\drawable-port-mdpi-screen.png" density="port-mdpi"/>
   </platform>
+
   <icon src="resources\android\icon\drawable-xhdpi-icon.png"/>
 </widget>
