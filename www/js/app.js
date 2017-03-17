@@ -59,6 +59,7 @@ app.config(function($stateProvider, $urlRouterProvider,$ionicConfigProvider) {
     views: {
       'home-tab': {
         templateUrl: "templates/tabs/home.html",
+        // controller: 'BackupCtrl'
         controller: 'HomeTabCtrl'
       }
     },
@@ -72,8 +73,7 @@ app.config(function($stateProvider, $urlRouterProvider,$ionicConfigProvider) {
         templateUrl: "templates/tabs/settings.html",
         controller: 'SettingsCtrl'
       }
-    },
-    cache: false
+    }
   })
 
   $urlRouterProvider.otherwise('/login');
