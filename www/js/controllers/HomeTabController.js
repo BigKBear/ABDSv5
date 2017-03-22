@@ -33,7 +33,6 @@ app.controller('HomeTabCtrl', function($scope, $ionicPopup, $state, $ionicPlatfo
 	$scope.restore = function(){
 		console.log('Starting restore of user data');
 	 	clearReportAreaForBackup();
-	 	CreateTempFolder();
 	 	document.addEventListener('deviceready',listRecoveryDir(file_system_path+ROOT_OF_BACKUP_AND_RECOVERY+ROOT_OF_DATA_BACKUP));
 	 	alert('successfully recovered: '+successResult+'/n \n  ERROR' + errorResult +' NOT recovered');
 	}
@@ -58,7 +57,7 @@ app.controller('HomeTabCtrl', function($scope, $ionicPopup, $state, $ionicPlatfo
 								      	$cordovaFile.copyDir(file_system_path+ROOT_OF_BACKUP_AND_RECOVERY+ROOT_OF_DATA_BACKUP,element.name,file_system_path,element.name)
 											.then(function (success) {
 													// success
-													alert('successfully restored' +element.name);
+													alert('successfully restored ' +element.name);
 													successResult += element.name;
 											}, function (error) {
 												alert("Folder "+folder+" was NOT copied error "+error.code);
@@ -97,7 +96,7 @@ app.controller('HomeTabCtrl', function($scope, $ionicPopup, $state, $ionicPlatfo
       });
 	}
 
-	var MoveFolder = function(currentFolderLocation,FolderToBeMoved,NewLocation,NewFolderName){
+	/*var MoveFolder = function(currentFolderLocation,FolderToBeMoved,NewLocation,NewFolderName){
 		$cordovaFile.moveDir(currentFolderLocation, FolderToBeMoved, NewLocation, NewFolderName)
       .then(function (success) {
         // success
@@ -106,7 +105,7 @@ app.controller('HomeTabCtrl', function($scope, $ionicPopup, $state, $ionicPlatfo
         // error
         alert('The current '+FolderToBeMoved + 'folder was NOT moved to '+ NewLocation + 'due to ERROR code '+ error.code +'.');
       });
-	}
+	}*/
 
 	var CheckThatBackupExist = function(){
 		$cordovaFile.checkDir(file_system_path, ROOT_OF_BACKUP_AND_RECOVERY+ROOT_OF_DATA_BACKUP)
@@ -116,10 +115,6 @@ app.controller('HomeTabCtrl', function($scope, $ionicPopup, $state, $ionicPlatfo
  					$scope.rootDirectoryExist += ' '+ ROOT_OF_BACKUP_AND_RECOVERY+ROOT_OF_DATA_BACKUP +' Does not Exist';
  					alert("please make a backup of your device before trying to restore.");
 		});
-	}
-
-	var CreateTempFolder = function(){
-		CreateABackupFolder(file_system_path,'ABDSTEMP');
 	}
 
 	/*
