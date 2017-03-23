@@ -37,54 +37,47 @@ app.controller('HomeTabCtrl', function($scope, $ionicPopup, $state, $ionicPlatfo
 	 	alert('successfully recovered: '+successResult+'/n \n  ERROR' + errorResult +' NOT recovered');
 	}
 
-
-
-		  function listRecoveryDir(path){
-		  	$ionicPlatform.ready(function() {
-		      if (ionic.Platform.isAndroid()) {
-		          window.resolveLocalFileSystemURL(path, function(fileSystem) {
-		          	var reader = fileSystem.createReader();
-		          	reader.readEntries(
-		          		function (entries) {
-		                  existingBackupDirectory = entries;
-						  existingBackupDirectory.forEach(function(element) {
-						  	// MoveFolder(file_system_path,element.name,'ABDSTEMP/',element.name);
-						  	// for each folder in the backup create replacing if the folder already exist the folder on th root then copy the content from backup into the folder
-				 					$cordovaFile.createDir(file_system_path,element.name,true)
-								      .then(function (success) {
-								      	// successfully created directory
-								      	//copy from backyp data folder to the root
-								      	$cordovaFile.copyDir(file_system_path+ROOT_OF_BACKUP_AND_RECOVERY+ROOT_OF_DATA_BACKUP,element.name,file_system_path,element.name)
-											.then(function (success) {
-													// success
-													alert('successfully restored ' +element.name);
-													successResult += element.name;
-											}, function (error) {
-												alert("Folder "+folder+" was NOT copied error "+error.code);
-												errorResult += element.name + 'not coppid due to '+ error.code;
-											});
-								      }, function (error) {
-								        // error removing previous backup of the directory
-								        console.log("Folder "+element.name+" was not removed sucssfully. \n");
-								        alert("Folder "+element.name+" was not Created sucssfully. \n"+ error.code);
-								      });
-								  });
-						  });
-		              }, function(err) {
-		              	alert('hi'+err.code);
-		                console.log(err);
-		              });
-		          }else{
-		          	alert('The user is not on and android device');
-		          }
-		    });
-
-		          /*, function (err) {
-		          	alert('hi'+err);
-		            console.log(err);
-		          });*/
-		          return;
-		}
+	function listRecoveryDir(path){
+	  	$ionicPlatform.ready(function() {
+	      if (ionic.Platform.isAndroid()) {
+	          window.resolveLocalFileSystemURL(path, function(fileSystem) {
+	          	var reader = fileSystem.createReader();
+	          	reader.readEntries(
+	          		function (entries) {
+	                  existingBackupDirectory = entries;
+					  existingBackupDirectory.forEach(function(element) {
+					  	// MoveFolder(file_system_path,element.name,'ABDSTEMP/',element.name);
+					  	// for each folder in the backup create replacing if the folder already exist the folder on th root then copy the content from backup into the folder
+			 					$cordovaFile.createDir(file_system_path,element.name,true)
+							      .then(function (success) {
+							      	// successfully created directory
+							      	//copy from backyp data folder to the root
+							      	$cordovaFile.copyDir(file_system_path+ROOT_OF_BACKUP_AND_RECOVERY+ROOT_OF_DATA_BACKUP,element.name,file_system_path,element.name)
+										.then(function (success) {
+												// success
+												alert('successfully restored ' +element.name);
+												successResult += element.name;
+										}, function (error) {
+											alert("Folder "+folder+" was NOT copied error "+error.code);
+											errorResult += element.name + 'not coppid due to '+ error.code;
+										});
+							      }, function (error) {
+							        // error removing previous backup of the directory
+							        console.log("Folder "+element.name+" was not removed sucssfully. \n");
+							        alert("Folder "+element.name+" was not Created sucssfully. \n"+ error.code);
+							      });
+							  });
+					  });
+	              }, function(err) {
+	              	alert('hi'+err.code);
+	                console.log(err);
+	              });
+	          }else{
+	          	alert('The user is not on and android device');
+	          }
+	    });
+	    	return;
+	}
 
 	var DeleteFolder = function(parent_directory,folderToBeDeleted){
 		alert('here');
