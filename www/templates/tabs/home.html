@@ -1,5 +1,9 @@
-<ion-view view-title="{{titleToShowUser}}">
+<!-- <ion-view view-title="{{titleToShowUser}}"> -->
+<ion-view title='<img class="title-image" src="img/ionic.png" /> <a>Android Build Device Switch</a>' >
   <ion-content class="padding">
+    <p align="center">
+      <b>{{titleToShowUser}}</b>
+    </p>
     <!-- <div class="padding-left padding-right" ng-controller="BackupCtrl"> -->
     <div class="padding-left padding-right">
       <div class="button-bar">
@@ -15,16 +19,16 @@
       </div>
     </div>
 
-    <div class="padding">
+    <!-- <div class="padding">
       <p>{{timeNow | date:'yyyy-MM-dd'}}</p>
       <p>{{currentPlatform}}</p>
-    </div>
+    </div> -->
     
     <div class="padding">
       <p>{{freeSpace}}</p>
     </div>
 
-    <div class="padding">
+   <!--  <div class="padding">
       <p>{{rootDirectoryExist}}</p>
     </div>
 
@@ -34,7 +38,7 @@
 
     <div class="padding">
       <p>{{stepone}}</p>
-    </div>
+    </div> -->
     
     <!-- <div class="padding">
       <p>The name that will be given to this backup will be: Backup{{timeNow | date:'yyyy-MM-dd-HH-mm-ss'}}</p>
