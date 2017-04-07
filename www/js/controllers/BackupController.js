@@ -3,7 +3,6 @@ app.controller('BackupCtrl', function($scope, $ionicPopup, $state, $ionicPlatfor
 	
   console.log('BackupCtrl');
   $scope.titleToShowUser = window.localStorage.getItem("userUsername") +" Home Page";
-  //$ionicHistory.clearHistory();
   
   $scope.backup = function(){
     console.log('Starting backup');
@@ -20,12 +19,7 @@ app.controller('BackupCtrl', function($scope, $ionicPopup, $state, $ionicPlatfor
         });//end of alert popup
     }//end of error free space
 
-    /*STEP ONE BACK UP ALL THE USER DATA*/
-    //Alert to see the path the foldet and data will be stored on
-    //alert(fileSystemPath);
-
      document.addEventListener('deviceready', function () {
-      //This variable has to be created with in the device ready function
       var currentPlatform = ionic.Platform.platform();
     $scope.currentPlatform = "Step 1: You are using "+ currentPlatform + " device.";
     $cordovaFile.getFreeDiskSpace()

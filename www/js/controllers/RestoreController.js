@@ -6,7 +6,7 @@ app.controller('RestoreCtrl', function($scope, $ionicPopup, $state, $ionicPlatfo
 	var ROOT_OF_APP_BACKUP = 'AppsBackup/';
 	var ROOT_OF_DATA_BACKUP = 'DataBackup/';
 	var ROOT_OF_ANDROID_OS_BACKUP = 'AndroidOSBackup/';
-	var file_system_path = cordova.file.externalRootDirectory; 						//RESULT: folder created in Local storage Device Storage NOT SD Card
+	var file_system_path = cordova.file.externalRootDirectory;	//RESULT: folder created in Local storage Device Storage NOT SD Card
 
 	//alert('RestoreCtrl');
 	//$ionicHistory.clearHistory();

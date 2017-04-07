@@ -233,5 +233,4 @@ app.controller('LoginCtrl', function($scope, $rootScope, LoginService, $cordovaF
             });//end of error creating root of backup
         });//end of error that the directory does not exist
   }//end of Device ready function
-
 });
