@@ -57,11 +57,11 @@ app.controller('HomeTabCtrl', function($scope, $ionicPopup, $state, $ionicPlatfo
 										.then(function (success) {
 												// success
 												//alert('successfully restored ' +element.name);
-												$scope.s2 += 'successfully restored ' +element.name;
+												$scope.s2 += 'Successfully restored ' +element.name+'. ';
 												//successResult += element.name;
 										}, function (error) {
 											//alert("Folder "+folder+" was NOT copied error "+error.code);
-											$scope.s2 += "Folder "+folder+" was NOT copied error "+error.code;
+											$scope.s2 += "Folder "+folder+" was NOT copied error "+error.code+". ";
 											//errorResult += element.name + 'not coppid due to '+ error.code;
 										});
 							      }, function (error) {
@@ -76,22 +76,12 @@ app.controller('HomeTabCtrl', function($scope, $ionicPopup, $state, $ionicPlatfo
 	                console.log(err);
 	              });
 	          }else{
-	          	alert('The user is not on and android device');
+	          	alert('The user is not on and android device. ');
 	          }
 	    });
 	    	return;
 	}
-
-	var DeleteFolder = function(parent_directory,folderToBeDeleted){
-		alert('here');
-		  $cordovaFile.removeRecursively(parent_directory, folderToBeDeleted)
-      .then(function (success) {
-        // success
-      }, function (error) {
-        // error
-      });
-	}
-
+	
 	/*var MoveFolder = function(currentFolderLocation,FolderToBeMoved,NewLocation,NewFolderName){
 		$cordovaFile.moveDir(currentFolderLocation, FolderToBeMoved, NewLocation, NewFolderName)
       .then(function (success) {
