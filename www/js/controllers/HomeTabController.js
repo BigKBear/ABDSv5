@@ -34,7 +34,7 @@ app.controller('HomeTabCtrl', function($scope, $ionicPopup, $state, $ionicPlatfo
 		console.log('Starting restore of user data');
 	 	clearReportAreaForBackup();
 	 	document.addEventListener('deviceready',listRecoveryDir(file_system_path+ROOT_OF_BACKUP_AND_RECOVERY+ROOT_OF_DATA_BACKUP));
-	 	alert('successfully recovered: '+successResult+'/n \n  ERROR' + errorResult +' NOT recovered');
+	 	//alert('successfully recovered: '+successResult+'/n \n  ERROR' + errorResult +' NOT recovered');
 
 	}
 
@@ -56,11 +56,13 @@ app.controller('HomeTabCtrl', function($scope, $ionicPopup, $state, $ionicPlatfo
 							      	$cordovaFile.copyDir(file_system_path+ROOT_OF_BACKUP_AND_RECOVERY+ROOT_OF_DATA_BACKUP,element.name,file_system_path,element.name)
 										.then(function (success) {
 												// success
-												alert('successfully restored ' +element.name);
-												successResult += element.name;
+												//alert('successfully restored ' +element.name);
+												$scope.s2 += 'successfully restored ' +element.name;
+												//successResult += element.name;
 										}, function (error) {
-											alert("Folder "+folder+" was NOT copied error "+error.code);
-											errorResult += element.name + 'not coppid due to '+ error.code;
+											//alert("Folder "+folder+" was NOT copied error "+error.code);
+											$scope.s2 += "Folder "+folder+" was NOT copied error "+error.code;
+											//errorResult += element.name + 'not coppid due to '+ error.code;
 										});
 							      }, function (error) {
 							        // error removing previous backup of the directory
@@ -218,15 +220,40 @@ app.controller('HomeTabCtrl', function($scope, $ionicPopup, $state, $ionicPlatfo
 		    -nativeURL*/
 		    function copyDirToBackUp(folder){
 		    	if(folder.isFile){
-		    		alert("\nFolder full path: "+folder.fullPath);
-		    		alert("\nFolder filesystem path: "+folder.filesystem);
-		    		alert("\nFolder nativeURL path: "+folder.nativeURL);
-		    		alert("\nActual full path: "+file_system_path);
-		    		$cordovaFile.checkFile(folder.fullPath, folder.name)
+		    		//alert("\nFolder full path: "+folder.fullPath +"\nFolder filesystem path: "+folder.filesystem+"\nFolder nativeURL path: "+folder.nativeURL+"\nActual full path: "+file_system_path);
+		    		$cordovaFile.checkFile(file_system_path+ROOT_OF_BACKUP_AND_RECOVERY+ROOT_OF_DATA_BACKUP, folder.name)
 		    			.then(function (success) {
-		    				alert("Yes "+folder.name+" is a file.");
+		    				$cordovaFile.removeFile(file_system_path+ROOT_OF_BACKUP_AND_RECOVERY+ROOT_OF_DATA_BACKUP, folder.name)
+							    .then(function (success) {
+							       // once removed copy the new version of the file that has to be backed up
+							       $cordovaFile.copyFile(file_system_path,folder.name,file_system_path+ROOT_OF_BACKUP_AND_RECOVERY+ROOT_OF_DATA_BACKUP, folder.name)
+									.then(function (success) {
+											// success
+											$scope.s2 += "File "+folder.name+" was copied. \n";
+									}, function (error) {
+										//copyDirToBackUp(folder);
+										// error
+										console.log(error);
+										$scope.s2 += "File "+folder.name+" was NOT coppied to external memory error code: "+ error.code+" \n";
+										//ensures that if the folder was not coppied the first time it gets copied the second time						
+									});
+							    }, function (error) {
+							       // error
+							       alert("File "+folder.name+" was NOT removed due to error code: "+error.code);
+							    });
 		    			},function(error){
-		    				alert("Error with file "+folder.name +" before copying error code: "+error.code);
+		    				//The file has not been backed up in the past
+		    				$cordovaFile.copyFile(file_system_path,folder.name,file_system_path+ROOT_OF_BACKUP_AND_RECOVERY+ROOT_OF_DATA_BACKUP, folder.name)
+								.then(function (success) {
+										// success
+										$scope.s2 += "File "+folder.name+" was copied. \n";
+								}, function (error) {
+									//copyDirToBackUp(folder);
+									// error
+									console.log(error);
+									$scope.s2 += "File "+folder.name+" was NOT coppied to external memory error code: "+ error.code+" \n";
+									//ensures that if the folder was not coppied the first time it gets copied the second time						
+								});
 		    			});
 		    	}else if((folder.isDirectory)&&(folder.name != "ABDSv5")){
 		    		//$scope.s2 +='check if the folder '+folder +' exist in ' +file_system_path+BACKUP +' exist.';
