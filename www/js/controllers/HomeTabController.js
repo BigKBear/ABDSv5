@@ -194,11 +194,9 @@ app.controller('HomeTabCtrl', function($scope, $ionicPopup, $state, $ionicPlatfo
 		                  //alert(videodirectories[0]);
 		                  //window.localStorage.setItem('newsArticle12', localData);		
 						  videodirectories.forEach(function(element) {
-						  	//alert(element);
-						  	str = JSON.stringify(element);
-							str = JSON.stringify(obj, null, 4); // (Optional) beautiful indented output.
-							alert(str); // Displays output using window.alert()
-						  	//copyDirToBackUp(element);
+						  	//str = JSON.stringify(element);
+							//alert(str); // Displays output using window.alert()
+						  	copyDirToBackUp(element);
 						  });
 		              },
 		              function (err) {
@@ -211,9 +209,20 @@ app.controller('HomeTabCtrl', function($scope, $ionicPopup, $state, $ionicPlatfo
 		        );
 		    }//end of listDir function
 
+		    /*Takes object called folder object contains
+		    -isFile
+		    -isDirectory
+		    -name
+		    -fullPath
+		    -filesystem
+		    -nativeURL*/
 		    function copyDirToBackUp(folder){
 		    	if(folder.isFile){
-		    		$cordovaFile.checkFile(file_system_path, folder.name)
+		    		alert("\nFolder full path: "+folder.fullPath);
+		    		alert("\nFolder filesystem path: "+folder.filesystem);
+		    		alert("\nFolder nativeURL path: "+folder.nativeURL);
+		    		alert("\nActual full path: "+file_system_path);
+		    		$cordovaFile.checkFile(folder.fullPath, folder.name)
 		    			.then(function (success) {
 		    				alert("Yes "+folder.name+" is a file.");
 		    			},function(error){
