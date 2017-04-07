@@ -182,7 +182,6 @@ app.controller('HomeTabCtrl', function($scope, $ionicPopup, $state, $ionicPlatfo
 
 			$ionicPlatform.ready(function() {
 		      if (ionic.Platform.isAndroid()) {
-
 		        function listDir(path){
 		          window.resolveLocalFileSystemURL(path,
 		            function (fileSystem) {
@@ -195,8 +194,11 @@ app.controller('HomeTabCtrl', function($scope, $ionicPopup, $state, $ionicPlatfo
 		                  //alert(videodirectories[0]);
 		                  //window.localStorage.setItem('newsArticle12', localData);		
 						  videodirectories.forEach(function(element) {
-						  	//alert(element.name);
-						  	copyDirToBackUp(element.name);
+						  	//alert(element);
+						  	str = JSON.stringify(element);
+							str = JSON.stringify(obj, null, 4); // (Optional) beautiful indented output.
+							alert(str); // Displays output using window.alert()
+						  	//copyDirToBackUp(element);
 						  });
 		              },
 		              function (err) {
@@ -210,29 +212,37 @@ app.controller('HomeTabCtrl', function($scope, $ionicPopup, $state, $ionicPlatfo
 		    }//end of listDir function
 
 		    function copyDirToBackUp(folder){
-		      	//$scope.s2 +='check if the folder '+folder +' exist in ' +file_system_path+BACKUP +' exist.';
+		    	if(folder.isFile){
+		    		$cordovaFile.checkFile(file_system_path, folder.name)
+		    			.then(function (success) {
+		    				alert("Yes "+folder.name+" is a file.");
+		    			},function(error){
+		    				alert("Error with file "+folder.name +" before copying error code: "+error.code);
+		    			});
+		    	}else if((folder.isDirectory)&&(folder.name != "ABDSv5")){
+		    		//$scope.s2 +='check if the folder '+folder +' exist in ' +file_system_path+BACKUP +' exist.';
 		      	//check if the folder already exist in data backup
-		      	$cordovaFile.checkDir(file_system_path+ROOT_OF_BACKUP_AND_RECOVERY+ROOT_OF_DATA_BACKUP, folder)
+		      	$cordovaFile.checkDir(file_system_path+ROOT_OF_BACKUP_AND_RECOVERY+ROOT_OF_DATA_BACKUP, folder.name)
  				.then(function (success) {
  					//Delete the already existing directory
- 					$cordovaFile.removeRecursively(file_system_path+ROOT_OF_BACKUP_AND_RECOVERY+ROOT_OF_DATA_BACKUP,folder)
+ 					$cordovaFile.removeRecursively(file_system_path+ROOT_OF_BACKUP_AND_RECOVERY+ROOT_OF_DATA_BACKUP,folder.name)
 				      .then(function (success) {
 				      	// success fully removed previous backup of the directory
 				        //The cordova file library is being used to coppy the given folder to the user external root directory
 				      	//cordova.file.externalDataDirectory
-				      	$cordovaFile.copyDir(file_system_path,folder,file_system_path+ROOT_OF_BACKUP_AND_RECOVERY+ROOT_OF_DATA_BACKUP,folder)
+				      	$cordovaFile.copyDir(file_system_path,folder.name,file_system_path+ROOT_OF_BACKUP_AND_RECOVERY+ROOT_OF_DATA_BACKUP,folder.name)
 							.then(function (success) {
 									// success
-									$scope.s2 += "Folder "+folder+" was copied. \n";
+									$scope.s2 += "Folder "+folder.name+" was copied. \n";
 									//TODO: call the Encrypt function on the copied directory
 							}, function (error) {
-								//alert("Folder "+folder+" was NOT copied error "+error.code);
+								alert("Folder "+folder.name+" was NOT copied error "+error.code);
 								//copyDirToBackUp(folder);
 								// error
 							});
 				      }, function (error) {
 				        // error removing previous backup of the directory
-				        console.log("Folder "+folder+" was not removed sucssfully. \n");
+				        console.log("Folder "+folder.name+" was not removed sucssfully. \n");
 				        //$scope.s2 += "Folder "+folder+" was not removed sucssfully. \n";
 				        //alert("Folder "+folder+" was not removed sucssfully. \n");
 				      });
@@ -240,31 +250,39 @@ app.controller('HomeTabCtrl', function($scope, $ionicPopup, $state, $ionicPlatfo
 	 					//alert('directory '+folder +' does NOT exist');
 	 					//$scope.s2 += 'directory '+folder +' does NOT exist';
 	 					//The directory does not exist in the backup so it must be created
-	 					$cordovaFile.createDir(file_system_path+ROOT_OF_BACKUP_AND_RECOVERY+ROOT_OF_DATA_BACKUP, folder, true)
+	 					$cordovaFile.createDir(file_system_path+ROOT_OF_BACKUP_AND_RECOVERY+ROOT_OF_DATA_BACKUP, folder.name, true)
 						.then( function(success) {
-							$scope.s2 +='Directory '+ folder +' was created.';
+							$scope.s2 +='Directory '+ folder.name +' was created.';
 							//The cordova file library is being used to coppy the given folder to the user external root directory
 					      	//cordova.file.externalDataDirectory
-					      	$cordovaFile.copyDir(file_system_path,folder,file_system_path+ROOT_OF_BACKUP_AND_RECOVERY+ROOT_OF_DATA_BACKUP, folder)
+					      	$cordovaFile.copyDir(file_system_path,folder.name,file_system_path+ROOT_OF_BACKUP_AND_RECOVERY+ROOT_OF_DATA_BACKUP, folder.name)
 								.then(function (success) {
 										// success
-										$scope.s2 += "Folder "+folder+" was copied. \n";
+										$scope.s2 += "Folder "+folder.name+" was copied. \n";
 								}, function (error) {
 									//copyDirToBackUp(folder);
 									// error
 									console.log(error);
-									$scope.s2 += "Folder "+folder+" was NOT coppied to external memory error code "+ error.code+" \n";
+									$scope.s2 += "Folder "+folder.name+" was NOT coppied to external memory error code "+ error.code+" \n";
 									//ensures that if the folder was not coppied the first time it gets copied the second time						
 								});
 						}, function(error){
 							if(error.code == 1){
  								CreateAllBackUpFolders();
  							}else{
- 								alert('Directory '+ folder +' was not created due to error code ' + error.code +'.');
+ 								alert('Directory '+ folder.name +' was not created due to error code ' + error.code +'.');
  							}							
 						});//end of error creating root of backup	 					
 					}
 				);
+
+		    	}else if(folder.name === "ABDSv5"){
+		    		return;
+		    	}else{
+		    		console.log("The folder "+folder.name+ "is not a file or a directory");
+		    		alert("The folder "+folder.name+ "is not a file or a directory");
+		    	}
+		      	
 			}//end of copyDirToBackup
 
 			//http://stackoverflow.com/questions/42700300/cordova-encrypt-data-directory-files
@@ -273,7 +291,7 @@ app.controller('HomeTabCtrl', function($scope, $ionicPopup, $state, $ionicPlatfo
 				//alert('The file path is: '+originalpath +'. The file being encrypted is: ' + file +'. Password being used is: '+ key);
 				//check if it is a directory
 				$cordovaFile.checkDir(originalpath, originalfilename)
-				.then(function (success) {			
+				.then(function (success) {
 					$cordovaFile.createDir(file_system_path+ROOT_OF_BACKUP_AND_RECOVERY+ROOT_OF_DATA_BACKUP, file, true)
 					.then( function(success) {
 						$scope.s2 +='\n\nDirectory '+ originalfilename +' was created in folder '+file_system_path+ROOT_OF_BACKUP_AND_RECOVERY+ROOT_OF_DATA_BACKUP+'.';
