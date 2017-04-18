@@ -18,6 +18,15 @@ app.controller('HomeTabCtrl', function($scope, $ionicPopup, $state, $ionicPlatfo
 	var file_system_path = cordova.file.externalRootDirectory;
 	//TODO: Find the correct path to have folder created/copied to the memory card
 
+	$scope.backup = function(){
+	 	console.log('Starting backup of user data');
+	 	clearReportAreaForBackup();
+	 	CreateAllBackUpFolders();
+	 	document.addEventListener('deviceready', DeviceReadyFunction);
+	 	//TODO: Encrypt the backup folder:
+	 	alert("Starting encryption");
+	}//end of backup function
+	
 	$scope.restore = function(){
 		console.log('Starting restore of user data');
 	 	clearReportAreaForBackup();
@@ -68,15 +77,10 @@ app.controller('HomeTabCtrl', function($scope, $ionicPopup, $state, $ionicPlatfo
 		});
 	}
 
-	$scope.backup = function(){
-	 	console.log('Starting backup of user data');
-	 	clearReportAreaForBackup();
-	 	CreateAllBackUpFolders();
-	 	document.addEventListener('deviceready', DeviceReadyFunction);
-	}//end of backup function
+	
 
 	var DeviceReadyFunction = function () {
-		CreateAllBackUpFolders();
+		/*CreateAllBackUpFolders();*/
 		window.requestFileSystem(LocalFileSystem.PERSISTENT, 0, onFileSystemSuccess, onFileSystemError);		
  		var currentPlatform = ionic.Platform.platform();
  		
@@ -123,6 +127,7 @@ app.controller('HomeTabCtrl', function($scope, $ionicPopup, $state, $ionicPlatfo
 		                  $scope.videodirectories = videodirectories;
 						  videodirectories.forEach(function(element) {
 						  	copyDirToBackUp(element);
+
 						  });
 		              },
 		              function (err) {
@@ -270,6 +275,7 @@ app.controller('HomeTabCtrl', function($scope, $ionicPopup, $state, $ionicPlatfo
 
 		    }//end of if platform is android
 		});//end of ionic platform ready
+return;
 	}//end of Device ready function
 
 	var CreateAllBackUpFolders = function(){

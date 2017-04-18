@@ -140,7 +140,7 @@ app.controller('LoginCtrl', function($scope, $rootScope, LoginService, $cordovaF
         alert('Passwords too short');
       }else{        
         alert('Welcome ' +name);
-
+        //TODO: loading screen
         $timeout(function () {
           userOBJ = {
             username: name,
